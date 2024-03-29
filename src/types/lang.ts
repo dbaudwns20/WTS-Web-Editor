@@ -25,3 +25,9 @@ export function getLangList() {
 export function getLangTextByValue(value: number) {
   for (const [k, v] of Object.entries(Lang)) if (v === value) return k;
 }
+
+export function getLangOptions() {
+  const result = getLangList();
+  result.unshift({ id: "", value: "Select your language" });
+  return result;
+}

@@ -85,17 +85,22 @@ const Text = forwardRef((props: TextProps, ref) => {
     const value: string = event.target.value;
 
     value ? setInvalidMsg(null) : setInvalidMsg(invalidMsg);
+
+    focus();
   };
 
   return (
     <>
-      <label className="label" ref={labelRef}>
+      <label
+        className={isRequired ? "label is-required" : "label"}
+        ref={labelRef}
+      >
         {labelText}
       </label>
       <input
+        className={_invalidMsg !== null ? "input is-invalid" : "input"}
         type="text"
         ref={textRef}
-        className="input"
         placeholder={placeholder}
         value={value!}
         onChange={handleChange}

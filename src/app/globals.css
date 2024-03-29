@@ -8,6 +8,9 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+
+  --var-header-height: 60px;
+  --var-footer-height: 60px;
 }
 
 .main {
@@ -18,5 +21,27 @@ body {
   @apply flex-col;
 
   height: auto;
-  min-height: calc(100% - 120px);
+  min-height: calc(
+    100% - calc(var(--var-footer-height) + var(--var-header-height))
+  );
+}
+
+.label {
+  @apply block;
+  @apply text-sm;
+  @apply mb-2;
+  @apply font-medium;
+  @apply text-slate-400;
+  @apply dark:text-white;
+}
+
+.label.is-required::after {
+  @apply text-orange-400;
+  content: " *";
+}
+
+.invalid-message {
+  @apply text-sm;
+  @apply text-red-600;
+  @apply dark:text-red-500;
 }

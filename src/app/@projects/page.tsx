@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Project, { bindProjects } from "@/types/project";
+
+import Project, { bindProjectList } from "@/types/project";
 import { getLangTextByValue } from "@/types/lang";
 
 export default function ProjectSection() {
@@ -16,8 +17,9 @@ export default function ProjectSection() {
     try {
       setIsLoading(true);
       const response = await fetch("/api/projects");
-      setProjectList(bindProjects(await response.json()));
+      setProjectList(bindProjectList(await response.json()));
     } catch (error) {
+      // TODO Error Handling
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -32,6 +34,7 @@ export default function ProjectSection() {
       });
       getProjectList();
     } catch (error) {
+      // TODO Error Handling
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -39,7 +42,7 @@ export default function ProjectSection() {
   };
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mx-10 my-10 py-10">
+    <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mx-10 mb-10">
       {projectList.map((project: Project) => {
         return (
           <article

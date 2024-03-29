@@ -1,22 +1,36 @@
 import {
+  useState,
   useRef,
   useEffect,
   SetStateAction,
   forwardRef,
   useImperativeHandle,
+  ChangeEvent,
+  InvalidEvent,
 } from "react";
+
+import "./style.css";
 
 import { generateRandomText } from "@/utils/common";
 
 type PropsType = {
+  value?: any;
   options: any[];
-  value: any;
-  onChange: React.Dispatch<SetStateAction<any>>;
   labelText: string;
+  isRequired?: boolean;
+  invalidMsg?: string;
+  onChange: React.Dispatch<SetStateAction<any>>;
 };
 
 const Select = forwardRef((props: PropsType, ref) => {
-  let { options, value, labelText, onChange } = props;
+  let {
+    value = "",
+    options,
+    labelText,
+    isRequired = false,
+    invalidMsg = "Please select your value",
+    onChange,
+  } = props;
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({}));
@@ -27,6 +41,27 @@ const Select = forwardRef((props: PropsType, ref) => {
 
   // values
   const elId: string = `select_${generateRandomText()}`;
+  const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
+
+  // change 이벤트 헨들링
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value: any = event.target.value;
+
+    if (isRequired && value) {
+      setInvalidMsg(null);
+    }
+
+    onChange(value);
+  };
+
+  // invalid 이벤트 헨들링
+  const handleInvalid = (event: InvalidEvent<HTMLSelectElement>) => {
+    if (!isRequired) return;
+
+    const value: string = event.target.value;
+
+    value ? setInvalidMsg(null) : setInvalidMsg(invalidMsg);
+  };
 
   useEffect(() => {
     labelRef.current!.setAttribute("for", elId);
@@ -37,16 +72,18 @@ const Select = forwardRef((props: PropsType, ref) => {
     <>
       <label
         ref={labelRef}
-        className="block text-sm mb-2 font-medium text-slate-400 dark:text-white"
+        className={isRequired ? "label is-required" : "label"}
       >
         {labelText}
       </label>
       <div className="relative">
         <select
+          className={_invalidMsg !== null ? "select is-invalid" : "select"}
           ref={selectRef}
           value={value}
-          onChange={onChange}
-          className="appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          onChange={handleChange}
+          onInvalid={handleInvalid}
+          required={isRequired}
         >
           {options.map((option: any) => {
             return (
@@ -66,6 +103,11 @@ const Select = forwardRef((props: PropsType, ref) => {
           </svg>
         </div>
       </div>
+      {_invalidMsg !== null ? (
+        <p className="invalid-message">{invalidMsg}</p>
+      ) : (
+        <></>
+      )}
     </>
   );
 });

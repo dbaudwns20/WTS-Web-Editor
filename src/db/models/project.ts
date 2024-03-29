@@ -6,6 +6,7 @@ export interface IProject {
   lang: number;
   process: number;
   lastModifiedId: string | null;
+  version: string | null;
   dateCreated: Date;
   lastUpdated: Date;
 }
@@ -14,7 +15,6 @@ const ProjectSchema: Schema<IProject> = new Schema({
   title: {
     type: String,
     required: true,
-    unique: true,
   },
   lang: {
     type: Number,
@@ -28,6 +28,10 @@ const ProjectSchema: Schema<IProject> = new Schema({
     type: String,
     default: null,
   },
+  version: {
+    type: String,
+    default: null,
+  },
   dateCreated: {
     type: Date,
     default: new Date(),
@@ -37,6 +41,9 @@ const ProjectSchema: Schema<IProject> = new Schema({
     default: new Date(),
   },
 });
+
+// title & lang unique index
+ProjectSchema.index({ title: 1, lang: 1 }, { unique: true });
 
 const ProjectModel =
   models?.Project || mongoose.model("Project", ProjectSchema);

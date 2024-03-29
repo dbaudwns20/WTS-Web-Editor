@@ -2,16 +2,16 @@
 
 import { useRef, useState } from "react";
 
-import { Lang, getLangList } from "@/types/lang";
+import { getLangOptions } from "@/types/lang";
 
 import Modal from "@/components/common/modal";
-import Select from "@/components/input/select";
+import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 
 import { validateForm } from "@/utils/validator";
 
-export default function Root() {
+export default function RootPage() {
   // ref
   const titleRef = useRef<TextType>();
   const submitRef = useRef<SubmitType>();
@@ -19,13 +19,16 @@ export default function Root() {
   // values
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState<string>("");
-  const [lang, setLang] = useState<number>(Lang.en_US);
+  const [lang, setLang] = useState<number | "">("");
+  const [version, setVersion] = useState<string>("");
 
+  // 프로젝트 생성 모달창 열기
   const newProject = () => {
     setIsModalOpen(true);
     titleRef.current?.focus();
   };
 
+  // 프로젝트 생성
   const createNewProject = async (e: any) => {
     e.preventDefault();
 
@@ -41,6 +44,7 @@ export default function Root() {
         body: JSON.stringify({
           title: title,
           lang: lang,
+          version: version,
         }),
       });
       const result = await response.json();
@@ -91,10 +95,21 @@ export default function Root() {
           </div>
           <div className="block">
             <Select
-              labelText="LANG"
-              options={getLangList()}
+              labelText="LANGUAGE"
+              options={getLangOptions()}
               value={lang}
-              onChange={(e) => setLang(Number(e.target.value))}
+              onChange={(val) => setLang(val)}
+              invalidMsg="Please select your language."
+              isRequired={true}
+            />
+          </div>
+          <div className="block">
+            <Text
+              value={version}
+              labelText="VERSION"
+              placeholder="ex) 1.0.0"
+              invalidMsg="Please enter your version."
+              onChange={setVersion}
             />
           </div>
           <div className="block">

@@ -24,6 +24,6 @@ export function bindProject(project: IProject): Project {
   return new Project(project);
 }
 
-export function bindProjects(projects: IProject[]): Project[] {
+export function bindProjectList(projects: IProject[]): Project[] {
   return projects.map((project) => bindProject(project));
 }
