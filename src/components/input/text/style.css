@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.label {
+  @apply block;
+  @apply text-sm;
+  @apply mb-2;
+  @apply font-medium;
+  @apply text-slate-400;
+  @apply dark:text-white;
+}
+
+.input {
+  @apply bg-gray-50;
+  @apply border;
+  @apply border-gray-300;
+  @apply text-gray-900;
+  @apply focus:ring-blue-500;
+  @apply focus:border-blue-500;
+  @apply dark:bg-gray-700;
+  @apply dark:border-gray-600;
+  @apply dark:placeholder-gray-400;
+  @apply dark:text-white;
+  @apply dark:focus:border-blue-500;
+  @apply invalid:border-red-600;
+  @apply invalid:ring-red-500;
+  @apply disabled:opacity-70;
+  @apply disabled:cursor-not-allowed;
+  @apply read-only:cursor-default;
+  @apply text-sm;
+  @apply rounded-lg;
+  @apply block;
+  @apply w-full;
+  @apply p-2.5;
+}
+
+.invalid-message {
+  @apply mt-1;
+  @apply text-sm;
+  @apply text-red-600;
+  @apply dark:text-red-500;
+}
