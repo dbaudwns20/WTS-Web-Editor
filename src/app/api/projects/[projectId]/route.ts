@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
