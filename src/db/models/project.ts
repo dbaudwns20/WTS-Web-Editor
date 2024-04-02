@@ -3,10 +3,9 @@ import mongoose, { models, Schema } from "mongoose";
 export interface IProject {
   _id: string;
   title: string;
-  lang: number;
+  language: number;
   process: number;
-  lastModifiedId: string | null;
-  version: string | null;
+  version: string;
   dateCreated: Date;
   lastUpdated: Date;
 }
@@ -16,17 +15,13 @@ const ProjectSchema: Schema<IProject> = new Schema({
     type: String,
     required: true,
   },
-  lang: {
+  language: {
     type: Number,
     required: true,
   },
   process: {
     type: Number,
     default: 0,
-  },
-  lastModifiedId: {
-    type: String,
-    default: null,
   },
   version: {
     type: String,

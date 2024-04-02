@@ -1,4 +1,4 @@
-export enum Lang {
+export enum Language {
   en_US = 0,
   ko_KR = 1,
   zh_CN = 2,
@@ -15,7 +15,7 @@ export enum Lang {
 
 export function getLangList() {
   const result = [];
-  for (const [k, v] of Object.entries(Lang)) {
+  for (const [k, v] of Object.entries(Language)) {
     if (!Number.isNaN(Number(k))) continue;
     result.push({ id: v, value: k });
   }
@@ -23,7 +23,7 @@ export function getLangList() {
 }
 
 export function getLangTextByValue(value: number) {
-  for (const [k, v] of Object.entries(Lang)) if (v === value) return k;
+  for (const [k, v] of Object.entries(Language)) if (v === value) return k;
 }
 
 export function getLangOptions() {

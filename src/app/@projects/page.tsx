@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import Project, { bindProjectList } from "@/types/project";
-import { getLangTextByValue } from "@/types/lang";
+import { getLangTextByValue } from "@/types/language";
 
 export default function ProjectSection() {
   const [projectList, setProjectList] = useState<Project[]>([]);
@@ -52,7 +52,7 @@ export default function ProjectSection() {
             <p className="text-2xl font-bold text-gray-500">{project.title}</p>
             <div className="flex justify-between">
               <p className="text-gray-500">
-                {getLangTextByValue(project.lang)}
+                {getLangTextByValue(project.language)}
               </p>
             </div>
             <button
