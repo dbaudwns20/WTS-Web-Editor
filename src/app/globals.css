@@ -19,6 +19,8 @@ body {
   @apply h-full;
   @apply flex;
   @apply flex-col;
+  @apply bg-white;
+  @apply dark:bg-gray-800;
 
   height: auto;
   min-height: calc(

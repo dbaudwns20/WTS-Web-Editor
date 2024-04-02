@@ -69,7 +69,7 @@ export default function Modal(props: ModalProps) {
     >
       <div
         ref={wrapper}
-        className="bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-10/12 max-sm:w-10/12 md:w-8/12 lg:w-1/3 rounded-lg"
+        className="bg-white dark:bg-gray-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-10/12 max-sm:w-10/12 md:w-8/12 lg:w-1/3 rounded-lg"
       >
         <header className="flex justify-between items-center px-6 py-3">
           <p className="font-bold text-gray-500 text-xl">{title}</p>

@@ -3,17 +3,12 @@ import { Root, createRoot } from "react-dom/client";
 
 import Notification from "@/components/message/notification/notification";
 
-export enum MESSAGE_TYPE {
-  SUCCESS = "is-success",
-  WARNING = "is-warning",
-  DANGER = "is-danger",
-  INFO = "is-info",
-}
-
 let messageBox: Root | null;
 
 type NotificationOptions = {
   message: string;
+  messageType: "success" | "warning" | "danger" | "info";
+  position?: "left" | "center" | "right";
   timeout?: number;
 };
 
@@ -28,18 +23,10 @@ export function closeNotification() {
   messageBox = null;
 }
 
-export function showNotificationMessage(
-  type: MESSAGE_TYPE,
-  options: NotificationOptions
-) {
+export function showNotificationMessage(options: NotificationOptions) {
   // create root
   setMessageBox();
 
   // component render
-  messageBox!.render(
-    createElement(Notification, {
-      ...options,
-      messageType: type,
-    })
-  );
+  messageBox!.render(createElement(Notification, options));
 }

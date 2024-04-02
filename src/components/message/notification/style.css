@@ -1,3 +1,69 @@
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOutRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes fadeOutLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
 .wrapper {
   @apply flex;
   @apply w-full;
@@ -22,34 +88,68 @@
   @apply rounded-lg;
   @apply m-4;
   @apply z-40;
-  @apply w-1/4;
+  @apply max-sm:rounded-none;
+  @apply max-sm:m-0;
+  @apply max-sm:w-full;
+  @apply sm:w-full;
+  @apply md:w-1/2;
+  @apply lg:w-1/4;
   @apply h-16;
   @apply shadow-2xl;
   @apply transition;
   @apply duration-300;
 }
 
+.wrapper.is-left > .notification {
+  animation: fadeInLeft 0.5s ease;
+}
+
+.wrapper.is-left > .notification.fade-out {
+  animation: fadeOutRight 0.5s ease;
+}
+
+.wrapper.is-center > .notification {
+  animation: fadeInDown 0.5s ease;
+}
+
+.wrapper.is-center > .notification.fade-out {
+  animation: fadeOutUp 0.5s ease;
+}
+
+.wrapper.is-right > .notification {
+  animation: fadeInRight 0.5s ease;
+}
+
+.wrapper.is-right > .notification.fade-out {
+  animation: fadeOutLeft 0.5s ease;
+}
+
 .notification.is-success {
   @apply bg-green-600;
   @apply text-white;
+  @apply dark:bg-green-800;
 }
 
 .notification.is-danger {
   @apply bg-red-500;
   @apply text-white;
+  @apply dark:bg-red-700;
 }
 
 .notification.is-info {
   @apply bg-blue-500;
   @apply text-white;
+  @apply dark:bg-blue-700;
 }
 
 .notification.is-warning {
-  @apply bg-yellow-400;
+  @apply bg-yellow-500;
   @apply text-white;
+  @apply dark:bg-yellow-600;
 }
 
 .notification-content {
+  @apply pointer-events-auto;
   @apply pl-4;
   @apply flex;
   @apply items-center;
@@ -65,6 +165,7 @@
 }
 
 .close-btn {
+  @apply pointer-events-auto;
   @apply flex;
   @apply items-center;
   @apply z-50;
@@ -73,6 +174,7 @@
   @apply pr-4;
   @apply transition;
   @apply duration-300;
+  @apply cursor-pointer;
 }
 
 .notification-content:hover ~ .close-btn {
