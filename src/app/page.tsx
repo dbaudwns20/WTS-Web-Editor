@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, ChangeEvent } from "react";
 
-import { getLangOptions } from "@/types/lang";
+import { Language, getLangOptions } from "@/types/language";
+import { WtsString } from "@/types/wts.string";
 
 import Modal from "@/components/common/modal";
 import Select from "@/components/input/select/select";
@@ -10,17 +11,20 @@ import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 
 import { validateForm } from "@/utils/validator";
+import { readWtsFile } from "@/utils/wts";
 
 export default function RootPage() {
   // ref
   const titleRef = useRef<TextType>();
   const submitRef = useRef<SubmitType>();
+  const fileRef = useRef<HTMLInputElement>();
 
   // values
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState<string>("");
-  const [lang, setLang] = useState<number | "">("");
+  const [language, setLanguage] = useState<Language | "">("");
   const [version, setVersion] = useState<string>("");
+  const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
 
   // 프로젝트 생성 모달창 열기
   const newProject = () => {
@@ -34,8 +38,8 @@ export default function RootPage() {
 
     if (!validateForm(e.target)) return;
 
+    submitRef.current?.setFetchState(true);
     try {
-      submitRef.current?.setFetchState(true);
       const response = await fetch("/api/projects", {
         method: "POST",
         headers: {
@@ -43,13 +47,27 @@ export default function RootPage() {
         },
         body: JSON.stringify({
           title: title,
-          lang: lang,
+          language: language,
           version: version,
+          wtsStringList: wtsStringList,
         }),
       });
       const result = await response.json();
     } catch (error) {
       console.log(error);
+    } finally {
+      submitRef.current?.setFetchState(false);
+    }
+  };
+
+  const handleUploadWtsFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const file: File = event.currentTarget.files![0];
+    submitRef.current?.setFetchState(true);
+    try {
+      setWtsStringList(readWtsFile(file));
+    } catch (error: any) {
+      console.log(error);
+      alert(error.message);
     } finally {
       submitRef.current?.setFetchState(false);
     }
@@ -97,8 +115,8 @@ export default function RootPage() {
             <Select
               labelText="LANGUAGE"
               options={getLangOptions()}
-              value={lang}
-              onChange={(val) => setLang(val)}
+              value={language}
+              onChange={(val) => setLanguage(val)}
               invalidMsg="Please select your language."
               isRequired={true}
             />
@@ -113,7 +131,7 @@ export default function RootPage() {
             />
           </div>
           <div className="block">
-            <label className="block text-sm mb-2 font-medium text-slate-400 dark:text-white">
+            <label className="label is-required" htmlFor="dropzone-file">
               WTS FILE
             </label>
             <div className="flex items-center justify-center w-full">
@@ -123,7 +141,7 @@ export default function RootPage() {
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <svg
-                    className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                    className="w-8 h-8 mb-2 text-gray-500 dark:text-gray-400"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -137,12 +155,18 @@ export default function RootPage() {
                       d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                     />
                   </svg>
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     <span className="font-semibold">Click to upload</span> or
                     drag and drop
                   </p>
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" />
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  className="hidden"
+                  required
+                  onChange={handleUploadWtsFile}
+                />
               </label>
             </div>
           </div>

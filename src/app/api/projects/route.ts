@@ -1,25 +1,43 @@
-import { type NextRequest } from "next/server";
+import { startSession } from "mongoose";
+import { type NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
+import { createProject, createStrings } from "@/services/project.service";
+
+import { checkRequestBody } from "@/utils/api";
+
 export async function GET(request: NextRequest) {
   try {
     dbConnect();
-    return Response.json(await ProjectModel.find({}));
+    return NextResponse.json(await ProjectModel.find({}));
   } catch (error) {
-    return Response.json({ message: "Internal server error" });
+    return NextResponse.json({ message: "Internal server error" });
   }
 }
 
 export async function POST(request: NextRequest) {
+  let session;
   try {
-    dbConnect();
+    session = await startSession();
+    session.startTransaction();
+
     const body = await request.json();
-    const newProject = new ProjectModel(body);
-    newProject.save();
-    return Response.json(newProject);
-  } catch (error) {
-    return Response.json({ message: "Internal server error" });
+    checkRequestBody(["title", "language", "wtsStringList"], body);
+
+    await dbConnect();
+
+    const newProject = await createProject(body);
+    await createStrings(newProject._id, body["wtsStringList"]);
+
+    await session.commitTransaction();
+    return NextResponse.json(newProject);
+  } catch (error: any) {
+    if (session) {
+      session.abortTransaction();
+      session.endSession();
+    }
+    return NextResponse.json(error);
   }
 }
