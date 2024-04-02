@@ -12,6 +12,7 @@ import Submit, { type SubmitType } from "@/components/button/submit";
 
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
+import { showNotificationMessage, MESSAGE_TYPE } from "@/utils/message";
 
 export default function RootPage() {
   // ref
@@ -39,25 +40,33 @@ export default function RootPage() {
     if (!validateForm(e.target)) return;
 
     submitRef.current?.setFetchState(true);
-    try {
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: title,
-          language: language,
-          version: version,
-          wtsStringList: wtsStringList,
-        }),
+
+    const response = await fetch("/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title,
+        language: language,
+        version: version,
+        wtsStringList: wtsStringList,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      showNotificationMessage(MESSAGE_TYPE.SUCCESS, {
+        message: "프로젝트가 생성되었습니다.",
       });
-      const result = await response.json();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      submitRef.current?.setFetchState(false);
+    } else {
+      showNotificationMessage(MESSAGE_TYPE.DANGER, {
+        message: result.message,
+      });
     }
+
+    submitRef.current?.setFetchState(false);
   };
 
   const handleUploadWtsFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +97,6 @@ export default function RootPage() {
           </button>
         </div>
       </div>
-
       <Modal
         title="New Project"
         isOpen={isModalOpen}

@@ -1,0 +1,80 @@
+.wrapper {
+  @apply flex;
+  @apply w-full;
+}
+
+.wrapper.is-left {
+  @apply justify-start;
+}
+
+.wrapper.is-center {
+  @apply justify-center;
+}
+
+.wrapper.is-right {
+  @apply justify-end;
+}
+
+.notification {
+  @apply relative;
+  @apply flex;
+  @apply items-center;
+  @apply rounded-lg;
+  @apply m-4;
+  @apply z-40;
+  @apply w-1/4;
+  @apply h-16;
+  @apply shadow-2xl;
+  @apply transition;
+  @apply duration-300;
+}
+
+.notification.is-success {
+  @apply bg-green-600;
+  @apply text-white;
+}
+
+.notification.is-danger {
+  @apply bg-red-500;
+  @apply text-white;
+}
+
+.notification.is-info {
+  @apply bg-blue-500;
+  @apply text-white;
+}
+
+.notification.is-warning {
+  @apply bg-yellow-400;
+  @apply text-white;
+}
+
+.notification-content {
+  @apply pl-4;
+  @apply flex;
+  @apply items-center;
+  @apply w-full;
+  @apply h-full;
+}
+
+.message {
+  @apply w-full;
+  @apply ml-4;
+  @apply text-white;
+  @apply font-medium;
+}
+
+.close-btn {
+  @apply flex;
+  @apply items-center;
+  @apply z-50;
+  @apply opacity-0;
+  @apply hover:opacity-100;
+  @apply pr-4;
+  @apply transition;
+  @apply duration-300;
+}
+
+.notification-content:hover ~ .close-btn {
+  @apply opacity-50;
+}
