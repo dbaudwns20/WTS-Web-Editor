@@ -23,8 +23,6 @@ export async function POST(request: NextRequest) {
     session = await startSession();
     session.startTransaction();
 
-    throw new Error("tesatastesa");
-
     const body = await request.json();
     checkRequestBody(["title", "language", "wtsStringList"], body);
 
