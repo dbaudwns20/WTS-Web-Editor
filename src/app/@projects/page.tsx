@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Project, { bindProjectList } from "@/types/project";
 import { getLangTextByValue } from "@/types/language";
 
+import { showNotificationMessage } from "@/utils/message";
+
 export default function ProjectSection() {
   const [projectList, setProjectList] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,6 +40,10 @@ export default function ProjectSection() {
       console.log(error);
     } finally {
       setIsLoading(false);
+      showNotificationMessage({
+        message: "프로젝트가 삭제되었습니다",
+        messageType: "success",
+      });
     }
   };
 

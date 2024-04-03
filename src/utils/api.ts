@@ -15,3 +15,10 @@ export function checkRequestBody(keys: string[], body: any) {
     }
   }
 }
+
+export function handleErrors(error: any) {
+  return NextResponse.json({
+    success: false,
+    message: error.message,
+  });
+}

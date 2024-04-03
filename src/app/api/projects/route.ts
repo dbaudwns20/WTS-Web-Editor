@@ -6,7 +6,7 @@ import ProjectModel from "@/db/models/project";
 
 import { createProject, createStrings } from "@/services/project.service";
 
-import { checkRequestBody } from "@/utils/api";
+import { checkRequestBody, handleErrors } from "@/utils/api";
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +38,6 @@ export async function POST(request: NextRequest) {
       session.abortTransaction();
       session.endSession();
     }
-    return NextResponse.json(error);
+    return handleErrors(error);
   }
 }
