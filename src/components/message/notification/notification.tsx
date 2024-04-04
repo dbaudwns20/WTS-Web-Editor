@@ -9,7 +9,7 @@ import "./style.css";
 type NotificationProps = {
   message?: string;
   position?: "left" | "center" | "right";
-  messageType?: string;
+  messageType?: "info" | "success" | "warning" | "danger";
   timeout?: number;
 };
 
@@ -28,10 +28,11 @@ export default function Notification(props: NotificationProps) {
 
   // values
   const [icon, setIcon] = useState<string>("info");
+  const [isClose, setIsCode] = useState<boolean>(false);
 
   // 자동 닫기
   const close = () => {
-    notification.current!.className += " fade-out";
+    setIsCode(true);
     setTimeout(() => {
       closeNotification();
     }, 400);
@@ -52,12 +53,20 @@ export default function Notification(props: NotificationProps) {
 
   // props 로 받은 position 으로 notification 의 위치 지정
   const setPosition = useCallback(() => {
-    wrapper.current!.className = `wrapper is-${position}`;
+    if (wrapper.current!.classList.length > 1) {
+      const lastClass: string = wrapper.current!.classList[1];
+      wrapper.current!.classList.remove(lastClass);
+    }
+    wrapper.current!.classList.add(`is-${position}`);
   }, [position]);
 
   // props 로 받은 messageType 으로 클래스와 아이콘 정의
   const setMessageType = useCallback(() => {
-    notification.current!.className = `notification is-${messageType}`;
+    if (notification.current!.classList.length > 1) {
+      const lastClass: string = notification.current!.classList[1];
+      notification.current!.classList.remove(lastClass);
+    }
+    notification.current!.classList.add(`is-${messageType}`);
     switch (messageType) {
       case "success":
         setIcon("check_circle");
@@ -75,11 +84,12 @@ export default function Notification(props: NotificationProps) {
   }, [messageType]);
 
   useEffect(() => {
-    setPosition();
-    setMessageType();
-  }, [setPosition, setMessageType]);
+    if (isClose) notification.current!.classList.add("fade-out");
+  }, [isClose]);
 
   useEffect(() => {
+    setPosition();
+    setMessageType();
     // 타임아웃 설정
     setAutoCloseTimeout();
     // unmount
@@ -87,12 +97,13 @@ export default function Notification(props: NotificationProps) {
       // 컴포넌트가 unmount 될 때 타임아웃 클리어
       clearTimeout(timeoutRef.current!);
     };
-  }, [setAutoCloseTimeout]);
+  }, [setPosition, setMessageType, setAutoCloseTimeout]);
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none">
-      <div ref={wrapper}>
+      <div className="notification-wrapper" ref={wrapper}>
         <div
+          className="notification"
           ref={notification}
           onMouseOver={() => clearTimeout(timeoutRef.current!)}
           onMouseLeave={() => setAutoCloseTimeout()}
@@ -103,7 +114,7 @@ export default function Notification(props: NotificationProps) {
             </span>
             <span className="message">{message}</span>
           </div>
-          <button className="close-btn" onClick={manualClose}>
+          <button className="notification-close-button" onClick={manualClose}>
             <span className="icon">
               <i className="material-icons">close</i>
             </span>

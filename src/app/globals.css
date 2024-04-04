@@ -37,16 +37,20 @@ body {
 }
 
 /* Rules for sizing the icon. */
-.material-icons.md-18 {
+.material-icons.md-18,
+.material-icons-outlined.md-18 {
   font-size: 18px;
 }
-.material-icons.md-24 {
+.material-icons.md-24,
+.material-icons-outlined.md-24 {
   font-size: 24px;
 }
-.material-icons.md-36 {
+.material-icons.md-36,
+.material-icons-outlined.md-36 {
   font-size: 36px;
 }
-.material-icons.md-48 {
+.material-icons.md-48,
+.material-icons-outlined.md-48 {
   font-size: 48px;
 }
 
@@ -57,6 +61,7 @@ body {
   @apply font-medium;
   @apply text-slate-400;
   @apply dark:text-white;
+  @apply w-fit;
 }
 
 .label.is-required::after {
@@ -68,4 +73,18 @@ body {
   @apply text-sm;
   @apply text-red-600;
   @apply dark:text-red-500;
+}
+
+.block-group {
+  @apply flex;
+  @apply w-full;
+}
+
+.block-group > .block {
+  @apply w-full;
+  @apply mr-5;
+}
+
+.block-group > .block:last-child {
+  @apply mr-0;
 }
