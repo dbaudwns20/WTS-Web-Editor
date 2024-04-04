@@ -29,7 +29,7 @@ export default function RootLayout({
         <Header />
         <main className="main">
           <section>{children}</section>
-          <section>{projects}</section>
+          {projects}
         </main>
         <Footer />
         <div id="message-box"></div>
