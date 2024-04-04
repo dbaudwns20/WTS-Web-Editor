@@ -12,10 +12,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  projects,
 }: Readonly<{
   children: React.ReactNode;
-  projects: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -27,10 +25,7 @@ export default function RootLayout({
       </head>
       <body>
         <Header />
-        <main className="main">
-          <section>{children}</section>
-          {projects}
-        </main>
+        <main className="main">{children}</main>
         <Footer />
         <div id="message-box"></div>
       </body>

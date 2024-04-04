@@ -16,6 +16,13 @@ export function checkRequestBody(keys: string[], body: any) {
   }
 }
 
+export function handleSuccess(data: any) {
+  return NextResponse.json({
+    success: true,
+    data: data,
+  });
+}
+
 export function handleErrors(error: any) {
   return NextResponse.json({
     success: false,

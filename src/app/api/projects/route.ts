@@ -6,7 +6,7 @@ import ProjectModel from "@/db/models/project";
 
 import { createProject, createStrings } from "@/services/project.service";
 
-import { checkRequestBody, handleErrors } from "@/utils/api";
+import { checkRequestBody, handleSuccess, handleErrors } from "@/utils/api";
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     await createStrings(newProject._id, body["wtsStringList"]);
 
     await session.commitTransaction();
-    return NextResponse.json(newProject);
+    return handleSuccess(newProject);
   } catch (error: any) {
     if (session) {
       session.abortTransaction();

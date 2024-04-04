@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef, useState, ChangeEvent } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import { Language, getLangOptions } from "@/types/language";
 import { WtsString } from "@/types/wts.string";
+import Project, { bindProjectList } from "@/types/project";
+import { getLangTextByValue } from "@/types/language";
 
 import Modal from "@/components/common/modal";
 import Select from "@/components/input/select/select";
@@ -27,6 +29,9 @@ export default function RootPage() {
   const [language, setLanguage] = useState<Language | "">("");
   const [version, setVersion] = useState<string>("");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
+
+  const [projectList, setProjectList] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 프로젝트 생성 모달창 열기
   const newProject = () => {
@@ -68,87 +73,147 @@ export default function RootPage() {
         messageType: "danger",
       });
     }
-
     submitRef.current?.setFetchState(false);
+
+    setIsModalOpen(false);
+
+    await getProjectList();
+  };
+
+  const getProjectList = async () => {
+    setIsLoading(true);
+    const response = await fetch("/api/projects");
+    setProjectList(bindProjectList(await response.json()));
+    setIsLoading(false);
+  };
+
+  const deleteProject = async (projectId: string) => {
+    setIsLoading(true);
+    const response = await fetch("/api/projects/" + projectId, {
+      method: "DELETE",
+    });
+
+    getProjectList();
+    setIsLoading(false);
+    showNotificationMessage({
+      message: "프로젝트가 삭제되었습니다",
+      messageType: "success",
+    });
   };
 
   const handleUploadWtsFile = (file: File) => {
     setWtsStringList(readWtsFile(file));
   };
 
+  useEffect(() => {
+    getProjectList();
+  }, []);
+
   return (
     <>
-      <div className="border border-grey-300 mx-10 my-10 px-10 py-10 text-center rounded-2xl">
-        <p className="py-5">Logo Or Description</p>
-      </div>
-      <div className="mx-10 my-10">
-        <div className="w-full flex justify-center">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg"
-            onClick={newProject}
-          >
-            CREATE NEW PROJECT
-          </button>
+      <section>
+        <div className="border border-grey-300 mx-10 my-10 px-10 py-10 text-center rounded-2xl">
+          <p className="py-5">Logo Or Description</p>
         </div>
-      </div>
-      <Modal
-        title="New Project"
-        isOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        isCloseOnOverlay={false}
-      >
-        <form
-          className="grid gap-6 md:grid-cols-1 p-6"
-          onSubmit={createNewProject}
-          noValidate
-        >
-          <div className="block">
-            <Text
-              ref={titleRef}
-              value={title}
-              labelText="TITLE"
-              placeholder="Project Title"
-              invalidMsg="Please enter your project title."
-              isRequired={true}
-              onChange={setTitle}
-            />
+        <div className="mx-10 my-10">
+          <div className="w-full flex justify-center">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg"
+              onClick={newProject}
+            >
+              CREATE NEW PROJECT
+            </button>
           </div>
-          <div className="block-group">
-            <div className="block">
-              <Select
-                labelText="LANGUAGE"
-                options={getLangOptions()}
-                value={language}
-                onChange={(val) => setLanguage(val)}
-                invalidMsg="Please select your language."
-                isRequired={true}
-              />
-            </div>
+        </div>
+      </section>
+      <section className="grid grid-cols-1 lg:grid-cols-4 gap-8 mx-10 mb-10">
+        {projectList.map((project: Project) => {
+          return (
+            <article
+              className="rounded-2xl shadow-lg h-48 w-full p-8"
+              key={project.id}
+            >
+              <p className="text-2xl font-bold text-gray-500">
+                {project.title}
+              </p>
+              <div className="flex justify-between">
+                <p className="text-gray-500">
+                  {getLangTextByValue(project.language)}
+                </p>
+              </div>
+              <button
+                className="bg-red-300 hover:bg-red-500"
+                type="button"
+                onClick={(e) => deleteProject(project.id)}
+              >
+                DELETE
+              </button>
+            </article>
+          );
+        })}
+      </section>
+      {isModalOpen ? (
+        <Modal
+          title="New Project"
+          isOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          isCloseOnOverlay={false}
+        >
+          <form
+            className="grid gap-6 md:grid-cols-1 p-6"
+            onSubmit={createNewProject}
+            noValidate
+          >
             <div className="block">
               <Text
-                value={version}
-                labelText="VERSION"
-                placeholder="ex) 1.0.0"
-                invalidMsg="Please enter your version."
-                onChange={setVersion}
+                ref={titleRef}
+                value={title}
+                labelText="TITLE"
+                placeholder="Project Title"
+                invalidMsg="Please enter your project title."
+                isRequired={true}
+                onChange={setTitle}
               />
             </div>
-          </div>
-          <div className="block">
-            <File
-              ref={fileRef}
-              labelText="WTS FILE"
-              onChange={handleUploadWtsFile}
-              isRequired={true}
-              accept=".wts"
-              invalidMsg="Please upload your wts file."
-            />
-          </div>
-          <div className="block text-center">
-            <Submit ref={submitRef} buttonText="CREATE" />
-          </div>
-        </form>
-      </Modal>
+            <div className="block-group">
+              <div className="block">
+                <Select
+                  labelText="LANGUAGE"
+                  options={getLangOptions()}
+                  value={language}
+                  onChange={(val) => setLanguage(val)}
+                  invalidMsg="Please select your language."
+                  isRequired={true}
+                />
+              </div>
+              <div className="block">
+                <Text
+                  value={version}
+                  labelText="VERSION"
+                  placeholder="ex) 1.0.0"
+                  invalidMsg="Please enter your version."
+                  onChange={setVersion}
+                />
+              </div>
+            </div>
+            <div className="block">
+              <File
+                ref={fileRef}
+                labelText="WTS FILE"
+                onChange={handleUploadWtsFile}
+                isRequired={true}
+                accept=".wts"
+                invalidMsg="Please upload your wts file."
+              />
+            </div>
+            <div className="block text-center">
+              <Submit ref={submitRef} buttonText="CREATE" />
+            </div>
+          </form>
+        </Modal>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

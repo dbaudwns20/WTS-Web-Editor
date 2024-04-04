@@ -16,6 +16,7 @@ body {
 .main {
   @apply container;
   @apply mx-auto;
+  @apply px-52;
   @apply h-full;
   @apply flex;
   @apply flex-col;
