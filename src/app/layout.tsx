@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
-import Notification from "@/components/message/notification/notification";
 
 import "./globals.css";
 
@@ -22,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
           rel="stylesheet"
         />
       </head>
@@ -34,7 +33,6 @@ export default function RootLayout({
         </main>
         <Footer />
         <div id="message-box"></div>
-        {/* <Notification /> */}
       </body>
     </html>
   );

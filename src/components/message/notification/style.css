@@ -64,20 +64,20 @@
   }
 }
 
-.wrapper {
+.notification-wrapper {
   @apply flex;
   @apply w-full;
 }
 
-.wrapper.is-left {
+.notification-wrapper.is-left {
   @apply justify-start;
 }
 
-.wrapper.is-center {
+.notification-wrapper.is-center {
   @apply justify-center;
 }
 
-.wrapper.is-right {
+.notification-wrapper.is-right {
   @apply justify-end;
 }
 
@@ -100,27 +100,27 @@
   @apply duration-300;
 }
 
-.wrapper.is-left > .notification {
+.notification-wrapper.is-left > .notification {
   animation: fadeInLeft 0.5s ease;
 }
 
-.wrapper.is-left > .notification.fade-out {
+.notification-wrapper.is-left > .notification.fade-out {
   animation: fadeOutRight 0.5s ease;
 }
 
-.wrapper.is-center > .notification {
+.notification-wrapper.is-center > .notification {
   animation: fadeInDown 0.5s ease;
 }
 
-.wrapper.is-center > .notification.fade-out {
+.notification-wrapper.is-center > .notification.fade-out {
   animation: fadeOutUp 0.5s ease;
 }
 
-.wrapper.is-right > .notification {
+.notification-wrapper.is-right > .notification {
   animation: fadeInRight 0.5s ease;
 }
 
-.wrapper.is-right > .notification.fade-out {
+.notification-wrapper.is-right > .notification.fade-out {
   animation: fadeOutLeft 0.5s ease;
 }
 
@@ -157,18 +157,17 @@
   @apply h-full;
 }
 
-.message {
+.notification-content > .message {
   @apply w-full;
   @apply ml-4;
   @apply text-white;
   @apply font-medium;
 }
 
-.close-btn {
+.notification-close-button {
   @apply pointer-events-auto;
   @apply flex;
   @apply items-center;
-  @apply z-50;
   @apply opacity-0;
   @apply hover:opacity-100;
   @apply pr-4;
@@ -177,6 +176,6 @@
   @apply cursor-pointer;
 }
 
-.notification-content:hover ~ .close-btn {
+.notification-content:hover ~ .notification-close-button {
   @apply opacity-50;
 }

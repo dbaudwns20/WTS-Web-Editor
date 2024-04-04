@@ -1,0 +1,84 @@
+.file-wrapper {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply w-full;
+  @apply h-32;
+}
+
+.file {
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply justify-center;
+  @apply w-full;
+  @apply h-full;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+  @apply cursor-pointer;
+  @apply bg-gray-50;
+  @apply hover:bg-gray-100;
+  @apply dark:bg-gray-700;
+  @apply dark:hover:bg-gray-800;
+  @apply dark:border-gray-600;
+  @apply dark:hover:border-gray-500;
+  @apply dark:hover:bg-gray-600;
+}
+
+.file.is-drag-enter {
+  @apply border-2;
+  @apply border-dashed;
+  @apply bg-gray-100;
+}
+
+.file.is-uploaded {
+  @apply pointer-events-none;
+  @apply bg-gray-100;
+}
+
+.file > .file-content {
+  @apply flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply justify-center;
+  @apply pointer-events-none;
+}
+
+.file > .file-content > .icon {
+  @apply text-gray-500;
+  @apply dark:text-gray-400;
+  @apply opacity-70;
+  @apply mb-2;
+}
+
+.file > .file-content > .text {
+  @apply text-sm;
+  @apply mb-2;
+  @apply text-gray-500;
+  @apply dark:text-gray-400;
+}
+
+.file.is-uploaded > .file-content > .reupload-button {
+  @apply inline-flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply text-gray-600;
+  @apply bg-neutral-100;
+  @apply hover:bg-neutral-200;
+  @apply border;
+  @apply rounded-lg;
+  @apply py-1;
+  @apply px-3;
+  @apply text-sm;
+  @apply pointer-events-auto;
+  @apply cursor-pointer;
+  @apply z-20;
+  @apply shadow-md;
+}
+
+.file.is-invalid {
+  @apply border-red-600;
+  @apply outline-red-500;
+  @apply mb-1;
+}

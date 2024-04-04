@@ -7,6 +7,7 @@ import {
   useState,
   InvalidEvent,
   ChangeEvent,
+  Dispatch,
 } from "react";
 
 import "./style.css";
@@ -21,7 +22,7 @@ type TextProps = {
   isReadOnly?: boolean;
   isRequired?: boolean;
   invalidMsg?: string;
-  onChange: React.Dispatch<SetStateAction<string>>;
+  onChange: Dispatch<SetStateAction<string>>;
 };
 
 export type TextType = {
