@@ -5,12 +5,16 @@ export default class Project {
   title: string;
   language: number;
   process: number;
+  version: string | null;
+  dateCreated: Date;
 
   constructor(project: IProject) {
     this.id = project._id;
     this.title = project.title;
     this.language = project.language;
     this.process = project.process;
+    this.version = project.version;
+    this.dateCreated = new Date(project.dateCreated);
   }
 }
 

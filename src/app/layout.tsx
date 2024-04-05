@@ -25,7 +25,7 @@ export default function RootLayout({
       </head>
       <body>
         <Header />
-        <main className="main">{children}</main>
+        {children}
         <Footer />
         <div id="message-box"></div>
       </body>

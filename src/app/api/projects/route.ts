@@ -11,7 +11,9 @@ import { checkRequestBody, handleSuccess, handleErrors } from "@/utils/api";
 export async function GET(request: NextRequest) {
   try {
     dbConnect();
-    return NextResponse.json(await ProjectModel.find({}));
+    return NextResponse.json(
+      await ProjectModel.find({}, null, { sort: { dateCreated: -1 } })
+    );
   } catch (error) {
     return NextResponse.json({ message: "Internal server error" });
   }

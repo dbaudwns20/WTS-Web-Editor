@@ -1,0 +1,23 @@
+.main {
+  @apply container;
+  @apply mx-auto;
+  @apply h-full;
+  @apply flex;
+  @apply flex-col;
+  @apply bg-white;
+  @apply dark:bg-gray-800;
+
+  height: auto;
+  min-height: calc(
+    100% - calc(var(--var-footer-height) + var(--var-header-height))
+  );
+}
+
+.project-section {
+  @apply grid;
+  @apply grid-cols-1;
+  @apply lg:grid-cols-4;
+  @apply gap-8;
+  @apply mx-10;
+  @apply mb-10;
+}

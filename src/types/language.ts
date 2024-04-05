@@ -1,4 +1,4 @@
-export enum Language {
+enum Language {
   en_US = 0,
   ko_KR = 1,
   zh_CN = 2,
@@ -31,3 +31,5 @@ export function getLangOptions() {
   result.unshift({ id: "", value: "Select your language" });
   return result;
 }
+
+export default Language;
