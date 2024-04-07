@@ -1,5 +1,3 @@
-import { Schema } from "mongoose";
-
 import { IString } from "@/db/models/string";
 
 export default class String {

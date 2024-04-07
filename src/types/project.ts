@@ -7,6 +7,7 @@ export default class Project {
   process: number;
   version: string | null;
   dateCreated: Date;
+  lastUpdated: Date;
 
   constructor(project: IProject) {
     this.id = project._id;
@@ -15,6 +16,7 @@ export default class Project {
     this.process = project.process;
     this.version = project.version;
     this.dateCreated = new Date(project.dateCreated);
+    this.lastUpdated = new Date(project.dateCreated);
   }
 }
 

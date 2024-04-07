@@ -4,6 +4,7 @@
   @apply h-full;
   @apply flex;
   @apply flex-col;
+  @apply px-32;
   @apply bg-white;
   @apply dark:bg-gray-800;
 

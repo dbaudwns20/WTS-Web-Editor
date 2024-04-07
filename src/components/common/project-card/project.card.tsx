@@ -29,7 +29,9 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
 
   // values
   const [bgImage, setBgImage] = useState<BgImage>(getRandomBgImage());
-  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(
+    project.process === 100 ? true : false
+  );
 
   const handleDeleteProject = (
     event: MouseEvent<HTMLButtonElement>,
@@ -59,13 +61,36 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           </div>
           <p className="date-created">
             <span className="material-icons-outlined">schedule</span>
-            {convertDateToString(project.dateCreated)}
+            {convertDateToString(project.lastUpdated)}
           </p>
         </div>
-        <div className="w-full bg-neutral-200 dark:bg-neutral-600 rounded-md">
-          <div className="bg-primary p-0.5 text-center text-xs font-medium leading-none text-primary-100">
-            25%
-          </div>
+        <div
+          className="progress-bar"
+          role="progressbar"
+          aria-valuenow={project.process}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          {isCompleted ? (
+            <>
+              <p className="percent">COMPLETE</p>
+              <div className="progress is-completed"></div>
+            </>
+          ) : (
+            <>
+              <p className="percent">{project.process}%</p>
+              {project.process === 0 ? (
+                <div className="progress"></div>
+              ) : (
+                <div
+                  className="progress is-proceeding"
+                  style={{
+                    width: `${project.process}%`,
+                  }}
+                ></div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </article>

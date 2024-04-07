@@ -18,7 +18,10 @@
   @apply top-3;
   @apply left-4;
   @apply shadow-xl;
-  @apply bg-teal-400;
+  @apply border-2;
+  @apply bg-teal-500;
+  @apply border-teal-500;
+  @apply dark:bg-gray-700;
   @apply text-white;
   @apply rounded-full;
   @apply px-2;
@@ -45,12 +48,12 @@
 
 .project-content > .title {
   @apply text-lg;
+  @apply tracking-tight;
   @apply font-bold;
-  @apply leading-5;
-  @apply truncate;
+  @apply leading-6;
   @apply text-gray-500;
   @apply dark:text-white;
-  @apply h-8;
+  @apply h-10;
   @apply mb-4;
 }
 
@@ -59,6 +62,7 @@
   @apply items-center;
   @apply justify-between;
   @apply mb-4;
+  @apply tracking-tight;
 }
 
 .project-content > .project-content-between > .tag-group {
@@ -101,4 +105,48 @@
   > .material-icons-outlined {
   @apply mr-1;
   font-size: 1rem;
+}
+
+.project-content > .progress-bar {
+  @apply relative;
+  @apply flex;
+  @apply items-center;
+  @apply w-full;
+  @apply h-5;
+  @apply rounded-lg;
+  @apply overflow-hidden;
+  @apply bg-gray-500;
+  @apply bg-opacity-35;
+  @apply dark:bg-gray-700;
+}
+
+.project-content > .progress-bar > .percent {
+  @apply w-full;
+  @apply text-center;
+  @apply text-xs;
+  @apply text-white;
+  @apply font-semibold;
+  @apply z-10;
+}
+
+.project-content > .progress-bar > .progress {
+  @apply absolute;
+  @apply flex;
+  @apply flex-col;
+  @apply w-full;
+  @apply h-full;
+  @apply justify-center;
+  @apply overflow-hidden;
+  @apply text-xs;
+  @apply text-gray-700;
+  @apply text-center;
+  @apply whitespace-nowrap;
+  @apply transition;
+  @apply duration-500;
+  @apply [&.is-completed]:bg-teal-500;
+  @apply [&.is-completed]:dark:bg-teal-600;
+  @apply [&.is-completed~.percent]:text-white;
+  @apply [&.is-proceeding]:bg-blue-500;
+  @apply [&.is-proceeding]:dark:bg-blue-600;
+  @apply [&.is-proceeding]:text-white;
 }
