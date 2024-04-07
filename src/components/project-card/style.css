@@ -1,7 +1,7 @@
 .project {
   @apply relative;
   @apply w-full;
-  @apply h-full;
+  @apply h-[432px];
   @apply bg-white;
   @apply rounded-lg;
   @apply shadow-xl;
@@ -48,13 +48,18 @@
 
 .project-content > .title {
   @apply text-lg;
-  @apply tracking-tight;
   @apply font-bold;
   @apply leading-6;
   @apply text-gray-500;
   @apply dark:text-white;
-  @apply h-10;
+  @apply h-[48px];
   @apply mb-4;
+  @apply overflow-hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .project-content > .project-content-between {

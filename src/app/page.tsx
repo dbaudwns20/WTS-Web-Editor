@@ -14,7 +14,8 @@ import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File from "@/components/input/file/file";
-import ProjectCard from "@/components/common/project-card/project.card";
+import ProjectCard from "@/components/project-card/project.card";
+import ProjectCardSkeleton from "@/components/project-card/skeleton/project.card.skeleton";
 
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
@@ -136,17 +137,26 @@ export default function RootPage() {
         </div>
       </section>
       <section className="project-section">
-        {projectList.map((project: Project) => {
-          return (
-            <Link
-              className="h-fit"
-              href={`/projects/${project.id}`}
-              key={project.id}
-            >
-              <ProjectCard project={project} onDeleteProject={deleteProject} />
-            </Link>
-          );
-        })}
+        {isLoading ? (
+          <ProjectCardSkeleton />
+        ) : (
+          <>
+            {projectList.map((project: Project) => {
+              return (
+                <Link
+                  className="h-fit"
+                  href={`/projects/${project.id}`}
+                  key={project.id}
+                >
+                  <ProjectCard
+                    project={project}
+                    onDeleteProject={deleteProject}
+                  />
+                </Link>
+              );
+            })}
+          </>
+        )}
       </section>
       {isModalOpen ? (
         <Modal

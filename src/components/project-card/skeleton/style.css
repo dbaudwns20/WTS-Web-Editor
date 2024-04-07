@@ -1,0 +1,13 @@
+.project-loading {
+  @apply relative;
+  @apply w-full;
+  @apply h-[432px];
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply shadow-xl;
+  @apply dark:bg-gray-800;
+  @apply dark:border-gray-700;
+  @apply transition;
+  @apply duration-300;
+  @apply animate-pulse;
+}
