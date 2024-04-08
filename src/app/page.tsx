@@ -1,17 +1,21 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import "./style.css";
 
-import { Language, getLangOptions } from "@/types/language";
-import { WtsString } from "@/types/wts.string";
+import { useRef, useState, useEffect } from "react";
+import Link from "next/link";
+
 import Project, { bindProjectList } from "@/types/project";
-import { getLangTextByValue } from "@/types/language";
+import Language, { getLangOptions } from "@/types/language";
+import { WtsString } from "@/types/wts.string";
 
 import Modal from "@/components/common/modal";
 import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File from "@/components/input/file/file";
+import ProjectCard from "@/components/project-card/project.card";
+import ProjectCardSkeleton from "@/components/project-card/skeleton/project.card.skeleton";
 
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
@@ -34,8 +38,10 @@ export default function RootPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 프로젝트 생성 모달창 열기
-  const newProject = () => {
-    setIsModalOpen(true);
+  const newProject = async () => {
+    await setIsModalOpen(true);
+
+    // title input focus
     titleRef.current?.focus();
   };
 
@@ -75,11 +81,14 @@ export default function RootPage() {
     }
     submitRef.current?.setFetchState(false);
 
+    // 모달 닫기
     setIsModalOpen(false);
 
+    // 프로젝트 리스트 새로고침
     await getProjectList();
   };
 
+  // 프로젝트 조회
   const getProjectList = async () => {
     setIsLoading(true);
     const response = await fetch("/api/projects");
@@ -87,6 +96,7 @@ export default function RootPage() {
     setIsLoading(false);
   };
 
+  // 프로젝트 삭제
   const deleteProject = async (projectId: string) => {
     setIsLoading(true);
     const response = await fetch("/api/projects/" + projectId, {
@@ -110,7 +120,7 @@ export default function RootPage() {
   }, []);
 
   return (
-    <>
+    <main className="main">
       <section>
         <div className="border border-grey-300 mx-10 my-10 px-10 py-10 text-center rounded-2xl">
           <p className="py-5">Logo Or Description</p>
@@ -126,31 +136,27 @@ export default function RootPage() {
           </div>
         </div>
       </section>
-      <section className="grid grid-cols-1 lg:grid-cols-4 gap-8 mx-10 mb-10">
-        {projectList.map((project: Project) => {
-          return (
-            <article
-              className="rounded-2xl shadow-lg h-48 w-full p-8"
-              key={project.id}
-            >
-              <p className="text-2xl font-bold text-gray-500">
-                {project.title}
-              </p>
-              <div className="flex justify-between">
-                <p className="text-gray-500">
-                  {getLangTextByValue(project.language)}
-                </p>
-              </div>
-              <button
-                className="bg-red-300 hover:bg-red-500"
-                type="button"
-                onClick={(e) => deleteProject(project.id)}
-              >
-                DELETE
-              </button>
-            </article>
-          );
-        })}
+      <section className="project-section">
+        {isLoading ? (
+          <ProjectCardSkeleton />
+        ) : (
+          <>
+            {projectList.map((project: Project) => {
+              return (
+                <Link
+                  className="h-fit"
+                  href={`/projects/${project.id}`}
+                  key={project.id}
+                >
+                  <ProjectCard
+                    project={project}
+                    onDeleteProject={deleteProject}
+                  />
+                </Link>
+              );
+            })}
+          </>
+        )}
       </section>
       {isModalOpen ? (
         <Modal
@@ -214,6 +220,6 @@ export default function RootPage() {
       ) : (
         <></>
       )}
-    </>
+    </main>
   );
 }

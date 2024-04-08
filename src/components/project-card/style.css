@@ -1,0 +1,157 @@
+.project {
+  @apply relative;
+  @apply w-full;
+  @apply h-[432px];
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply shadow-xl;
+  @apply dark:bg-gray-800;
+  @apply dark:border-gray-700;
+  @apply transition;
+  @apply duration-300;
+  @apply hover:scale-110;
+  @apply hover:shadow-2xl;
+}
+
+.complete {
+  @apply absolute;
+  @apply top-3;
+  @apply left-4;
+  @apply shadow-xl;
+  @apply border-2;
+  @apply bg-teal-500;
+  @apply border-teal-500;
+  @apply dark:bg-gray-700;
+  @apply text-white;
+  @apply rounded-full;
+  @apply px-2;
+  @apply py-1;
+  @apply font-semibold;
+  @apply text-xs;
+  @apply z-10;
+}
+
+.project.is-completed {
+  @apply grayscale;
+}
+
+.project > .image {
+  @apply object-cover;
+  @apply aspect-square;
+  @apply rounded-t-lg;
+}
+
+.project-content {
+  @apply block;
+  @apply p-4;
+}
+
+.project-content > .title {
+  @apply text-lg;
+  @apply font-bold;
+  @apply leading-6;
+  @apply text-gray-500;
+  @apply dark:text-white;
+  @apply h-[48px];
+  @apply mb-4;
+  @apply overflow-hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.project-content > .project-content-between {
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply mb-4;
+  @apply tracking-tight;
+}
+
+.project-content > .project-content-between > .tag-group {
+  @apply inline-flex;
+  @apply items-center;
+  @apply gap-1.5;
+}
+
+.project-content > .project-content-between > .tag-group > .language {
+  @apply bg-blue-400;
+  @apply text-white;
+  @apply rounded-lg;
+  @apply px-2;
+  @apply py-1;
+  @apply font-semibold;
+  @apply text-xs;
+}
+
+.project-content > .project-content-between > .tag-group > .version {
+  @apply bg-orange-400;
+  @apply text-white;
+  @apply rounded-lg;
+  @apply px-2;
+  @apply py-1;
+  @apply font-semibold;
+  @apply text-xs;
+}
+
+.project-content > .project-content-between > .date-created {
+  @apply flex;
+  @apply items-center;
+  @apply text-sm;
+  @apply font-semibold;
+  @apply text-gray-400;
+}
+
+.project-content
+  > .project-content-between
+  > .date-created
+  > .material-icons-outlined {
+  @apply mr-1;
+  font-size: 1rem;
+}
+
+.project-content > .progress-bar {
+  @apply relative;
+  @apply flex;
+  @apply items-center;
+  @apply w-full;
+  @apply h-5;
+  @apply rounded-lg;
+  @apply overflow-hidden;
+  @apply bg-gray-500;
+  @apply bg-opacity-35;
+  @apply dark:bg-gray-700;
+}
+
+.project-content > .progress-bar > .percent {
+  @apply w-full;
+  @apply text-center;
+  @apply text-xs;
+  @apply text-white;
+  @apply font-semibold;
+  @apply z-10;
+}
+
+.project-content > .progress-bar > .progress {
+  @apply absolute;
+  @apply flex;
+  @apply flex-col;
+  @apply w-full;
+  @apply h-full;
+  @apply justify-center;
+  @apply overflow-hidden;
+  @apply text-xs;
+  @apply text-gray-700;
+  @apply text-center;
+  @apply whitespace-nowrap;
+  @apply transition;
+  @apply duration-500;
+  @apply [&.is-completed]:bg-teal-500;
+  @apply [&.is-completed]:dark:bg-teal-600;
+  @apply [&.is-completed~.percent]:text-white;
+  @apply [&.is-proceeding]:bg-blue-500;
+  @apply [&.is-proceeding]:dark:bg-blue-600;
+  @apply [&.is-proceeding]:text-white;
+}

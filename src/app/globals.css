@@ -13,22 +13,6 @@ body {
   --var-footer-height: 60px;
 }
 
-.main {
-  @apply container;
-  @apply mx-auto;
-  @apply px-52;
-  @apply h-full;
-  @apply flex;
-  @apply flex-col;
-  @apply bg-white;
-  @apply dark:bg-gray-800;
-
-  height: auto;
-  min-height: calc(
-    100% - calc(var(--var-footer-height) + var(--var-header-height))
-  );
-}
-
 .icon {
   align-items: center;
   display: inline-flex;
@@ -79,13 +63,6 @@ body {
 .block-group {
   @apply flex;
   @apply w-full;
-}
-
-.block-group > .block {
-  @apply w-full;
-  @apply mr-5;
-}
-
-.block-group > .block:last-child {
-  @apply mr-0;
+  @apply gap-4;
+  @apply [&>.block]:w-full;
 }
