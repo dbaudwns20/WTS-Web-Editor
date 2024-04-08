@@ -6,20 +6,20 @@ export default function ProjectListSkeleton() {
       {[0, 1, 2, 3].map((key) => {
         return (
           <article className="project-loading" key={key}>
-            <div className="rounded-t-lg bg-slate-200 h-[276px] w-full"></div>
-            <div className="py-5 px-4">
-              <div className="h-[48px] mb-3.5">
-                <div className="h-3.5 rounded-lg bg-slate-200 mb-2"></div>
-                <div className="h-3.5 rounded-lg bg-slate-200 w-1/2"></div>
+            <div className="image"></div>
+            <div className="content">
+              <div className="title-group">
+                <p className="title mb-2"></p>
+                <p className="title w-1/2"></p>
               </div>
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-2 h-full w-1/2">
-                  <div className="h-5 bg-slate-200 rounded-lg w-1/2"></div>
-                  <div className="h-5 bg-slate-200 rounded-lg w-1/2"></div>
+              <div className="detail-info">
+                <div className="tag-group">
+                  <span className="tag"></span>
+                  <span className="tag"></span>
                 </div>
-                <div className="h-2.5 bg-slate-200 rounded-lg w-[40%]"></div>
+                <div className="date"></div>
               </div>
-              <div className="h-5 rounded-lg bg-slate-200 mb-4"></div>
+              <div className="progress-bar"></div>
             </div>
           </article>
         );
