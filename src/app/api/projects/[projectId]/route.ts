@@ -6,26 +6,36 @@ import ProjectModel from "@/db/models/project";
 
 import Project from "@/types/project";
 
-import { deleteProject } from "@/services/project.service";
+import { deleteProject, getProject } from "@/app/api/_services/project.service";
 
-import { checkRequestBody, checkRequestParams } from "@/utils/api";
+import {
+  checkRequestBody,
+  checkRequestParams,
+  handleSuccess,
+  handleErrors,
+} from "@/app/api/api";
 
 type Params = {
   projectId: string;
 };
 
-export async function GET(request: NextRequest, params: Params) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Params }
+) {
   try {
     checkRequestParams(["projectId"], params);
-
     await dbConnect();
-    return NextResponse.json(await ProjectModel.findById(params.projectId));
+    return handleSuccess(await getProject(params.projectId));
   } catch (error) {
-    return NextResponse.json({ message: "Internal server error" });
+    return handleErrors(error);
   }
 }
 
-export async function PUT(request: NextRequest, params: Params) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Params }
+) {
   let session;
   try {
     session = await startSession();
@@ -63,12 +73,12 @@ export async function DELETE(
     await deleteProject(params.projectId);
 
     await session.commitTransaction();
-    return Response.json("the project is deleted");
+    return handleSuccess("the project is deleted");
   } catch (error: any) {
     if (session) {
       session.abortTransaction();
       session.endSession();
     }
-    return NextResponse.json(error);
+    return handleErrors(error);
   }
 }

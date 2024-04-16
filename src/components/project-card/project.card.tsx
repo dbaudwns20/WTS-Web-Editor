@@ -17,11 +17,10 @@ import type Project from "@/types/project";
 
 type ProjectProps = {
   project: Project;
-  onDeleteProject: (projectId: string) => void;
 };
 
 const ProjectCard = forwardRef((props: ProjectProps, ref) => {
-  const { project, onDeleteProject } = props;
+  const { project } = props;
 
   useImperativeHandle(ref, () => {});
 
@@ -32,15 +31,6 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
   const [isCompleted, setIsCompleted] = useState<boolean>(
     project.process === 100 ? true : false
   );
-
-  const handleDeleteProject = (
-    event: MouseEvent<HTMLButtonElement>,
-    projectId: string
-  ) => {
-    event.stopPropagation();
-
-    onDeleteProject(projectId);
-  };
 
   return (
     <article ref={projectRef} className="project">

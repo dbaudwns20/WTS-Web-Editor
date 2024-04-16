@@ -64,6 +64,10 @@ const BackgroundImages: BgImage[] = [
   },
 ];
 
+export function getBgImageById(id: number): BgImage {
+  return BackgroundImages.find((bg) => bg.id === id)!;
+}
+
 export function getRandomBgImage(): BgImage {
   return BackgroundImages[Math.floor(Math.random() * BackgroundImages.length)];
 }

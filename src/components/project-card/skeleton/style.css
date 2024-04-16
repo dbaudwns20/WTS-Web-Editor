@@ -56,10 +56,11 @@
   @apply w-1/2;
 }
 
-.project-loading > .content > .detail-info > .tag-group > .date {
+.project-loading > .content > .detail-info > .date {
   @apply h-2.5;
   @apply bg-slate-200;
-  @apply rounded-lg w-[40%];
+  @apply rounded-lg;
+  @apply w-[40%];
 }
 
 .project-loading > .content > .progress-bar {

@@ -28,12 +28,48 @@ export function convertFileSizeToString(size: number): string {
   }
 }
 
-export function convertDateToString(date: Date): string {
-  return (
-    date.getFullYear() +
-    "-" +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(date.getDate()).padStart(2, "0")
-  );
+export enum DATE_FORMAT {
+  DATE,
+  TIME,
+  DATE_TIME,
+}
+
+export function convertDateToString(
+  date: Date,
+  format: DATE_FORMAT = DATE_FORMAT.DATE
+): string {
+  let result: string = "";
+  switch (format) {
+    case DATE_FORMAT.DATE:
+      result =
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(date.getDate()).padStart(2, "0");
+      break;
+    case DATE_FORMAT.TIME:
+      const times: string[] = date.toTimeString().split(" ")[0].split(":");
+      result = times[0] + ":" + times[1];
+      break;
+    case DATE_FORMAT.DATE_TIME:
+      result =
+        convertDateToString(date) +
+        " " +
+        convertDateToString(date, DATE_FORMAT.TIME);
+      break;
+  }
+
+  return result;
+}
+
+/**
+ * Api 호출
+ * @param url
+ * @param opt
+ * @returns
+ */
+export async function callApi(url: string, opt?: any): Promise<any> {
+  const response = await fetch(url, opt);
+  return await response.json();
 }

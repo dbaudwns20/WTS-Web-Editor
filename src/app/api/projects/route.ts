@@ -4,18 +4,22 @@ import { type NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
-import { createProject, createStrings } from "@/services/project.service";
+import {
+  createProject,
+  createStrings,
+} from "@/app/api/_services/project.service";
 
-import { checkRequestBody, handleSuccess, handleErrors } from "@/utils/api";
+import { checkRequestBody, handleSuccess, handleErrors } from "@/app/api/api";
 
 export async function GET(request: NextRequest) {
   try {
     dbConnect();
-    return NextResponse.json(
+
+    return handleSuccess(
       await ProjectModel.find({}, null, { sort: { dateCreated: -1 } })
     );
   } catch (error) {
-    return NextResponse.json({ message: "Internal server error" });
+    return handleErrors(error);
   }
 }
 

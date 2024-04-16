@@ -20,6 +20,7 @@ import ProjectCardSkeleton from "@/components/project-card/skeleton/project.card
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
+import { callApi } from "@/utils/common";
 
 export default function RootPage() {
   // ref
@@ -34,7 +35,7 @@ export default function RootPage() {
   const [version, setVersion] = useState<string>("");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
 
-  const [projectList, setProjectList] = useState<Project[]>([]);
+  const [projectList, setProjectList] = useState<Project[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 프로젝트 생성 모달창 열기
@@ -53,7 +54,7 @@ export default function RootPage() {
 
     submitRef.current?.setFetchState(true);
 
-    const response = await fetch("/api/projects", {
+    const response = await callApi("/api/projects", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,16 +67,14 @@ export default function RootPage() {
       }),
     });
 
-    const result = await response.json();
-
-    if (result.success) {
+    if (response.success) {
       showNotificationMessage({
         message: "프로젝트가 생성되었습니다.",
         messageType: "success",
       });
     } else {
       showNotificationMessage({
-        message: result.message,
+        message: response.message,
         messageType: "danger",
       });
     }
@@ -90,16 +89,23 @@ export default function RootPage() {
 
   // 프로젝트 조회
   const getProjectList = async () => {
-    setIsLoading(true);
-    const response = await fetch("/api/projects");
-    setProjectList(bindProjectList(await response.json()));
-    setIsLoading(false);
+    const response: any = await callApi("/api/projects");
+
+    if (!response.success) {
+      showNotificationMessage({
+        message: response.message,
+        messageType: "danger",
+      });
+      return;
+    }
+
+    setProjectList(bindProjectList(response.data));
   };
 
   // 프로젝트 삭제
   const deleteProject = async (projectId: string) => {
     setIsLoading(true);
-    const response = await fetch("/api/projects/" + projectId, {
+    const response = await callApi("/api/projects/" + projectId, {
       method: "DELETE",
     });
 
@@ -116,11 +122,15 @@ export default function RootPage() {
   };
 
   useEffect(() => {
+    setIsLoading(!projectList);
+  }, [projectList]);
+
+  useEffect(() => {
     getProjectList();
   }, []);
 
   return (
-    <main className="main">
+    <>
       <section>
         <div className="border border-grey-300 mx-10 my-10 px-10 py-10 text-center rounded-2xl">
           <p className="py-5">Logo Or Description</p>
@@ -141,17 +151,10 @@ export default function RootPage() {
           <ProjectCardSkeleton />
         ) : (
           <>
-            {projectList.map((project: Project) => {
+            {projectList!.map((project: Project) => {
               return (
-                <Link
-                  className="h-fit"
-                  href={`/projects/${project.id}`}
-                  key={project.id}
-                >
-                  <ProjectCard
-                    project={project}
-                    onDeleteProject={deleteProject}
-                  />
+                <Link key={project.id} href={`/projects/${project.id}`}>
+                  <ProjectCard project={project} />
                 </Link>
               );
             })}
@@ -220,6 +223,6 @@ export default function RootPage() {
       ) : (
         <></>
       )}
-    </main>
+    </>
   );
 }

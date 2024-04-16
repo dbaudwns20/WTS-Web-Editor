@@ -1,4 +1,5 @@
 import ProjectModel from "@/db/models/project";
+import Project from "@/types/project";
 import StringModel, { IString } from "@/db/models/string";
 
 export async function createProject(body: any): Promise<any> {
@@ -22,7 +23,9 @@ export async function createStrings(newProjectId: any, wtsStringList: any[]) {
 }
 
 export async function getProject(projectId: string) {
-  return await ProjectModel.findById(projectId);
+  const instance = await ProjectModel.findById(projectId);
+  if (!instance) throw new Error("instance not found");
+  return instance;
 }
 
 /**
