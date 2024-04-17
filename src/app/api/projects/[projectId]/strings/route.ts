@@ -11,8 +11,8 @@ import { getStringList } from "@/app/api/_services/string.service";
 import {
   checkRequestBody,
   checkRequestParams,
-  handleSuccess,
-  handleErrors,
+  resolveSuccess,
+  resolveErrors,
 } from "@/app/api/api";
 
 type Params = {
@@ -27,8 +27,8 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
     await dbConnect();
-    return handleSuccess(await getStringList(params.projectId));
+    return resolveSuccess(await getStringList(params.projectId));
   } catch (error) {
-    return handleErrors(error);
+    return resolveErrors(error);
   }
 }

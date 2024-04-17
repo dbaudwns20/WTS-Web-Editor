@@ -9,17 +9,19 @@ import {
   createStrings,
 } from "@/app/api/_services/project.service";
 
-import { checkRequestBody, handleSuccess, handleErrors } from "@/app/api/api";
+import {
+  checkRequestBody,
+  resolveSuccess,
+  resolveErrors,
+  resolvePagination,
+} from "@/app/api/api";
 
 export async function GET(request: NextRequest) {
   try {
     dbConnect();
-
-    return handleSuccess(
-      await ProjectModel.find({}, null, { sort: { dateCreated: -1 } })
-    );
+    return await resolvePagination(request, ProjectModel);
   } catch (error) {
-    return handleErrors(error);
+    return resolveErrors(error);
   }
 }
 
@@ -38,12 +40,12 @@ export async function POST(request: NextRequest) {
     await createStrings(newProject._id, body["wtsStringList"]);
 
     await session.commitTransaction();
-    return handleSuccess(newProject);
+    return resolveSuccess(newProject);
   } catch (error: any) {
     if (session) {
       session.abortTransaction();
       session.endSession();
     }
-    return handleErrors(error);
+    return resolveErrors(error);
   }
 }

@@ -22,6 +22,18 @@ import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
+const defaultPageInfo = {
+  offset: 8,
+  currentPage: 1,
+  totalPage: 1,
+  totalCount: 0,
+};
+
+const defaultOrderInfo = {
+  sort: "dateCreated",
+  order: "DESC",
+};
+
 export default function RootPage() {
   // ref
   const titleRef = useRef<TextType>();
@@ -34,9 +46,14 @@ export default function RootPage() {
   const [language, setLanguage] = useState<Language | "">("");
   const [version, setVersion] = useState<string>("");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
-
   const [projectList, setProjectList] = useState<Project[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
+
+  // 페이징 정보
+  const [pageInfo, setPageInfo] = useState(defaultPageInfo);
+  // 정렬 정보
+  const [orderInfo, setOrderInfo] = useState(defaultOrderInfo);
 
   // 프로젝트 생성 모달창 열기
   const newProject = async () => {
@@ -83,13 +100,21 @@ export default function RootPage() {
     // 모달 닫기
     setIsModalOpen(false);
 
+    // 조회정보 초기화
+    await setPageInfo(defaultPageInfo);
+    await setOrderInfo(defaultOrderInfo);
+
     // 프로젝트 리스트 새로고침
     await getProjectList();
   };
 
   // 프로젝트 조회
   const getProjectList = async () => {
-    const response: any = await callApi("/api/projects");
+    setIsLoading(true);
+
+    const response: any = await callApi(
+      `/api/projects?offset=${pageInfo.offset}&currentPage=${pageInfo.currentPage}&sort=${orderInfo.sort}&order=${orderInfo.order}`
+    );
 
     if (!response.success) {
       showNotificationMessage({
@@ -99,32 +124,61 @@ export default function RootPage() {
       return;
     }
 
+    setPageInfo(response.pageInfo);
     setProjectList(bindProjectList(response.data));
+
+    setIsLoading(false);
   };
 
-  // 프로젝트 삭제
-  const deleteProject = async (projectId: string) => {
-    setIsLoading(true);
-    const response = await callApi("/api/projects/" + projectId, {
-      method: "DELETE",
-    });
+  // 스크롤링으로 추가 데이터 조회
+  const getMoreProjectList = async () => {
+    setIsMoreLoading(true);
 
-    getProjectList();
-    setIsLoading(false);
-    showNotificationMessage({
-      message: "프로젝트가 삭제되었습니다",
-      messageType: "success",
-    });
+    const response: any = await callApi(
+      `/api/projects?offset=${pageInfo.offset}&currentPage=${
+        pageInfo.currentPage + 1
+      }&sort=${orderInfo.sort}&order=${orderInfo.order}`
+    );
+
+    if (!response.success) {
+      showNotificationMessage({
+        message: response.message,
+        messageType: "danger",
+      });
+      return;
+    }
+
+    setPageInfo(response.pageInfo);
+    setProjectList(projectList!.concat(bindProjectList(response.data)));
+
+    setIsMoreLoading(false);
   };
 
   const handleUploadWtsFile = (file: File) => {
     setWtsStringList(readWtsFile(file));
   };
 
-  useEffect(() => {
-    setIsLoading(!projectList);
-  }, [projectList]);
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (
+      scrollTop + clientHeight >= scrollHeight &&
+      pageInfo.currentPage < pageInfo.totalPage
+    ) {
+      getMoreProjectList();
+    }
+  };
 
+  // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
+  // mount 시 프로젝트 리스트 조회
   useEffect(() => {
     getProjectList();
   }, []);
@@ -160,6 +214,7 @@ export default function RootPage() {
             })}
           </>
         )}
+        {isMoreLoading ? <ProjectCardSkeleton /> : <></>}
       </section>
       {isModalOpen ? (
         <Modal
