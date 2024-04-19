@@ -6,13 +6,12 @@ import StringModel from "@/db/models/string";
 
 import String from "@/types/string";
 
-import { getStringList } from "@/app/api/_services/string.service";
-
 import {
   checkRequestBody,
   checkRequestParams,
   resolveSuccess,
   resolveErrors,
+  resolvePagination,
 } from "@/app/api/api";
 
 type Params = {
@@ -27,7 +26,9 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
     await dbConnect();
-    return resolveSuccess(await getStringList(params.projectId));
+    return resolvePagination(request, StringModel, {
+      projectId: params.projectId,
+    });
   } catch (error) {
     return resolveErrors(error);
   }

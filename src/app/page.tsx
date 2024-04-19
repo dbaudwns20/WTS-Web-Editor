@@ -2,12 +2,8 @@
 
 import "./style.css";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-
-import Project, { bindProjectList } from "@/types/project";
-import Language, { getLangOptions } from "@/types/language";
-import { WtsString } from "@/types/wts.string";
 
 import Modal from "@/components/common/modal";
 import Select from "@/components/input/select/select";
@@ -17,19 +13,24 @@ import File from "@/components/input/file/file";
 import ProjectCard from "@/components/project-card/project.card";
 import ProjectCardSkeleton from "@/components/project-card/skeleton/project.card.skeleton";
 
+import Project, { bindProjectList } from "@/types/project";
+import Language, { getLangOptions } from "@/types/language";
+import { WtsString } from "@/types/wts.string";
+import { type OrderInfo, type PageInfo } from "@/types/pagination";
+
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
-const defaultPageInfo = {
+const defaultPageInfo: PageInfo = {
   offset: 8,
   currentPage: 1,
   totalPage: 1,
   totalCount: 0,
 };
 
-const defaultOrderInfo = {
+const defaultOrderInfo: OrderInfo = {
   sort: "dateCreated",
   order: "DESC",
 };
@@ -51,9 +52,9 @@ export default function RootPage() {
   const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
 
   // 페이징 정보
-  const [pageInfo, setPageInfo] = useState(defaultPageInfo);
+  const [pageInfo, setPageInfo] = useState<PageInfo>(defaultPageInfo);
   // 정렬 정보
-  const [orderInfo, setOrderInfo] = useState(defaultOrderInfo);
+  const [orderInfo, setOrderInfo] = useState<OrderInfo>(defaultOrderInfo);
 
   // 프로젝트 생성 모달창 열기
   const newProject = async () => {
@@ -112,7 +113,7 @@ export default function RootPage() {
   const getProjectList = async () => {
     setIsLoading(true);
 
-    const response: any = await callApi(
+    const response = await callApi(
       `/api/projects?offset=${pageInfo.offset}&currentPage=${pageInfo.currentPage}&sort=${orderInfo.sort}&order=${orderInfo.order}`
     );
 
@@ -134,7 +135,7 @@ export default function RootPage() {
   const getMoreProjectList = async () => {
     setIsMoreLoading(true);
 
-    const response: any = await callApi(
+    const response = await callApi(
       `/api/projects?offset=${pageInfo.offset}&currentPage=${
         pageInfo.currentPage + 1
       }&sort=${orderInfo.sort}&order=${orderInfo.order}`
@@ -149,7 +150,7 @@ export default function RootPage() {
     }
 
     setPageInfo(response.pageInfo);
-    setProjectList(projectList!.concat(bindProjectList(response.data)));
+    setProjectList((prev) => prev!.concat(bindProjectList(response.data)));
 
     setIsMoreLoading(false);
   };
@@ -164,7 +165,8 @@ export default function RootPage() {
     const clientHeight = document.documentElement.clientHeight;
     if (
       scrollTop + clientHeight >= scrollHeight &&
-      pageInfo.currentPage < pageInfo.totalPage
+      pageInfo.currentPage < pageInfo.totalPage &&
+      !isMoreLoading
     ) {
       getMoreProjectList();
     }
@@ -173,12 +175,10 @@ export default function RootPage() {
   // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   });
 
-  // mount 시 프로젝트 리스트 조회
+  // 프로젝트 리스트 조회
   useEffect(() => {
     getProjectList();
   }, []);

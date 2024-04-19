@@ -1,17 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { type PageInfo } from "@/types/pagination";
+
 type ApiResponse = {
   success: boolean;
   message?: string;
   data?: any;
-  pageInfo?: Pagination;
-};
-
-type Pagination = {
-  offset: number;
-  currentPage: number;
-  totalPage: number;
-  totalCount: number;
+  pageInfo?: PageInfo;
 };
 
 function setOrder(req: NextRequest) {
@@ -48,20 +43,24 @@ export function checkRequestBody(keys: string[], body: any) {
   }
 }
 
-export async function resolvePagination(req: NextRequest, model: any) {
+export async function resolvePagination(
+  req: NextRequest,
+  model: any,
+  query: any = {}
+) {
   // 현재 페이지
   const currentPage = Number(req.nextUrl.searchParams.get("currentPage"));
   // 제한
   const offset: number = Number(req.nextUrl.searchParams.get("offset") || "8");
   // 총 개수
-  const totalCount: number = await model.countDocuments();
+  const totalCount: number = await model.countDocuments(query);
   // 총 페이지 수
   const totalPage: number = Math.floor(totalCount / offset) + 1;
   // 정렬
   const order = setOrder(req);
 
   const data = await model
-    .find({})
+    .find(query)
     .sort(order) // 정렬
     .skip((currentPage - 1) * offset)
     .limit(offset);
@@ -74,7 +73,7 @@ export async function resolvePagination(req: NextRequest, model: any) {
       currentPage: currentPage,
       totalCount: totalCount,
       totalPage: totalPage,
-    } as Pagination,
+    } as PageInfo,
   } as ApiResponse);
 }
 

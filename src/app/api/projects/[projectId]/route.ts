@@ -2,14 +2,10 @@ import { startSession } from "mongoose";
 import { type NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/db/database";
-import ProjectModel from "@/db/models/project";
-
-import Project from "@/types/project";
 
 import { deleteProject, getProject } from "@/app/api/_services/project.service";
 
 import {
-  checkRequestBody,
   checkRequestParams,
   resolveSuccess,
   resolveErrors,
