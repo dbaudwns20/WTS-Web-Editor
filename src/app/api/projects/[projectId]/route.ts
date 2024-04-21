@@ -2,17 +2,13 @@ import { startSession } from "mongoose";
 import { type NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/db/database";
-import ProjectModel from "@/db/models/project";
-
-import Project from "@/types/project";
 
 import { deleteProject, getProject } from "@/app/api/_services/project.service";
 
 import {
-  checkRequestBody,
   checkRequestParams,
-  handleSuccess,
-  handleErrors,
+  resolveSuccess,
+  resolveErrors,
 } from "@/app/api/api";
 
 type Params = {
@@ -26,9 +22,9 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
     await dbConnect();
-    return handleSuccess(await getProject(params.projectId));
+    return resolveSuccess(await getProject(params.projectId));
   } catch (error) {
-    return handleErrors(error);
+    return resolveErrors(error);
   }
 }
 
@@ -73,12 +69,12 @@ export async function DELETE(
     await deleteProject(params.projectId);
 
     await session.commitTransaction();
-    return handleSuccess("the project is deleted");
+    return resolveSuccess("the project is deleted");
   } catch (error: any) {
     if (session) {
       session.abortTransaction();
       session.endSession();
     }
-    return handleErrors(error);
+    return resolveErrors(error);
   }
 }

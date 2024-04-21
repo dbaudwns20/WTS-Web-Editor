@@ -3,11 +3,8 @@
 import "./style.css";
 
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
-
-import Project, { bindProjectList } from "@/types/project";
-import Language, { getLangOptions } from "@/types/language";
-import { WtsString } from "@/types/wts.string";
 
 import Modal from "@/components/common/modal";
 import Select from "@/components/input/select/select";
@@ -17,10 +14,29 @@ import File from "@/components/input/file/file";
 import ProjectCard from "@/components/project-card/project.card";
 import ProjectCardSkeleton from "@/components/project-card/skeleton/project.card.skeleton";
 
+import Project, { bindProjectList } from "@/types/project";
+import Language, { getLangOptions } from "@/types/language";
+import { WtsString } from "@/types/wts.string";
+import { type OrderInfo, type PageInfo } from "@/types/pagination";
+
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
+
+import LogoMain from "@/assets/logo.png";
+
+const defaultPageInfo: PageInfo = {
+  offset: 8,
+  currentPage: 1,
+  totalPage: 1,
+  totalCount: 0,
+};
+
+const defaultOrderInfo: OrderInfo = {
+  sort: "dateCreated",
+  order: "DESC",
+};
 
 export default function RootPage() {
   // ref
@@ -34,9 +50,14 @@ export default function RootPage() {
   const [language, setLanguage] = useState<Language | "">("");
   const [version, setVersion] = useState<string>("");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
-
   const [projectList, setProjectList] = useState<Project[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
+
+  // 페이징 정보
+  const [pageInfo, setPageInfo] = useState<PageInfo>(defaultPageInfo);
+  // 정렬 정보
+  const [orderInfo, setOrderInfo] = useState<OrderInfo>(defaultOrderInfo);
 
   // 프로젝트 생성 모달창 열기
   const newProject = async () => {
@@ -83,13 +104,21 @@ export default function RootPage() {
     // 모달 닫기
     setIsModalOpen(false);
 
+    // 조회정보 초기화
+    await setPageInfo(defaultPageInfo);
+    await setOrderInfo(defaultOrderInfo);
+
     // 프로젝트 리스트 새로고침
     await getProjectList();
   };
 
   // 프로젝트 조회
   const getProjectList = async () => {
-    const response: any = await callApi("/api/projects");
+    setIsLoading(true);
+
+    const response = await callApi(
+      `/api/projects?offset=${pageInfo.offset}&currentPage=${pageInfo.currentPage}&sort=${orderInfo.sort}&order=${orderInfo.order}`
+    );
 
     if (!response.success) {
       showNotificationMessage({
@@ -99,46 +128,74 @@ export default function RootPage() {
       return;
     }
 
+    setPageInfo(response.pageInfo);
     setProjectList(bindProjectList(response.data));
+
+    setIsLoading(false);
   };
 
-  // 프로젝트 삭제
-  const deleteProject = async (projectId: string) => {
-    setIsLoading(true);
-    const response = await callApi("/api/projects/" + projectId, {
-      method: "DELETE",
-    });
+  // 스크롤링으로 추가 데이터 조회
+  const getMoreProjectList = async () => {
+    setIsMoreLoading(true);
 
-    getProjectList();
-    setIsLoading(false);
-    showNotificationMessage({
-      message: "프로젝트가 삭제되었습니다",
-      messageType: "success",
-    });
+    const response = await callApi(
+      `/api/projects?offset=${pageInfo.offset}&currentPage=${
+        pageInfo.currentPage + 1
+      }&sort=${orderInfo.sort}&order=${orderInfo.order}`
+    );
+
+    if (!response.success) {
+      showNotificationMessage({
+        message: response.message,
+        messageType: "danger",
+      });
+      return;
+    }
+
+    setPageInfo(response.pageInfo);
+    setProjectList((prev) => prev!.concat(bindProjectList(response.data)));
+
+    setIsMoreLoading(false);
   };
 
   const handleUploadWtsFile = (file: File) => {
     setWtsStringList(readWtsFile(file));
   };
 
-  useEffect(() => {
-    setIsLoading(!projectList);
-  }, [projectList]);
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (
+      scrollTop + clientHeight >= scrollHeight &&
+      pageInfo.currentPage < pageInfo.totalPage &&
+      !isMoreLoading
+    ) {
+      getMoreProjectList();
+    }
+  };
 
+  // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+
+  // 프로젝트 리스트 조회
   useEffect(() => {
     getProjectList();
   }, []);
 
   return (
     <>
-      <section>
-        <div className="border border-grey-300 mx-10 my-10 px-10 py-10 text-center rounded-2xl">
-          <p className="py-5">Logo Or Description</p>
+      <section className="flex flex-col justify-center items-center pb-8">
+        <div className="flex justify-center items-center gap-5">
+          <Image src={LogoMain} alt="logo_main" width={400} />
         </div>
-        <div className="mx-10 my-10">
+        <div className="">
           <div className="w-full flex justify-center">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg"
+              className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg m-3.5"
               onClick={newProject}
             >
               CREATE NEW PROJECT
@@ -160,6 +217,7 @@ export default function RootPage() {
             })}
           </>
         )}
+        {isMoreLoading ? <ProjectCardSkeleton /> : <></>}
       </section>
       {isModalOpen ? (
         <Modal

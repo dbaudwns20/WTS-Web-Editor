@@ -1,6 +1,8 @@
 .project-info-section {
   @apply pb-5;
   @apply border-gray-300;
+  @apply min-h-[171px];
+  @apply h-fit;
 }
 
 .project-info-section > .wrapper {

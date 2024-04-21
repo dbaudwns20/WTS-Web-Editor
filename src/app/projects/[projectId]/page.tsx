@@ -15,7 +15,6 @@ import { getLangTextByValue } from "@/types/language";
 
 import { showNotificationMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
-import Link from "next/link";
 
 export default function ProjectDetail() {
   // params
@@ -101,7 +100,7 @@ export default function ProjectDetail() {
               </p>
             </div>
           </div>
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex justify-center items-end gap-2">
             <button
               type="button"
               className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
@@ -120,6 +119,12 @@ export default function ProjectDetail() {
               className="w-full bg-sky-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
             >
               UPLOAD
+            </button>
+            <button
+              type="button"
+              className="w-full bg-slate-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+            >
+              DOWNLOAD
             </button>
           </div>
         </div>
