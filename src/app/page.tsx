@@ -2,7 +2,8 @@
 
 import "./style.css";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 import Modal from "@/components/common/modal";
@@ -22,6 +23,8 @@ import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
+
+import LogoMain from "@/assets/logo.png";
 
 const defaultPageInfo: PageInfo = {
   offset: 8,
@@ -185,14 +188,14 @@ export default function RootPage() {
 
   return (
     <>
-      <section>
-        <div className="border border-grey-300 mx-10 my-10 px-10 py-10 text-center rounded-2xl">
-          <p className="py-5">Logo Or Description</p>
+      <section className="flex flex-col justify-center items-center pb-8">
+        <div className="flex justify-center items-center gap-5">
+          <Image src={LogoMain} alt="logo_main" width={400} />
         </div>
-        <div className="mx-10 my-10">
+        <div className="">
           <div className="w-full flex justify-center">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg"
+              className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg m-3.5"
               onClick={newProject}
             >
               CREATE NEW PROJECT

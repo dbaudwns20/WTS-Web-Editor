@@ -24,7 +24,7 @@ const defaultOrderInfo: OrderInfo = {
   order: "ASC",
 };
 
-export default function Strings() {
+export default function ProjectStrings() {
   const router = useRouter();
   const params = useSearchParams();
 
