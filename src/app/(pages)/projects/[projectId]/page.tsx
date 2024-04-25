@@ -12,7 +12,10 @@ import { getLangTextByValue } from "@/types/language";
 
 import StringList from "./_string-list/string.list";
 import StringContent from "./_string-content/string.content";
-import { BgImage, getBgImageById } from "@/app/_project-card/background.image";
+import {
+  BgImage,
+  getBgImageById,
+} from "@/app/(pages)/_project-card/background.image";
 
 import { showNotificationMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";

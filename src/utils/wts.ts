@@ -1,4 +1,4 @@
-import { WtsString } from "@/types/wts.string";
+import WtsString from "@/types/wts.string";
 
 export function readWtsFile(wtsFile: File): WtsString[] {
   const result: WtsString[] = [];

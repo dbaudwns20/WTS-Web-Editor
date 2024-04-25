@@ -77,6 +77,12 @@
   @apply shadow-md;
 }
 
+.file.is-uploaded > .file-content > .reupload-button.is-disabled {
+  @apply opacity-50;
+  @apply cursor-not-allowed;
+  @apply hover:bg-neutral-100;
+}
+
 .file.is-invalid {
   @apply border-red-600;
   @apply outline-red-500;

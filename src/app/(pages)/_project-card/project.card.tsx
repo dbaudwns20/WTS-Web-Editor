@@ -1,10 +1,4 @@
-import {
-  forwardRef,
-  useRef,
-  useImperativeHandle,
-  MouseEvent,
-  useState,
-} from "react";
+import { forwardRef, useImperativeHandle, useMemo } from "react";
 import Image from "next/image";
 
 import "./style.css";
@@ -24,17 +18,13 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
 
   useImperativeHandle(ref, () => {});
 
-  const projectRef = useRef<HTMLDivElement>(null);
-
   // values
-  const [bgImage, setBgImage] = useState<BgImage>(getRandomBgImage());
-  const [isCompleted, setIsCompleted] = useState<boolean>(
-    project.process === "100" ? true : false
-  );
+  const bgImage: BgImage = useMemo(() => getRandomBgImage(), []);
+  const isCompleted: boolean = project.process === "100" ? true : false;
 
   return (
-    <article ref={projectRef} className="project">
-      {isCompleted ? <span className="complete">COMPLETE</span> : <></>}
+    <article className="project">
+      {isCompleted ?? <span className="complete">COMPLETE</span>}
       <Image className="image" src={bgImage?.path} alt={bgImage?.name} />
       <div className="project-content">
         <p className="title">{project.title}</p>
@@ -44,7 +34,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
               {getLangTextByValue(project.language)}
             </span>
             {project.version ? (
-              <span className="version">v{project.version}</span>
+              <span className="version">{"v" + project.version}</span>
             ) : (
               <></>
             )}

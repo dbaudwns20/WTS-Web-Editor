@@ -24,6 +24,10 @@ type FileProps = {
   onChange: Dispatch<File>;
 };
 
+export type FileType = {
+  setDisableReloadButton: (isDisabled: boolean) => void;
+};
+
 const File = forwardRef((props: FileProps, ref) => {
   const {
     labelText,
@@ -34,7 +38,9 @@ const File = forwardRef((props: FileProps, ref) => {
   } = props;
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
-  useImperativeHandle(ref, () => ({}));
+  useImperativeHandle(ref, () => ({
+    setDisableReloadButton,
+  }));
 
   // ref
   const labelRef = useRef<HTMLLabelElement>(null);
@@ -43,7 +49,7 @@ const File = forwardRef((props: FileProps, ref) => {
   const reuploadButtonRef = useRef<HTMLButtonElement>(null);
 
   // values
-  const elId: string = `file_${generateRandomText()}`;
+  const elId = useRef(`file_${generateRandomText()}`);
   const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
   const [displayFile, setDisplayFile] = useState<string>("");
   const [isDragEnter, setIsDragEnter] = useState<boolean>(false);
@@ -109,17 +115,24 @@ const File = forwardRef((props: FileProps, ref) => {
     setTimeout(() => (fileRef.current!.value = ""));
   };
 
+  const setDisableReloadButton = (isDisabled: boolean) => {
+    reuploadButtonRef.current!.disabled = isDisabled;
+    if (isDisabled) reuploadButtonRef.current!.classList.add("is-disabled");
+    else reuploadButtonRef.current!.classList.remove("is-disabled");
+  };
+
   // 드래그 앤 드롭 여부 변경시 클래스 추가, 삭제
   useEffect(() => {
     if (isDragEnter) innerLabel.current?.classList.add("is-drag-enter");
     else innerLabel.current?.classList.remove("is-drag-enter");
   }, [isDragEnter]);
 
+  // set element id
   useEffect(() => {
-    labelRef.current!.setAttribute("for", elId);
-    reuploadButtonRef.current?.setAttribute("id", elId);
-    fileRef.current?.setAttribute("id", elId);
-  }, [elId]);
+    labelRef.current!.setAttribute("for", elId.current);
+    fileRef.current?.setAttribute("id", elId.current);
+    reuploadButtonRef.current?.setAttribute("id", elId.current);
+  }, [displayFile]);
 
   return (
     <>

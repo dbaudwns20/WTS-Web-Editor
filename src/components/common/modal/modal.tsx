@@ -7,12 +7,14 @@ import React, {
   MouseEventHandler,
 } from "react";
 
+import "./style.css";
+
 type ModalProps = {
   children: React.ReactNode;
   isOpen: boolean;
   title?: string;
   isCloseOnOverlay?: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Modal(props: ModalProps) {
@@ -54,6 +56,11 @@ export default function Modal(props: ModalProps) {
     [isCloseOnOverlay, closeModal, overlay, wrapper]
   );
 
+  useEffect(() => {
+    if (isOpen) overlay.current?.classList.add("is-active");
+    else overlay.current?.classList.remove("is-active");
+  }, [isOpen]);
+
   // 키 이벤트 등록
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
@@ -61,34 +68,11 @@ export default function Modal(props: ModalProps) {
   }, [onKeyDown]);
 
   return (
-    <div
-      style={{ display: isOpen ? "block" : "none" }}
-      ref={overlay}
-      className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/60"
-      onClick={onClick}
-    >
-      <div
-        ref={wrapper}
-        className="bg-white dark:bg-gray-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:w-10/12 max-sm:w-10/12 md:w-8/12 lg:w-1/3 rounded-lg"
-      >
-        <header className="flex justify-between items-center px-6 py-3">
-          <p className="font-bold text-gray-500 text-xl">{title}</p>
-          <button
-            className="inline-flex
-                       items-center
-                       justify-center
-                       rounded-full
-                       p-1
-                       text-gray-400
-                       bg-gray-100
-                       hover:text-gray-500
-                       focus:outline-none
-                       focus:ring-2
-                       focus:ring-inset
-                       focus:ring-blue-500
-                       focus:border-blue-500"
-            onClick={closeModal}
-          >
+    <div ref={overlay} className="modal-background" onClick={onClick}>
+      <div ref={wrapper} className="modal">
+        <header className="header">
+          <p className="title">{title}</p>
+          <button className="close-button" onClick={closeModal}>
             <svg
               className="h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"
@@ -106,8 +90,8 @@ export default function Modal(props: ModalProps) {
             </svg>
           </button>
         </header>
-        <hr className="border-gray-200 mx-5" />
-        <div className="container -mb-1">{children}</div>
+        <hr />
+        <div className="content">{children}</div>
       </div>
     </div>
   );
