@@ -104,3 +104,8 @@
   @apply mr-1;
   font-size: 1rem;
 }
+
+.string-content-section {
+  @apply flex;
+  @apply h-[500px];
+}

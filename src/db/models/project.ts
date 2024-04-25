@@ -4,8 +4,9 @@ export interface IProject {
   _id: string;
   title: string;
   language: number;
-  process: number;
+  process: string;
   version: string;
+  lastModifiedStringNumber: number;
   dateCreated: Date;
   lastUpdated: Date;
 }
@@ -20,12 +21,16 @@ const ProjectSchema: Schema<IProject> = new Schema({
     required: true,
   },
   process: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "0",
   },
   version: {
     type: String,
     default: null,
+  },
+  lastModifiedStringNumber: {
+    type: Number,
+    default: -1,
   },
   dateCreated: {
     type: Date,

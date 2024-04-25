@@ -1,4 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
+
+export type TObjectId = mongoose.ObjectId;
+export const ObjectId = mongoose.Types.ObjectId;
 
 import { type PageInfo } from "@/types/pagination";
 

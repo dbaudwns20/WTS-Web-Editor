@@ -6,15 +6,18 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
-import Project, { bindProject } from "@/types/project";
-import {
-  BgImage,
-  getBgImageById,
-} from "@/components/project-card/background.image";
+import Project from "@/types/project";
+import String from "@/types/string";
 import { getLangTextByValue } from "@/types/language";
+
+import StringList from "./_string-list/string.list";
+import StringContent from "./_string-content/string.content";
+import { BgImage, getBgImageById } from "@/app/_project-card/background.image";
 
 import { showNotificationMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
+
+import { useSelector } from "react-redux";
 
 export default function ProjectDetail() {
   // params
@@ -23,28 +26,11 @@ export default function ProjectDetail() {
   // router
   const router = useRouter();
 
+  const project: Project = useSelector((state: any) => state.project);
+
   // values
-  const [isLoading, setIsLoading] = useState(true);
-  const [project, setProject] = useState<Project | null>(null);
   const [image, setImage] = useState<BgImage>(getBgImageById(2));
-
-  // 프로젝트 정보 가져오기
-  const getProject = async () => {
-    const response = await callApi(`/api/projects/${projectId}`);
-
-    if (!response.success) {
-      showNotificationMessage({
-        message: response.message,
-        messageType: "danger",
-      });
-
-      // 메인화면으로 이동
-      router.back();
-      return;
-    }
-
-    setProject(bindProject(response.data));
-  };
+  const [currentString, setCurrentString] = useState<String | null>(null);
 
   // 프로젝트 삭제
   const deleteProject = async () => {
@@ -65,36 +51,30 @@ export default function ProjectDetail() {
     }
   };
 
-  useEffect(() => {
-    setIsLoading(project === null);
-  }, [project]);
-
-  useEffect(() => {
-    getProject();
-  }, []);
-
   return (
-    <section className="project-info-section">
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
+    <>
+      <section className="project-info-section">
         <div className="wrapper">
           <div className="project-info">
             <figure className="image-wrapper">
               <Image className="image" src={image.path} alt={image.name} />
             </figure>
             <div className="info-wrapper">
-              <p className="title">{project?.title}</p>
+              <p className="title">{project.title}</p>
               <div className="tag-group">
                 <span className="language">
-                  {getLangTextByValue(project!.language)}
+                  {getLangTextByValue(project.language)}
                 </span>
-                <span className="version">v{project!.version}</span>
+                {project.version ? (
+                  <span className="version">v{project.version}</span>
+                ) : (
+                  <></>
+                )}
               </div>
               <p className="last-updated">
                 <span className="material-icons-outlined">history</span>
                 {convertDateToString(
-                  project!.lastUpdated,
+                  project.lastUpdated,
                   DATE_FORMAT.DATE_TIME
                 )}
               </p>
@@ -128,7 +108,15 @@ export default function ProjectDetail() {
             </button>
           </div>
         </div>
-      )}
-    </section>
+      </section>
+      <section className="string-content-section">
+        <StringList
+          projectId={projectId}
+          setCurrentString={setCurrentString}
+          lastModifiedStringNumber={project.lastModifiedStringNumber}
+        />
+        <StringContent projectId={projectId} currentString={currentString} />
+      </section>
+    </>
   );
 }

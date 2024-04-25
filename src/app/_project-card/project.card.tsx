@@ -29,7 +29,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
   // values
   const [bgImage, setBgImage] = useState<BgImage>(getRandomBgImage());
   const [isCompleted, setIsCompleted] = useState<boolean>(
-    project.process === 100 ? true : false
+    project.process === "100" ? true : false
   );
 
   return (
@@ -57,7 +57,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
         <div
           className="progress-bar"
           role="progressbar"
-          aria-valuenow={project.process}
+          aria-valuenow={Number(project.process)}
           aria-valuemin={0}
           aria-valuemax={100}
         >
@@ -69,7 +69,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           ) : (
             <>
               <p className="percent">{project.process}%</p>
-              {project.process === 0 ? (
+              {project.process === "0" ? (
                 <div className="progress"></div>
               ) : (
                 <div

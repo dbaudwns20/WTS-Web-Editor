@@ -13,7 +13,7 @@
   @apply hover:shadow-2xl;
 }
 
-.complete {
+.project > .complete {
   @apply absolute;
   @apply top-3;
   @apply left-4;

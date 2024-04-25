@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
+
+import "./globals.css";
 
 import Header from "@/components/common/header/header";
 import Footer from "@/components/common/footer/footer";
-
-import "./globals.css";
+import ProviderWrapper from "./provider";
 
 export const metadata: Metadata = {
   title: "WTS Web Editor",
@@ -24,10 +25,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Header />
-        <main className="main">{children}</main>
-        <Footer />
-        <div id="message-box"></div>
+        <ProviderWrapper>
+          <Header />
+          <main className="main">{children}</main>
+          <Footer />
+          <div id="message-box"></div>
+        </ProviderWrapper>
       </body>
     </html>
   );

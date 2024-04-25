@@ -3,16 +3,16 @@
 import "./style.css";
 
 import { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 
 import Modal from "@/components/common/modal";
 import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File from "@/components/input/file/file";
-import ProjectCard from "@/components/project-card/project.card";
-import ProjectCardSkeleton from "@/components/project-card/skeleton/project.card.skeleton";
+import ProjectCard from "@/app/_project-card/project.card";
+import ProjectCardSkeleton from "@/app/_project-card/skeleton/project.card.skeleton";
 
 import Project, { bindProjectList } from "@/types/project";
 import Language, { getLangOptions } from "@/types/language";
@@ -23,6 +23,8 @@ import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
+
+import { useDispatch } from "react-redux";
 
 import LogoMain from "@/assets/logo.png";
 
@@ -39,6 +41,9 @@ const defaultOrderInfo: OrderInfo = {
 };
 
 export default function RootPage() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   // ref
   const titleRef = useRef<TextType>();
   const submitRef = useRef<SubmitType>();
@@ -50,7 +55,7 @@ export default function RootPage() {
   const [language, setLanguage] = useState<Language | "">("");
   const [version, setVersion] = useState<string>("");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
-  const [projectList, setProjectList] = useState<Project[] | null>([]);
+  const [projectList, setProjectList] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
 
@@ -175,6 +180,13 @@ export default function RootPage() {
     }
   };
 
+  const goProject = async (project: Project) => {
+    // 이동할 프로젝트 정보를 storage 에 저장
+    dispatch({ type: "project/setProject", payload: project });
+    // router push
+    router.push(`/projects/${project.id}`);
+  };
+
   // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -210,9 +222,15 @@ export default function RootPage() {
           <>
             {projectList!.map((project: Project) => {
               return (
-                <Link key={project.id} href={`/projects/${project.id}`}>
+                <a
+                  className="hover:cursor-pointer"
+                  key={project.id}
+                  onClick={() => {
+                    goProject(project);
+                  }}
+                >
                   <ProjectCard project={project} />
-                </Link>
+                </a>
               );
             })}
           </>
