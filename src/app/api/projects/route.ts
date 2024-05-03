@@ -14,7 +14,7 @@ import {
   resolveSuccess,
   resolveErrors,
   resolvePagination,
-} from "@/app/api/api";
+} from "@/app/api";
 
 export async function GET(request: NextRequest) {
   try {

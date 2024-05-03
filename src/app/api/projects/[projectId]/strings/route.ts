@@ -11,8 +11,8 @@ import {
   checkRequestParams,
   resolveSuccess,
   resolveErrors,
-  resolvePagination,
-} from "@/app/api/api";
+  resolveStringModelPagination,
+} from "@/app/api";
 
 type Params = {
   projectId: string;
@@ -26,7 +26,7 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
     await dbConnect();
-    return resolvePagination(request, StringModel, {
+    return resolveStringModelPagination(request, StringModel, {
       projectId: params.projectId,
     });
   } catch (error) {

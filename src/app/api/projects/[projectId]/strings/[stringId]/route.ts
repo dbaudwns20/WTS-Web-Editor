@@ -11,7 +11,7 @@ import {
   checkRequestParams,
   resolveSuccess,
   resolveErrors,
-} from "@/app/api/api";
+} from "@/app/api";
 
 type Params = {
   projectId: string;

@@ -4,16 +4,17 @@ import {
   useRef,
   forwardRef,
   useImperativeHandle,
-  SetStateAction,
-  Dispatch,
   useCallback,
+  memo,
+  Dispatch,
+  SetStateAction,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import "./style.css";
 
 import String, { bindStringList } from "@/types/string";
-import { type PageInfo, type OrderInfo } from "@/types/pagination";
+import { type PageInfo } from "@/types/pagination";
 
 import { callApi } from "@/utils/common";
 import { showNotificationMessage } from "@/utils/message";
@@ -25,57 +26,59 @@ const defaultPageInfo: PageInfo = {
   totalCount: 0,
 };
 
-const defaultOrderInfo: OrderInfo = {
-  sort: "stringNumber",
-  order: "ASC",
-};
-
 type StringListProps = {
   projectId: string;
-  lastModifiedStringNumber?: number;
   setCurrentString: Dispatch<SetStateAction<String | null>>;
 };
+
+type _String = String & { index: number; isActive: boolean };
 
 export type StringListType = {
   getStringList: () => void;
   getMoreStringList: () => void;
+  setStringListScrollPosition: () => void;
 };
 
 const StringList = forwardRef((props: StringListProps, ref) => {
-  const { projectId, lastModifiedStringNumber, setCurrentString } = props;
+  const { projectId, setCurrentString } = props;
 
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
     getStringList,
     getMoreStringList,
+    setStringListScrollPosition,
   }));
 
   // refs
   const stringListRef = useRef<HTMLDivElement>(null);
 
   // values
-  const [stringList, setStringList] = useState<String[]>([]);
+  const [stringList, setStringList] = useState<_String[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
-  const [stringNumber, setStringNumber] = useState<number>(0);
+  const [isFirstRendering, setIsFirstRendering] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const currentStringNumber: number = searchParams.get("strings")
+    ? Number(searchParams.get("strings"))
+    : -1;
 
   // 페이징 정보
   const [pageInfo, setPageInfo] = useState<PageInfo>(defaultPageInfo);
-  // 정렬 정보
-  const [orderInfo, setOrderInfo] = useState<OrderInfo>(defaultOrderInfo);
 
   // project 의 string list 조회
   const getStringList = async () => {
     setIsLoading(true);
 
-    if (lastModifiedStringNumber !== -1) {
+    let url: string = `/api/projects/${projectId}/strings?offset=${pageInfo.offset}&currentPage=${pageInfo.currentPage}&sort=stringNumber&order=ASC`;
+    // 마지막 수정 string number 가 존재할 경우
+    if (currentStringNumber !== -1) {
+      url += `&lastModifiedStringNumber=${currentStringNumber}`;
     }
 
-    const response = await callApi(
-      `/api/projects/${projectId}/strings?offset=${pageInfo.offset}&currentPage=${pageInfo.currentPage}&sort=${orderInfo.sort}&order=${orderInfo.order}`
-    );
+    const response = await callApi(url);
 
     if (!response.success) {
       showNotificationMessage({
@@ -86,7 +89,21 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     }
 
     setPageInfo(response.pageInfo);
-    setStringList(bindStringList(response.data));
+    setStringList(() => {
+      let idx: number = 1;
+      const result: _String[] = [];
+      bindStringList(response.data).forEach((string: String) => {
+        result.push({
+          ...string,
+          ...{
+            index: idx,
+            isActive: string.stringNumber === currentStringNumber,
+          },
+        });
+        idx++;
+      });
+      return result;
+    });
 
     setIsLoading(false);
   };
@@ -97,9 +114,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     const response = await callApi(
       `/api/projects/${projectId}/strings?offset=${
         pageInfo.offset
-      }&currentPage=${pageInfo.currentPage + 1}&sort=${orderInfo.sort}&order=${
-        orderInfo.order
-      }`
+      }&currentPage=${pageInfo.currentPage + 1}&sort=stringNumber&order=ASC`
     );
 
     if (!response.success) {
@@ -111,55 +126,90 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     }
 
     setPageInfo(response.pageInfo);
-    setStringList((pre) => pre!.concat(bindStringList(response.data)));
+    setStringList(() => {
+      const result: _String[] = stringList;
+      let idx: number = result[result.length - 1].index + 1;
+      bindStringList(response.data).forEach((string: String) => {
+        result.push({
+          ...string,
+          ...{
+            index: idx,
+            isActive: false,
+          },
+        });
+        idx++;
+      });
+      return result;
+    });
 
     setIsMoreLoading(false);
   };
 
-  const handleScroll = () => {
-    const scrollHeight = stringListRef.current!.scrollHeight;
-    const scrollTop = stringListRef.current!.scrollTop;
-    const clientHeight = stringListRef.current!.clientHeight;
-    if (
-      scrollTop + clientHeight >= scrollHeight &&
-      pageInfo.currentPage < pageInfo.totalPage &&
-      !isMoreLoading
-    ) {
-      getMoreStringList();
+  const setStringListScrollPosition = () => {
+    const node = stringListRef.current;
+    if (!node) return;
+    const children = node.children;
+    let offsetTop: number = 0;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i] as HTMLElement;
+      if (child.classList.contains("is-active")) {
+        // 스크롤 위치 계산
+        offsetTop = child.offsetHeight * (i - 2);
+        break;
+      }
     }
+    node.scrollTop = offsetTop;
   };
 
   const replaceCurrentString = useCallback(
-    (string: String) => {
+    (string: _String) => {
       if (!string) return;
       router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
-      setStringNumber(string.stringNumber);
-      setCurrentString(string);
+      setCurrentIndex(string.index);
+      setCurrentString(string!);
     },
     [projectId, router, setCurrentString]
   );
 
   // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
   useEffect(() => {
-    const ref = stringListRef.current!;
-    if (!ref) return;
-    ref.addEventListener("scroll", handleScroll);
-    return () => ref.removeEventListener("scroll", handleScroll);
+    const node = stringListRef.current;
+    if (!node) return;
+
+    const handleScroll = () => {
+      const scrollHeight = node.scrollHeight;
+      const scrollTop = node.scrollTop;
+      const clientHeight = node.clientHeight;
+
+      if (
+        scrollTop + clientHeight >= scrollHeight &&
+        pageInfo.currentPage < pageInfo.totalPage &&
+        !isMoreLoading
+      ) {
+        getMoreStringList();
+      }
+    };
+
+    node.addEventListener("scroll", handleScroll);
+    return () => {
+      node.removeEventListener("scroll", handleScroll);
+    };
   });
 
   useEffect(() => {
-    if (stringList.length === 0) return;
-
-    const string = stringList.find((string: String) => {
-      if (lastModifiedStringNumber === -1) {
+    if (stringList.length === 0 || isFirstRendering) return;
+    const string = stringList.find((string: _String) => {
+      if (currentStringNumber === -1) {
         return stringList[0];
       } else {
-        if (string.stringNumber === lastModifiedStringNumber) return string;
+        if (string.stringNumber === currentStringNumber) return string;
       }
     });
 
+    setIsFirstRendering(true);
     replaceCurrentString(string!);
-  }, [stringList, lastModifiedStringNumber, replaceCurrentString]);
+    setStringListScrollPosition();
+  }, [stringList, replaceCurrentString, isFirstRendering, currentStringNumber]);
 
   // mount 시 스트링 리스트 조회
   useEffect(() => {
@@ -180,22 +230,20 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       ) : (
         <>
           <header className="string-list-header">
-            <span>STRINGS</span>
-            <span>{pageInfo.currentPage + " / " + pageInfo.totalPage}</span>
+            <span>{currentIndex + " / " + pageInfo.totalCount}</span>
+            <span>{currentIndex + " / " + pageInfo.totalCount}</span>
           </header>
           <div className="string-list" ref={stringListRef}>
-            {stringList.map((string: String) => {
+            {stringList.map((string: _String) => {
+              const isActive: boolean =
+                string.stringNumber === currentStringNumber;
               return (
                 <a
                   onClick={() => {
                     replaceCurrentString(string);
                   }}
-                  key={string.stringNumber}
-                  className={
-                    stringNumber === string.stringNumber
-                      ? "string is-active"
-                      : "string"
-                  }
+                  key={string.index}
+                  className={isActive ? "string is-active" : "string"}
                 >
                   <p className="number">
                     <span>STRING {string.stringNumber}</span>
@@ -242,4 +290,4 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 });
 
 StringList.displayName = "StringList";
-export default StringList;
+export default memo(StringList);

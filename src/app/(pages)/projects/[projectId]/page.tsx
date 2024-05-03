@@ -20,20 +20,39 @@ import {
 import { showNotificationMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
 
-import { useSelector } from "react-redux";
-
 export default function ProjectDetail() {
   // params
-  const { projectId }: any = useParams();
-
+  const { projectId } = useParams();
   // router
   const router = useRouter();
 
-  const project: Project = useSelector((state: any) => state.project);
-
   // values
-  const [image, setImage] = useState<BgImage>(getBgImageById(2));
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [project, setProject] = useState<Project | null>(null);
   const [currentString, setCurrentString] = useState<String | null>(null);
+  const image: BgImage = getBgImageById(2);
+
+  // 프로젝트 가져오기
+  const getProject = async () => {
+    setIsLoading(true);
+
+    const response = await callApi(`/api/projects/${projectId}`);
+
+    // onError
+    if (!response.success) {
+      showNotificationMessage({
+        message: response.message,
+        messageType: "danger",
+      });
+
+      // 메인화면으로 이동
+      router.push("/");
+      return;
+    }
+
+    setProject(response.data);
+    setIsLoading(false);
+  };
 
   // 프로젝트 삭제
   const deleteProject = async () => {
@@ -42,84 +61,103 @@ export default function ProjectDetail() {
         method: "DELETE",
       });
 
-      if (response.success) {
+      // onError
+      if (!response.success) {
         showNotificationMessage({
-          message: "삭제되었습니다",
-          messageType: "success",
+          message: response.message,
+          messageType: "danger",
         });
-
-        // 메인화면으로 이동
-        router.push("/");
+        return;
       }
+
+      showNotificationMessage({
+        message: "삭제되었습니다",
+        messageType: "success",
+      });
+
+      // 메인화면으로 이동
+      router.push("/");
     }
   };
 
+  useEffect(() => {
+    getProject();
+  }, []);
+
   return (
     <>
-      <section className="project-info-section">
-        <div className="wrapper">
-          <div className="project-info">
-            <figure className="image-wrapper">
-              <Image className="image" src={image.path} alt={image.name} />
-            </figure>
-            <div className="info-wrapper">
-              <p className="title">{project.title}</p>
-              <div className="tag-group">
-                <span className="language">
-                  {getLangTextByValue(project.language)}
-                </span>
-                {project.version ? (
-                  <span className="version">v{project.version}</span>
-                ) : (
-                  <></>
-                )}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <section className="project-info-section">
+            <div className="wrapper">
+              <div className="project-info">
+                <figure className="image-wrapper">
+                  <Image className="image" src={image.path} alt={image.name} />
+                </figure>
+                <div className="info-wrapper">
+                  <p className="title">{project?.title}</p>
+                  <div className="tag-group">
+                    <span className="language">
+                      {getLangTextByValue(project!.language)}
+                    </span>
+                    {project!.version ? (
+                      <span className="version">v{project!.version}</span>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                  <p className="last-updated">
+                    <span className="material-icons-outlined">history</span>
+                    {convertDateToString(
+                      project!.lastUpdated,
+                      DATE_FORMAT.DATE_TIME
+                    )}
+                  </p>
+                </div>
               </div>
-              <p className="last-updated">
-                <span className="material-icons-outlined">history</span>
-                {convertDateToString(
-                  project.lastUpdated,
-                  DATE_FORMAT.DATE_TIME
-                )}
-              </p>
+              <div className="flex justify-center items-end gap-2">
+                <button
+                  type="button"
+                  className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                >
+                  EDIT
+                </button>
+                <button
+                  type="button"
+                  onClick={deleteProject}
+                  className="w-full bg-red-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                >
+                  REMOVE
+                </button>
+                <button
+                  type="button"
+                  className="w-full bg-sky-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                >
+                  UPLOAD
+                </button>
+                <button
+                  type="button"
+                  className="w-full bg-slate-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                >
+                  DOWNLOAD
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="flex justify-center items-end gap-2">
-            <button
-              type="button"
-              className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-            >
-              EDIT
-            </button>
-            <button
-              type="button"
-              onClick={deleteProject}
-              className="w-full bg-red-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-            >
-              REMOVE
-            </button>
-            <button
-              type="button"
-              className="w-full bg-sky-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-            >
-              UPLOAD
-            </button>
-            <button
-              type="button"
-              className="w-full bg-slate-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-            >
-              DOWNLOAD
-            </button>
-          </div>
-        </div>
-      </section>
-      <section className="string-content-section">
-        <StringList
-          projectId={projectId}
-          setCurrentString={setCurrentString}
-          lastModifiedStringNumber={project.lastModifiedStringNumber}
-        />
-        <StringContent projectId={projectId} currentString={currentString} />
-      </section>
+          </section>
+          <section className="string-content-section">
+            <StringList
+              projectId={projectId as string}
+              setCurrentString={setCurrentString}
+            />
+            <StringContent
+              projectId={projectId as string}
+              currentString={currentString}
+            />
+          </section>
+        </>
+      )}
     </>
   );
 }

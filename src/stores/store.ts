@@ -3,16 +3,18 @@ import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from "redux-persist";
 
 import { project } from "./slices/project.slice";
+import { string } from "./slices/string.slice";
 
 // config 작성
 const persistConfig = {
   key: "wtswebeditor", // 로컬스토리지에 저장할 키값
   storage, // localStorage or sessionStorage
-  whitelist: ["project"], // 저장할 리듀서
+  whitelist: ["project", "string"], // 저장할 리듀서
 };
 
 const reducers = combineReducers({
   project,
+  string,
 });
 
 // persistReduce 생성

@@ -2,7 +2,7 @@ import StringModel, { IString } from "@/db/models/string";
 
 import { updateProjectProcess } from "./project.service";
 
-import { ObjectId } from "@/app/api/api";
+import { ObjectId } from "@/app/api";
 
 export async function createString(newStringData: IString) {
   await new StringModel(newStringData).save();

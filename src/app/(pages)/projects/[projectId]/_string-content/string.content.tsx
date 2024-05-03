@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState, memo } from "react";
 
 import "./style.css";
 
@@ -17,7 +17,9 @@ const StringContent = forwardRef((props: StringContentType, ref) => {
   const [translatedText, setTranslatedText] = useState<string>();
 
   useEffect(() => {
-    setTranslatedText(currentString?.translatedText);
+    if (currentString) {
+      setTranslatedText(currentString?.translatedText);
+    }
   }, [currentString]);
 
   const updateString = async (e: any) => {
@@ -98,4 +100,4 @@ const StringContent = forwardRef((props: StringContentType, ref) => {
 });
 
 StringContent.displayName = "StringContent";
-export default StringContent;
+export default memo(StringContent);

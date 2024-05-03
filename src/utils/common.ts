@@ -35,11 +35,14 @@ export enum DATE_FORMAT {
 }
 
 export function convertDateToString(
-  date: Date | string,
+  date: Date | string | null,
   format: DATE_FORMAT = DATE_FORMAT.DATE
 ): string {
   if (typeof date === "string") {
     date = new Date(date);
+  }
+  if (date === null) {
+    return "";
   }
 
   let result: string = "";

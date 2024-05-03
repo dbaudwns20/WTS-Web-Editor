@@ -5,11 +5,7 @@ import dbConnect from "@/db/database";
 
 import { deleteProject, getProject } from "@/app/api/_services/project.service";
 
-import {
-  checkRequestParams,
-  resolveSuccess,
-  resolveErrors,
-} from "@/app/api/api";
+import { checkRequestParams, resolveSuccess, resolveErrors } from "@/app/api";
 
 type Params = {
   projectId: string;

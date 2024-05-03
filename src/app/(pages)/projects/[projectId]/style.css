@@ -83,6 +83,7 @@
   @apply text-sm;
   @apply shadow-md;
 }
+
 .project-info-section
   > .wrapper
   > .project-info
@@ -108,4 +109,5 @@
 .string-content-section {
   @apply flex;
   @apply h-[500px];
+  /* @apply h-[611px]; */
 }

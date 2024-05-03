@@ -126,8 +126,14 @@ export default function RootPage() {
   const goProject = async (project: Project) => {
     // 이동할 프로젝트 정보를 storage 에 저장
     dispatch({ type: "project/setProject", payload: project });
+    let url: string = `/projects/${project.id}`;
+
+    if (project.lastModifiedStringNumber !== -1) {
+      url += `?strings=${project.lastModifiedStringNumber}`;
+    }
+
     // router push
-    router.push(`/projects/${project.id}`);
+    router.push(url);
   };
 
   // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
