@@ -1,4 +1,4 @@
-.header {
+.main-header {
   @apply flex;
   @apply items-center;
   @apply font-bold;

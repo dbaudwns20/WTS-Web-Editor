@@ -26,12 +26,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ProviderWrapper>
-          <Header />
-          <main className="main">{children}</main>
-          <Footer />
-          <div id="message-box"></div>
-        </ProviderWrapper>
+        {/* <ProviderWrapper> */}
+        <Header />
+        <main className="main">{children}</main>
+        <Footer />
+        <div id="message-box"></div>
+        {/* </ProviderWrapper> */}
       </body>
     </html>
   );

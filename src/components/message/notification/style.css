@@ -137,9 +137,9 @@
 }
 
 .notification.is-info {
-  @apply bg-blue-500;
+  @apply bg-sky-500;
   @apply text-white;
-  @apply dark:bg-blue-700;
+  @apply dark:bg-sky-700;
 }
 
 .notification.is-warning {

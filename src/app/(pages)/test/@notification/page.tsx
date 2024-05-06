@@ -2,7 +2,7 @@
 
 import { showNotificationMessage } from "@/utils/message";
 
-export default function Test() {
+export default function NotificationTest() {
   const info = () => {
     showNotificationMessage({
       message: "into message",
@@ -35,7 +35,7 @@ export default function Test() {
   };
 
   return (
-    <section className="w-full">
+    <section className="w-full mb-12">
       <p className="text-2xl font-semibold text-gray-500">Notifications</p>
       <hr className="mt-4" />
       <div className="w-full flex mt-5">

@@ -34,7 +34,7 @@ const defaultOrderInfo: OrderInfo = {
 
 export default function RootPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // values
   const [projectList, setProjectList] = useState<Project[]>([]);
@@ -125,7 +125,7 @@ export default function RootPage() {
 
   const goProject = async (project: Project) => {
     // 이동할 프로젝트 정보를 storage 에 저장
-    dispatch({ type: "project/setProject", payload: project });
+    // dispatch({ type: "project/setProject", payload: project });
     let url: string = `/projects/${project.id}`;
 
     if (project.lastModifiedStringNumber !== -1) {

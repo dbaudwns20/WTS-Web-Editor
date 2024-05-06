@@ -17,7 +17,7 @@ import {
   getBgImageById,
 } from "@/app/(pages)/_project-card/background.image";
 
-import { showNotificationMessage } from "@/utils/message";
+import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
 
 export default function ProjectDetail() {
@@ -30,7 +30,7 @@ export default function ProjectDetail() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [project, setProject] = useState<Project | null>(null);
   const [currentString, setCurrentString] = useState<String | null>(null);
-  const image: BgImage = getBgImageById(2);
+  const image: BgImage = getBgImageById(1);
 
   // 프로젝트 가져오기
   const getProject = async () => {
@@ -54,30 +54,45 @@ export default function ProjectDetail() {
     setIsLoading(false);
   };
 
+  const handleDeleteProject = () => {
+    showConfirmMessage({
+      message: "delete this project?",
+      buttons: [
+        {
+          label: "CANCEL",
+          onClick: null,
+        },
+        {
+          label: "OK",
+          class: "info",
+          onClick: () => deleteProject(),
+        },
+      ],
+    });
+  };
+
   // 프로젝트 삭제
   const deleteProject = async () => {
-    if (confirm("Are you sure?")) {
-      const response = await callApi(`/api/projects/${projectId}`, {
-        method: "DELETE",
-      });
+    const response = await callApi(`/api/projects/${projectId}`, {
+      method: "DELETE",
+    });
 
-      // onError
-      if (!response.success) {
-        showNotificationMessage({
-          message: response.message,
-          messageType: "danger",
-        });
-        return;
-      }
-
+    // onError
+    if (!response.success) {
       showNotificationMessage({
-        message: "삭제되었습니다",
-        messageType: "success",
+        message: response.message,
+        messageType: "danger",
       });
-
-      // 메인화면으로 이동
-      router.push("/");
+      return;
     }
+
+    showNotificationMessage({
+      message: "삭제되었습니다",
+      messageType: "success",
+    });
+
+    // 메인화면으로 이동
+    router.push("/");
   };
 
   useEffect(() => {
@@ -122,11 +137,11 @@ export default function ProjectDetail() {
                   type="button"
                   className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
                 >
-                  EDIT
+                  UPDATE
                 </button>
                 <button
                   type="button"
-                  onClick={deleteProject}
+                  onClick={handleDeleteProject}
                   className="w-full bg-red-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
                 >
                   REMOVE

@@ -108,6 +108,6 @@
 
 .string-content-section {
   @apply flex;
-  @apply h-[500px];
-  /* @apply h-[611px]; */
+  /* @apply h-[500px]; */
+  @apply h-[611px];
 }
