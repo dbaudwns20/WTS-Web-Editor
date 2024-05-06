@@ -1,0 +1,165 @@
+.confirm-background {
+  @apply hidden;
+  @apply fixed;
+  @apply z-10;
+  @apply left-0;
+  @apply right-0;
+  @apply top-0;
+  @apply bottom-0;
+  @apply mx-auto;
+  @apply bg-black/35;
+  @apply dark:bg-black/65;
+}
+
+.confirm-background.is-active {
+  @apply block;
+}
+
+.confirm {
+  @apply bg-white;
+  @apply dark:bg-gray-800;
+  @apply absolute;
+  @apply top-1/2;
+  @apply left-1/2;
+  @apply -translate-x-1/2;
+  @apply -translate-y-1/2;
+  @apply min-w-[400px];
+  @apply rounded-lg;
+  @apply transition;
+  @apply duration-150;
+  @apply ease-in-out;
+  @apply overflow-hidden;
+  @apply shadow-2xl;
+}
+
+.confirm > .header {
+  @apply dark:bg-gray-800;
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply h-12;
+  @apply px-4;
+  @apply py-2;
+}
+
+.confirm > .header > .title {
+  @apply font-bold;
+  @apply text-gray-500;
+  @apply text-base;
+  @apply dark:text-white/75;
+}
+
+.confirm > .header > .close-button {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply rounded-full;
+  @apply p-1;
+  @apply text-gray-400;
+  @apply transition;
+  @apply duration-150;
+  @apply ease-in-out;
+  @apply opacity-75;
+  @apply hover:opacity-100;
+}
+
+.confirm > hr {
+  @apply border-gray-200;
+  @apply mx-4;
+}
+
+.confirm > .content {
+  @apply container;
+  @apply px-4;
+  @apply py-3;
+}
+
+.confirm > .content > .message {
+  @apply text-gray-500;
+  @apply text-lg;
+  @apply min-h-8;
+  @apply mb-4;
+  @apply dark:text-white/75;
+}
+
+.confirm > .content > .buttons-wrapper {
+  @apply flex;
+  @apply w-full;
+  @apply justify-end;
+}
+
+.confirm > .content > .buttons-wrapper > .buttons {
+  @apply flex;
+  @apply gap-2;
+}
+
+.confirm > .content > .buttons-wrapper > .buttons > .func-button {
+  @apply min-w-24;
+  @apply bg-gray-300;
+  @apply hover:bg-gray-400/70;
+  @apply py-1.5;
+  @apply px-3;
+  @apply rounded-lg;
+  @apply text-black/65;
+  @apply font-semibold;
+  @apply text-sm;
+  @apply transition;
+  @apply duration-300;
+  @apply focus:outline-none;
+  @apply focus:ring;
+  @apply focus:ring-gray-200;
+  @apply active:bg-gray-200;
+  @apply dark:border-2;
+  @apply dark:border-white/60;
+  @apply dark:bg-transparent;
+  @apply dark:text-white/60;
+  @apply dark:hover:bg-transparent/30;
+}
+
+.confirm > .content > .buttons-wrapper > .buttons > .func-button.is-info {
+  @apply bg-sky-500;
+  @apply text-white;
+  @apply hover:bg-sky-600;
+  @apply active:bg-sky-700;
+  @apply focus:ring-sky-300;
+  @apply dark:border-sky-500;
+  @apply dark:bg-transparent;
+  @apply dark:text-sky-500;
+  @apply dark:hover:bg-transparent/30;
+}
+
+.confirm > .content > .buttons-wrapper > .buttons > .func-button.is-danger {
+  @apply bg-red-500;
+  @apply text-white;
+  @apply hover:bg-red-600;
+  @apply active:bg-red-700;
+  @apply focus:ring-red-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-red-600;
+  @apply dark:text-red-600;
+  @apply dark:hover:bg-transparent/30;
+}
+
+.confirm > .content > .buttons-wrapper > .buttons > .func-button.is-warning {
+  @apply bg-yellow-500;
+  @apply text-white;
+  @apply hover:bg-yellow-600;
+  @apply active:bg-yellow-600;
+  @apply focus:ring-yellow-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-yellow-600;
+  @apply dark:text-yellow-600;
+  @apply dark:hover:bg-transparent/30;
+}
+
+.confirm > .content > .buttons-wrapper > .buttons > .func-button.is-success {
+  @apply bg-green-600;
+  @apply text-white;
+  @apply hover:bg-green-700;
+  @apply active:bg-green-700;
+  @apply focus:ring-green-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-green-600;
+  @apply dark:text-green-600;
+  @apply dark:hover:bg-transparent/30;
+}

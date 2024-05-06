@@ -8,14 +8,17 @@ export const metadata: Metadata = {
 export default function TestLayout({
   children,
   notification,
+  confirm,
 }: Readonly<{
   children: React.ReactNode;
   notification: React.ReactNode;
+  confirm: React.ReactNode;
 }>) {
   return (
     <div className="py-8">
       {children}
       {notification}
+      {confirm}
     </div>
   );
 }
