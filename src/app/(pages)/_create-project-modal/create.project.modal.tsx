@@ -31,6 +31,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   const [title, setTitle] = useState<string>("");
   const [language, setLanguage] = useState<Language | "">("");
   const [version, setVersion] = useState<string>("");
+  const [source, setSource] = useState<string>("");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
 
   // 프로젝트 생성
@@ -51,6 +52,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         title: title,
         language: language,
         version: version,
+        source: source,
         wtsStringList: wtsStringList,
       }),
     });
@@ -125,6 +127,14 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
               onChange={setVersion}
             />
           </div>
+        </div>
+        <div className="block">
+          <Text
+            value={source}
+            labelText="SOURCE"
+            placeholder="Project Source"
+            onChange={setSource}
+          />
         </div>
         <div className="block">
           <File

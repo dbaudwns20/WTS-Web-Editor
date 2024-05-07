@@ -28,19 +28,17 @@ const defaultPageInfo: PageInfo = {
 
 type StringListProps = {
   projectId: string;
-  setCurrentString: Dispatch<SetStateAction<String | null>>;
+  setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
 };
 
 type _String = String & { index: number; isActive: boolean };
 
 export type StringListType = {
   getStringList: () => void;
-  getMoreStringList: () => void;
-  setStringListScrollPosition: () => void;
 };
 
 const StringList = forwardRef((props: StringListProps, ref) => {
-  const { projectId, setCurrentString } = props;
+  const { projectId, setStringGroup } = props;
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -48,8 +46,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
     getStringList,
-    getMoreStringList,
-    setStringListScrollPosition,
   }));
 
   // refs
@@ -59,7 +55,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   const [stringList, setStringList] = useState<_String[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isMoreLoading, setIsMoreLoading] = useState<boolean>(false);
-  const [isFirstRendering, setIsFirstRendering] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const currentStringNumber: number = searchParams.get("strings")
     ? Number(searchParams.get("strings"))
@@ -104,7 +99,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       });
       return result;
     });
-
     setIsLoading(false);
   };
 
@@ -145,30 +139,36 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     setIsMoreLoading(false);
   };
 
-  const setStringListScrollPosition = () => {
+  const setStringListScrollPosition = useCallback(() => {
     const node = stringListRef.current;
     if (!node) return;
     const children = node.children;
     let offsetTop: number = 0;
     for (let i = 0; i < children.length; i++) {
+      // 마지막인 경우
+      if (i === children.length - 1) {
+        offsetTop = node.scrollHeight;
+        break;
+      }
       const child = children[i] as HTMLElement;
       if (child.classList.contains("is-active")) {
         // 스크롤 위치 계산
-        offsetTop = child.offsetHeight * (i - 2);
+        offsetTop = child.offsetHeight * (i - 1);
         break;
       }
     }
-    node.scrollTop = offsetTop;
-  };
+    node.scrollTo({ top: offsetTop, behavior: "smooth" });
+  }, []);
 
   const replaceCurrentString = useCallback(
-    (string: _String) => {
-      if (!string) return;
-      router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
+    (stringGroup: (_String | null)[]) => {
+      if (!stringGroup[1]) return;
+      const string: _String = stringGroup[1];
+      setStringGroup(stringGroup);
       setCurrentIndex(string.index);
-      setCurrentString(string!);
+      router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
     },
-    [projectId, router, setCurrentString]
+    [projectId, router, setStringGroup]
   );
 
   // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
@@ -196,24 +196,47 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     };
   });
 
-  useEffect(() => {
-    if (stringList.length === 0 || isFirstRendering) return;
-    const string = stringList.find((string: _String) => {
+  const defineStringGroup = useCallback((): (_String | null)[] => {
+    let stringGroup: (_String | null)[] = [null, stringList[0], null];
+    if (stringList.length > 1) {
       if (currentStringNumber === -1) {
-        return stringList[0];
+        stringGroup[2] = stringList[1];
       } else {
-        if (string.stringNumber === currentStringNumber) return string;
+        for (let i = 0; i < stringList.length; i++) {
+          if (stringList[i].stringNumber === currentStringNumber) {
+            stringGroup = [
+              stringList[i - 1] ?? null,
+              stringList[i],
+              stringList[i + 1] ?? null,
+            ];
+            break;
+          }
+        }
       }
-    });
+    }
+    return stringGroup;
+  }, [stringList, currentStringNumber]);
 
-    setIsFirstRendering(true);
-    replaceCurrentString(string!);
+  useEffect(() => {
+    if (stringList.length === 0) return;
+    // string group 정의
+    const stringGroup: (_String | null)[] = defineStringGroup();
+    // string 설정
+    replaceCurrentString(stringGroup);
+    // 스크롤 위치 조정
     setStringListScrollPosition();
-  }, [stringList, replaceCurrentString, isFirstRendering, currentStringNumber]);
+  }, [
+    stringList,
+    defineStringGroup,
+    replaceCurrentString,
+    setStringListScrollPosition,
+  ]);
 
   // mount 시 스트링 리스트 조회
   useEffect(() => {
     getStringList();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -230,7 +253,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       ) : (
         <>
           <header className="string-list-header">
-            <span>{currentIndex + " / " + pageInfo.totalCount}</span>
+            <span>STRINGS</span>
             <span>{currentIndex + " / " + pageInfo.totalCount}</span>
           </header>
           <div className="string-list" ref={stringListRef}>
@@ -240,7 +263,11 @@ const StringList = forwardRef((props: StringListProps, ref) => {
               return (
                 <a
                   onClick={() => {
-                    replaceCurrentString(string);
+                    replaceCurrentString([
+                      stringList[string.index - 1] ?? null,
+                      string,
+                      stringList[string.index + 1] ?? null,
+                    ]);
                   }}
                   key={string.index}
                   className={isActive ? "string is-active" : "string"}

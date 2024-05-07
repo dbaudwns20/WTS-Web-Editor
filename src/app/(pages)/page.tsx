@@ -145,6 +145,8 @@ export default function RootPage() {
   // 프로젝트 리스트 조회
   useEffect(() => {
     getProjectList();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

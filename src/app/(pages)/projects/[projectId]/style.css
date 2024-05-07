@@ -23,7 +23,7 @@
   @apply justify-center;
   @apply items-start;
   @apply w-[135px];
-  @apply pt-4;
+  @apply pt-2;
 }
 
 .project-info-section > .wrapper > .project-info > .image-wrapper > .image {
@@ -88,18 +88,25 @@
   > .wrapper
   > .project-info
   > .info-wrapper
+  > .tag-group
   > .last-updated {
+  @apply bg-violet-500/90;
+  @apply rounded-lg;
+  @apply text-white;
+  @apply px-2.5;
+  @apply py-1;
   @apply flex;
   @apply items-center;
   @apply text-sm;
   @apply font-semibold;
-  @apply text-gray-400;
+  @apply shadow-md;
 }
 
 .project-info-section
   > .wrapper
   > .project-info
   > .info-wrapper
+  > .tag-group
   > .last-updated
   > .material-icons-outlined {
   @apply mr-1;
@@ -109,5 +116,5 @@
 .string-content-section {
   @apply flex;
   /* @apply h-[500px]; */
-  @apply h-[611px];
+  /* @apply h-[611px]; */
 }

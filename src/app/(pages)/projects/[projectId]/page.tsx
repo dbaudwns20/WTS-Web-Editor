@@ -2,7 +2,7 @@
 
 import "./style.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -10,7 +10,7 @@ import Project from "@/types/project";
 import String from "@/types/string";
 import { getLangTextByValue } from "@/types/language";
 
-import StringList from "./_string-list/string.list";
+import StringList, { StringListType } from "./_string-list/string.list";
 import StringContent from "./_string-content/string.content";
 import {
   BgImage,
@@ -26,10 +26,15 @@ export default function ProjectDetail() {
   // router
   const router = useRouter();
 
+  // refs
+  const stringContentSectionRef = useRef<HTMLDivElement>(null);
+  const stringListRef = useRef<StringListType>(null);
+  const stringContentRef = useRef(null);
+
   // values
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [project, setProject] = useState<Project | null>(null);
-  const [currentString, setCurrentString] = useState<String | null>(null);
+  const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
 
   // 프로젝트 가져오기
@@ -96,7 +101,23 @@ export default function ProjectDetail() {
   };
 
   useEffect(() => {
+    if (isLoading) return;
+
+    const projectInfoSectionHeight: number = document.querySelector(
+      ".project-info-section"
+    )!.clientHeight;
+    const mainHeight: number = document.querySelector(".main")!.clientHeight;
+
+    // string content section 높이 지정
+    stringContentSectionRef.current!.style.height = `${
+      mainHeight - projectInfoSectionHeight - 32 // -2rem
+    }px`;
+  }, [isLoading]);
+
+  useEffect(() => {
     getProject();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -122,14 +143,14 @@ export default function ProjectDetail() {
                     ) : (
                       <></>
                     )}
+                    <span className="last-updated">
+                      <span className="material-icons-outlined">history</span>
+                      {convertDateToString(
+                        project!.lastUpdated,
+                        DATE_FORMAT.DATE_TIME
+                      )}
+                    </span>
                   </div>
-                  <p className="last-updated">
-                    <span className="material-icons-outlined">history</span>
-                    {convertDateToString(
-                      project!.lastUpdated,
-                      DATE_FORMAT.DATE_TIME
-                    )}
-                  </p>
                 </div>
               </div>
               <div className="flex justify-center items-end gap-2">
@@ -161,14 +182,19 @@ export default function ProjectDetail() {
               </div>
             </div>
           </section>
-          <section className="string-content-section">
+          <section
+            className="string-content-section"
+            ref={stringContentSectionRef}
+          >
             <StringList
+              ref={stringListRef}
               projectId={projectId as string}
-              setCurrentString={setCurrentString}
+              setStringGroup={setStringGroup}
             />
             <StringContent
+              ref={stringContentRef}
               projectId={projectId as string}
-              currentString={currentString}
+              stringGroup={stringGroup}
             />
           </section>
         </>

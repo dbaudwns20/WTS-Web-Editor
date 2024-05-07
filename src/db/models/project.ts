@@ -7,6 +7,7 @@ export interface IProject {
   process: string;
   version: string;
   lastModifiedStringNumber: number;
+  source: string;
   dateCreated: Date;
   lastUpdated: Date;
 }
@@ -15,6 +16,9 @@ const ProjectSchema: Schema<IProject> = new Schema({
   title: {
     type: String,
     required: true,
+    minlength: 2,
+    maxlength: 50,
+    trim: true,
   },
   language: {
     type: Number,
@@ -31,6 +35,11 @@ const ProjectSchema: Schema<IProject> = new Schema({
   lastModifiedStringNumber: {
     type: Number,
     default: -1,
+  },
+  source: {
+    type: String,
+    default: null,
+    maxlength: 100,
   },
   dateCreated: {
     type: Date,
