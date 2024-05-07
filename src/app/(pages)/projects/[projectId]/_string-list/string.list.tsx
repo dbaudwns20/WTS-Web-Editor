@@ -59,6 +59,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   const currentStringNumber: number = searchParams.get("strings")
     ? Number(searchParams.get("strings"))
     : -1;
+  const isFirst = useRef(false);
 
   // 페이징 정보
   const [pageInfo, setPageInfo] = useState<PageInfo>(defaultPageInfo);
@@ -157,7 +158,14 @@ const StringList = forwardRef((props: StringListProps, ref) => {
         break;
       }
     }
-    node.scrollTo({ top: offsetTop, behavior: "smooth" });
+    const options = { top: offsetTop };
+    // 최초엔 즉시 이동
+    if (isFirst.current) {
+      Object.assign(options, { behavior: "smooth" });
+    } else {
+      isFirst.current = true;
+    }
+    node.scrollTo(options);
   }, []);
 
   const replaceCurrentString = useCallback(
@@ -317,4 +325,4 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 });
 
 StringList.displayName = "StringList";
-export default memo(StringList);
+export default StringList;
