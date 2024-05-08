@@ -11,7 +11,7 @@ import String from "@/types/string";
 import { getLangTextByValue } from "@/types/language";
 
 import StringList, { StringListType } from "./_string-list/string.list";
-import StringContent from "./_string-content/string.content";
+import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
 import {
   BgImage,
   getBgImageById,
@@ -29,10 +29,11 @@ export default function ProjectDetail() {
   // refs
   const stringContentSectionRef = useRef<HTMLDivElement>(null);
   const stringListRef = useRef<StringListType>(null);
-  const stringContentRef = useRef(null);
+  const stringEditorRef = useRef<StringEditorType>(null);
 
   // values
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isEdited, setIsEdited] = useState<boolean>(false);
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
@@ -169,12 +170,6 @@ export default function ProjectDetail() {
                 </button>
                 <button
                   type="button"
-                  className="w-full bg-sky-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-                >
-                  UPLOAD
-                </button>
-                <button
-                  type="button"
                   className="w-full bg-slate-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
                 >
                   DOWNLOAD
@@ -190,11 +185,14 @@ export default function ProjectDetail() {
               ref={stringListRef}
               projectId={projectId as string}
               setStringGroup={setStringGroup}
+              isEdited={isEdited}
             />
-            <StringContent
-              ref={stringContentRef}
+            <StringEditor
+              ref={stringEditorRef}
               projectId={projectId as string}
               stringGroup={stringGroup}
+              isEdited={isEdited}
+              setIsEdited={setIsEdited}
             />
           </section>
         </>

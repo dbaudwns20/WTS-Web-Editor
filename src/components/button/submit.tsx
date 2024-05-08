@@ -47,7 +47,8 @@ const Submit = forwardRef((props: SubmitProps, ref) => {
     setIsFetching(state);
     setButtonClass(
       state
-        ? "inline-flex justify-center items-center bg-blue-500 text-white font-bold rounded-lg p-3 w-full opacity-50 disabled: cursor-not-allowed"
+        ? buttonClass +
+            " inline-flex justify-center items-center opacity-50 disabled: cursor-not-allowed"
         : buttonClass
     );
   };

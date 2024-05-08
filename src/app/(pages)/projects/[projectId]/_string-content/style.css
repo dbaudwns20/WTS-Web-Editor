@@ -1,5 +1,0 @@
-.string-wrapper {
-  @apply flex;
-  @apply flex-col;
-  @apply w-[70%];
-}

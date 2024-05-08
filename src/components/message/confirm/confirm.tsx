@@ -72,7 +72,7 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
                     className={`func-button is-${btn.class}`}
                     onClick={() => {
                       if (btn.onClick) btn.onClick();
-                      else closeConfirm();
+                      closeConfirm();
                     }}
                   >
                     {btn.label}

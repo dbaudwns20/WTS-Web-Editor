@@ -1,0 +1,21 @@
+.string-editor-wrapper {
+  @apply flex;
+  @apply flex-col;
+  @apply w-[70%];
+}
+
+.string-editor-wrapper > .string-editor-form {
+  @apply flex;
+  @apply flex-col;
+  @apply h-full;
+}
+
+.translate-textarea {
+  @apply w-full;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+  @apply p-4;
+  @apply h-full;
+  @apply text-lg;
+}

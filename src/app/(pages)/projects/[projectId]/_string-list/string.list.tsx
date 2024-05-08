@@ -5,7 +5,6 @@ import {
   forwardRef,
   useImperativeHandle,
   useCallback,
-  memo,
   Dispatch,
   SetStateAction,
 } from "react";
@@ -17,7 +16,7 @@ import String, { bindStringList } from "@/types/string";
 import { type PageInfo } from "@/types/pagination";
 
 import { callApi } from "@/utils/common";
-import { showNotificationMessage } from "@/utils/message";
+import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
 
 const defaultPageInfo: PageInfo = {
   offset: 10,
@@ -29,6 +28,7 @@ const defaultPageInfo: PageInfo = {
 type StringListProps = {
   projectId: string;
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
+  isEdited: boolean;
 };
 
 type _String = String & { index: number; isActive: boolean };
@@ -38,7 +38,7 @@ export type StringListType = {
 };
 
 const StringList = forwardRef((props: StringListProps, ref) => {
-  const { projectId, setStringGroup } = props;
+  const { projectId, setStringGroup, isEdited } = props;
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -147,7 +147,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     let offsetTop: number = 0;
     for (let i = 0; i < children.length; i++) {
       // 마지막인 경우
-      if (i === children.length - 1) {
+      if (i === children.length - 1 && currentStringNumber !== -1) {
         offsetTop = node.scrollHeight;
         break;
       }
@@ -166,7 +166,39 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       isFirst.current = true;
     }
     node.scrollTo(options);
-  }, []);
+  }, [currentStringNumber]);
+
+  const handleMove = (stringGroup: (_String | null)[]) => {
+    // 편집된 상태인 경우
+    if (isEdited) {
+      showConfirmMessage({
+        title: "Warning",
+        message: "Changes exist. Would you like to save?",
+        buttons: [
+          {
+            label: "Ignore",
+            class: "default",
+            onClick: () => replaceCurrentString(stringGroup),
+          },
+          {
+            label: "Save",
+            class: "success",
+            onClick: () => {
+              const form: HTMLFormElement = document.querySelector(
+                ".string-editor-form"
+              )!;
+              form.dispatchEvent(
+                new Event("submit", { cancelable: true, bubbles: true })
+              );
+              replaceCurrentString(stringGroup);
+            },
+          },
+        ],
+      });
+    } else {
+      replaceCurrentString(stringGroup);
+    }
+  };
 
   const replaceCurrentString = useCallback(
     (stringGroup: (_String | null)[]) => {
@@ -271,7 +303,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
               return (
                 <a
                   onClick={() => {
-                    replaceCurrentString([
+                    handleMove([
                       stringList[string.index - 1] ?? null,
                       string,
                       stringList[string.index + 1] ?? null,
