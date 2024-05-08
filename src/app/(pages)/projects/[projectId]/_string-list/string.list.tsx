@@ -35,6 +35,7 @@ type _String = String & { index: number; isActive: boolean };
 
 export type StringListType = {
   getStringList: () => void;
+  componentElement: HTMLElement;
 };
 
 const StringList = forwardRef((props: StringListProps, ref) => {
@@ -46,9 +47,11 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
     getStringList,
+    componentElement: stringWrapperRef.current!,
   }));
 
   // refs
+  const stringWrapperRef = useRef<HTMLDivElement>(null);
   const stringListRef = useRef<HTMLDivElement>(null);
 
   // values
@@ -280,7 +283,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   }, []);
 
   return (
-    <div className="string-list-wrapper">
+    <div className="string-list-wrapper" ref={stringWrapperRef}>
       {isLoading ? (
         <div className="is-loading">
           <svg viewBox="0 0 24 24">

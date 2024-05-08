@@ -27,7 +27,7 @@ export default function ProjectDetail() {
   const router = useRouter();
 
   // refs
-  const stringContentSectionRef = useRef<HTMLDivElement>(null);
+  const projectInfoSectionRef = useRef<HTMLSelectElement>(null);
   const stringListRef = useRef<StringListType>(null);
   const stringEditorRef = useRef<StringEditorType>(null);
 
@@ -104,13 +104,12 @@ export default function ProjectDetail() {
   useEffect(() => {
     if (isLoading) return;
 
-    const projectInfoSectionHeight: number = document.querySelector(
-      ".project-info-section"
-    )!.clientHeight;
+    const projectInfoSectionHeight: number =
+      projectInfoSectionRef.current!.clientHeight;
     const mainHeight: number = document.querySelector(".main")!.clientHeight;
 
-    // string content section 높이 지정
-    stringContentSectionRef.current!.style.height = `${
+    // string list section 높이 지정
+    stringListRef.current!.componentElement!.style.height = `${
       mainHeight - projectInfoSectionHeight - 32 // -2rem
     }px`;
   }, [isLoading]);
@@ -127,7 +126,7 @@ export default function ProjectDetail() {
         <p>Loading...</p>
       ) : (
         <>
-          <section className="project-info-section">
+          <section ref={projectInfoSectionRef} className="project-info-section">
             <div className="wrapper">
               <div className="project-info">
                 <figure className="image-wrapper">
@@ -177,10 +176,7 @@ export default function ProjectDetail() {
               </div>
             </div>
           </section>
-          <section
-            className="string-content-section"
-            ref={stringContentSectionRef}
-          >
+          <section className="string-content-section">
             <StringList
               ref={stringListRef}
               projectId={projectId as string}

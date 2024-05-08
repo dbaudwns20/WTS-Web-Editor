@@ -5,6 +5,7 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useImperativeHandle,
 } from "react";
 import { useRouter } from "next/navigation";
 
@@ -18,14 +19,32 @@ import { callApi } from "@/utils/common";
 import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
 
 export type StringEditorType = {
+  componentElement: HTMLElement;
+};
+
+type StringEditorProps = {
   projectId: string;
   stringGroup: (String | null)[];
   isEdited: boolean;
   setIsEdited: Dispatch<SetStateAction<boolean>>;
 };
 
-const StringEditor = forwardRef((props: StringEditorType, ref) => {
+const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   const { projectId, stringGroup, isEdited, setIsEdited } = props;
+
+  const router = useRouter();
+
+  // 부모 컴포넌트에서 사용할 수 있는 함수 선언
+  useImperativeHandle(ref, () => ({
+    componentElement: stringEditorWrapperRef.current!,
+  }));
+
+  // refs
+  const stringEditorWrapperRef = useRef<HTMLDivElement>(null);
+  const stringEditorFormRef = useRef<HTMLFormElement>(null);
+  const submitRef = useRef<SubmitType>(null);
+
+  // values
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [translatedText, setTranslatedText] = useState<string>();
   const [currentString, setCurrentString] = useState<String>();
@@ -33,12 +52,6 @@ const StringEditor = forwardRef((props: StringEditorType, ref) => {
     false,
     false,
   ]);
-
-  const router = useRouter();
-
-  // refs
-  const stringContentFormRef = useRef<HTMLFormElement>(null);
-  const submitRef = useRef<SubmitType>(null);
 
   const updateString = async (e: any) => {
     e.preventDefault();
@@ -106,7 +119,7 @@ const StringEditor = forwardRef((props: StringEditorType, ref) => {
             label: "Save",
             class: "success",
             onClick: () => {
-              const form: HTMLFormElement = stringContentFormRef.current!;
+              const form: HTMLFormElement = stringEditorFormRef.current!;
               form.dispatchEvent(
                 new Event("submit", { cancelable: true, bubbles: true })
               );
@@ -146,9 +159,9 @@ const StringEditor = forwardRef((props: StringEditorType, ref) => {
   }, [isFetching]);
 
   return (
-    <div className="string-editor-wrapper">
+    <div className="string-editor-wrapper" ref={stringEditorWrapperRef}>
       <form
-        ref={stringContentFormRef}
+        ref={stringEditorFormRef}
         className="string-editor-form"
         onSubmit={updateString}
       >
