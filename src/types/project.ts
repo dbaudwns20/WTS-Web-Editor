@@ -6,6 +6,7 @@ export default class Project {
   language: number;
   process: string | null;
   version: string | null;
+  source: string;
   lastModifiedStringNumber: number;
   dateCreated: Date;
   lastUpdated: Date;
@@ -16,9 +17,10 @@ export default class Project {
     this.language = project.language;
     this.process = project.process;
     this.version = project.version;
+    this.source = project.source;
     this.lastModifiedStringNumber = project.lastModifiedStringNumber;
     this.dateCreated = new Date(project.dateCreated);
-    this.lastUpdated = new Date(project.dateCreated);
+    this.lastUpdated = new Date(project.lastUpdated);
   }
 }
 

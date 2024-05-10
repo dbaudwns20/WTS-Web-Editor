@@ -1,7 +1,7 @@
 import {
-  useRef,
   forwardRef,
   useState,
+  useRef,
   useEffect,
   Dispatch,
   SetStateAction,
@@ -9,6 +9,7 @@ import {
 
 import Language, { getLangOptions } from "@/types/language";
 import WtsString from "@/types/wts.string";
+import Project from "@/types/project";
 
 import Modal from "@/components/common/modal/modal";
 import Select from "@/components/input/select/select";
@@ -16,18 +17,19 @@ import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File, { type FileType } from "@/components/input/file/file";
 
-import { validateForm } from "@/utils/validator";
+import { checkDataEdited, validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
-type CreateProjectModalProps = {
+type UpdateProjectModalProps = {
+  project: Project;
   closeModal: Dispatch<SetStateAction<boolean>>;
   completeFunction: (...arg: any) => void;
 };
 
-const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
-  const { closeModal, completeFunction } = props;
+const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
+  const { project, closeModal, completeFunction } = props;
 
   // ref
   const titleRef = useRef<TextType>();
@@ -35,23 +37,41 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   const fileRef = useRef<FileType>();
 
   // values
-  const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("");
-  const [language, setLanguage] = useState<Language>();
-  const [version, setVersion] = useState<string>("");
-  const [source, setSource] = useState<string>("");
+  const [title, setTitle] = useState<string>(project.title);
+  const [language, setLanguage] = useState<Language>(project.language);
+  const [version, setVersion] = useState<string>(project.version!);
+  const [source, setSource] = useState<string>(project.source);
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  // 프로젝트 생성
-  const createNewProject = async (e: any) => {
+  const updateProject = async (e: any) => {
     e.preventDefault();
 
+    // check required values
     if (!validateForm(e.target)) return;
+    // check data is changed
+    if (
+      !checkDataEdited(
+        {
+          title: project.title,
+          language: project.language,
+          version: project.version,
+          source: project.source,
+        },
+        { title: title, language: language, version: version, source: source }
+      )
+    ) {
+      showNotificationMessage({
+        message: "No data edited.",
+        messageType: "warning",
+      });
+      return;
+    }
 
     setIsFetching(true);
 
-    const response = await callApi("/api/projects", {
-      method: "POST",
+    const response = await callApi(`/api/projects/${project.id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -66,7 +86,6 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
     setIsFetching(false);
 
-    // onError
     if (!response.success) {
       showNotificationMessage({
         message: response.message,
@@ -79,11 +98,10 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: "Created.",
+        message: "Updated.",
         messageType: "success",
       });
-
-      // 모달 창 닫기
+      // 모달 닫기
       closeModal(false);
     });
   };
@@ -104,14 +122,14 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
   return (
     <Modal
-      title="New Project"
+      title="Update Project"
       isCloseOnOverlay={false}
       isOpen={true}
       setIsModalOpen={closeModal}
     >
       <form
         className="grid gap-6 md:grid-cols-1 p-6"
-        onSubmit={createNewProject}
+        onSubmit={updateProject}
         noValidate
       >
         <div className="block">
@@ -159,18 +177,17 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             ref={fileRef}
             labelText="WTS FILE"
             onChange={handleUploadWtsFile}
-            isRequired={true}
             accept=".wts"
             invalidMsg="Please upload your wts file."
           />
         </div>
         <div className="block text-center">
-          <Submit ref={submitRef} buttonText="CREATE" />
+          <Submit ref={submitRef} buttonText="UPDATE" />
         </div>
       </form>
     </Modal>
   );
 });
 
-CreateProjectModal.displayName = "CreateModal";
-export default CreateProjectModal;
+UpdateProjectModal.displayName = "UpdateProjectModal";
+export default UpdateProjectModal;

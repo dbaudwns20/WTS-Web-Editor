@@ -116,9 +116,10 @@ const File = forwardRef((props: FileProps, ref) => {
   };
 
   const setDisableReloadButton = (isDisabled: boolean) => {
-    reuploadButtonRef.current!.disabled = isDisabled;
-    if (isDisabled) reuploadButtonRef.current!.classList.add("is-disabled");
-    else reuploadButtonRef.current!.classList.remove("is-disabled");
+    if (!reuploadButtonRef.current) return;
+    reuploadButtonRef.current.disabled = isDisabled;
+    if (isDisabled) reuploadButtonRef.current.classList.add("is-disabled");
+    else reuploadButtonRef.current.classList.remove("is-disabled");
   };
 
   // 드래그 앤 드롭 여부 변경시 클래스 추가, 삭제

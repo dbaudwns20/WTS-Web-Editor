@@ -37,6 +37,20 @@ export async function deleteProject(projectId: string) {
   await ProjectModel.findByIdAndDelete(projectId);
 }
 
+export async function updateProject(projectId: string, updateData: any) {
+  if (updateData["wtsStringList"]) {
+  }
+  const instance = await ProjectModel.findByIdAndUpdate(
+    projectId,
+    {
+      ...updateData,
+      ...{ lastUpdated: new Date() },
+    },
+    { new: true }
+  );
+  return instance;
+}
+
 // 프로젝트 진행률 갱신
 export async function updateProjectProcess(
   projectId: string,

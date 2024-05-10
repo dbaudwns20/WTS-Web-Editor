@@ -29,7 +29,7 @@ type StringEditorProps = {
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
   setIsEdited: Dispatch<SetStateAction<boolean>>;
-  completeFunction: (arg: any) => void;
+  completeFunction: (...arg: any) => void;
 };
 
 const StringEditor = forwardRef((props: StringEditorProps, ref) => {
@@ -119,6 +119,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
         messageType: "success",
         position: "right",
       });
+      // 편집 상태 해제
+      setIsEdited(false);
     });
   };
 

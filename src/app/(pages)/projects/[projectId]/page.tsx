@@ -6,12 +6,13 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
-import Project from "@/types/project";
+import Project, { bindProject } from "@/types/project";
 import String from "@/types/string";
 import { getLangTextByValue } from "@/types/language";
 
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
+import UpdateProjectModal from "./_update-project-modal/update.project.modal";
 import {
   BgImage,
   getBgImageById,
@@ -34,6 +35,7 @@ export default function ProjectDetail() {
   // values
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEdited, setIsEdited] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
@@ -52,8 +54,11 @@ export default function ProjectDetail() {
       router.push("/");
       return;
     }
-    setProject(response.data);
+    setProject(bindProject(response.data));
   };
+
+  // 프로젝트 업데이트
+  const updateProject = () => setIsModalOpen(true);
 
   // 프로젝트 삭제 핸들링
   const handleDeleteProject = () => {
@@ -103,13 +108,11 @@ export default function ProjectDetail() {
   };
 
   // 함수 호출 후 처리
-  const completeFunction = async (messageCallback: Function) => {
-    // 메시지 표시
-    messageCallback();
-    // 편집모드 해제
-    setIsEdited(false);
-    // 재조회
-    await getProject();
+  const completeFunction = (callbacks: Function) => {
+    // 콜백함수 호출
+    callbacks();
+    // 프로젝트 재조회
+    getProject();
   };
 
   useEffect(() => {
@@ -171,6 +174,7 @@ export default function ProjectDetail() {
               <div className="flex justify-center items-end gap-2">
                 <button
                   type="button"
+                  onClick={updateProject}
                   className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
                 >
                   UPDATE
@@ -209,6 +213,15 @@ export default function ProjectDetail() {
               completeFunction={completeFunction}
             />
           </section>
+          {isModalOpen ? (
+            <UpdateProjectModal
+              project={project!}
+              completeFunction={completeFunction}
+              closeModal={setIsModalOpen}
+            />
+          ) : (
+            <></>
+          )}
         </>
       )}
     </>
