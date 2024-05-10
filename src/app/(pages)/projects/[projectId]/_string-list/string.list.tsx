@@ -29,6 +29,7 @@ type StringListProps = {
   projectId: string;
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
+  handleUpdateString: () => Promise<void>;
 };
 
 type _String = String & { index: number; isActive: boolean };
@@ -39,7 +40,7 @@ export type StringListType = {
 };
 
 const StringList = forwardRef((props: StringListProps, ref) => {
-  const { projectId, setStringGroup, isEdited } = props;
+  const { projectId, setStringGroup, isEdited, handleUpdateString } = props;
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -186,13 +187,8 @@ const StringList = forwardRef((props: StringListProps, ref) => {
           {
             label: "Save",
             class: "success",
-            onClick: () => {
-              const form: HTMLFormElement = document.querySelector(
-                ".string-editor-form"
-              )!;
-              form.dispatchEvent(
-                new Event("submit", { cancelable: true, bubbles: true })
-              );
+            onClick: async () => {
+              await handleUpdateString();
               replaceCurrentString(stringGroup);
             },
           },

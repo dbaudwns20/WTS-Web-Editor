@@ -40,10 +40,7 @@ export default function ProjectDetail() {
 
   // 프로젝트 가져오기
   const getProject = async () => {
-    setIsLoading(true);
-
     const response = await callApi(`/api/projects/${projectId}`);
-
     // onError
     if (!response.success) {
       showNotificationMessage({
@@ -55,11 +52,10 @@ export default function ProjectDetail() {
       router.push("/");
       return;
     }
-
     setProject(response.data);
-    setIsLoading(false);
   };
 
+  // 프로젝트 삭제 핸들링
   const handleDeleteProject = () => {
     showConfirmMessage({
       message: "delete this project?",
@@ -101,6 +97,21 @@ export default function ProjectDetail() {
     router.push("/");
   };
 
+  // string list component 에서 호출 용
+  const handleUpdateString = async () => {
+    await stringEditorRef.current?.updateString();
+  };
+
+  // 함수 호출 후 처리
+  const completeFunction = async (messageCallback: Function) => {
+    // 메시지 표시
+    messageCallback();
+    // 편집모드 해제
+    setIsEdited(false);
+    // 재조회
+    await getProject();
+  };
+
   useEffect(() => {
     if (isLoading) return;
 
@@ -113,6 +124,10 @@ export default function ProjectDetail() {
       mainHeight - projectInfoSectionHeight - 32 // -2rem
     }px`;
   }, [isLoading]);
+
+  useEffect(() => {
+    if (project) setIsLoading(false);
+  }, [project]);
 
   useEffect(() => {
     getProject();
@@ -182,13 +197,16 @@ export default function ProjectDetail() {
               projectId={projectId as string}
               setStringGroup={setStringGroup}
               isEdited={isEdited}
+              handleUpdateString={handleUpdateString}
             />
             <StringEditor
               ref={stringEditorRef}
               projectId={projectId as string}
               stringGroup={stringGroup}
+              setStringGroup={setStringGroup}
               isEdited={isEdited}
               setIsEdited={setIsEdited}
+              completeFunction={completeFunction}
             />
           </section>
         </>

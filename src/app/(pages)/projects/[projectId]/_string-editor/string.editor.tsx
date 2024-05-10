@@ -13,29 +13,40 @@ import "./style.css";
 
 import Submit, { SubmitType } from "@/components/button/submit";
 
-import String from "@/types/string";
+import String, { bindString } from "@/types/string";
 
 import { callApi } from "@/utils/common";
 import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
 
 export type StringEditorType = {
+  updateString: () => Promise<void>;
   componentElement: HTMLElement;
 };
 
 type StringEditorProps = {
   projectId: string;
   stringGroup: (String | null)[];
+  setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
   setIsEdited: Dispatch<SetStateAction<boolean>>;
+  completeFunction: (arg: any) => void;
 };
 
 const StringEditor = forwardRef((props: StringEditorProps, ref) => {
-  const { projectId, stringGroup, isEdited, setIsEdited } = props;
+  const {
+    projectId,
+    stringGroup,
+    setStringGroup,
+    isEdited,
+    setIsEdited,
+    completeFunction,
+  } = props;
 
   const router = useRouter();
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
+    updateString,
     componentElement: stringEditorWrapperRef.current!,
   }));
 
@@ -53,9 +64,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     false,
   ]);
 
-  const updateString = async (e: any) => {
-    e.preventDefault();
-
+  // String update
+  const updateString = async () => {
     // 변경사항이 없을 경우
     if (currentString?.translatedText === translatedText) {
       showNotificationMessage({
@@ -84,25 +94,35 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
 
     setIsFetching(false);
 
+    // onError
     if (!response.success) {
       showNotificationMessage({
         message: response.message,
         messageType: "danger",
       });
       return;
-    } else {
+    }
+
+    const newString: String = bindString(response.data);
+
+    // string group 갱신
+    setStringGroup([
+      stringGroup[0],
+      Object.assign(stringGroup[1] as String, newString),
+      stringGroup[2],
+    ]);
+
+    // 성공 처리
+    completeFunction(() => {
       showNotificationMessage({
         message: "Saved.",
         messageType: "success",
         position: "right",
       });
-
-      setIsEdited(false);
-
-      return;
-    }
+    });
   };
 
+  // string 이동 핸들링
   const handleMove = (isForward: boolean) => {
     // 편집된 정보가 존재한다면
     if (isEdited) {
@@ -118,11 +138,10 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
           {
             label: "Save",
             class: "success",
-            onClick: () => {
-              const form: HTMLFormElement = stringEditorFormRef.current!;
-              form.dispatchEvent(
-                new Event("submit", { cancelable: true, bubbles: true })
-              );
+            onClick: async () => {
+              // submit event 실행
+              await updateString();
+              // string 이동
               moveString(isForward);
             },
           },
@@ -133,6 +152,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     }
   };
 
+  // string 이동
   const moveString = (isForward: boolean) => {
     const string: String = isForward ? stringGroup[0]! : stringGroup[2]!;
     router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
@@ -163,7 +183,10 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       <form
         ref={stringEditorFormRef}
         className="string-editor-form"
-        onSubmit={updateString}
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateString();
+        }}
       >
         <div className="flex justify-between items-center mb-2">
           <p className="flex items-center text-xl font-semibold text-sky-500">

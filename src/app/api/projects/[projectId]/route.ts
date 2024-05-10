@@ -18,7 +18,10 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
     await dbConnect();
-    return resolveSuccess(await getProject(params.projectId));
+
+    const project = await getProject(params.projectId);
+
+    return resolveSuccess(project);
   } catch (error) {
     return resolveErrors(error);
   }
@@ -38,13 +41,15 @@ export async function PUT(
 
     await dbConnect();
 
+    await session.commitTransaction();
     return Response.json("the project is updated");
   } catch (error: any) {
-    if (session) {
+    if (session && session.inTransaction()) {
       session.abortTransaction();
-      session.endSession();
     }
     return NextResponse.json(error);
+  } finally {
+    session?.endSession();
   }
 }
 
@@ -66,11 +71,12 @@ export async function DELETE(
 
     await session.commitTransaction();
     return resolveSuccess("the project is deleted");
-  } catch (error: any) {
-    if (session) {
+  } catch (error) {
+    if (session && session.inTransaction()) {
       session.abortTransaction();
-      session.endSession();
     }
     return resolveErrors(error);
+  } finally {
+    session?.endSession();
   }
 }

@@ -4,7 +4,6 @@ import { type NextRequest } from "next/server";
 import dbConnect from "@/db/database";
 
 import { updateString } from "@/app/api/_services/string.service";
-import { updateProjectProcess } from "@/app/api/_services/project.service";
 
 import {
   checkRequestBody,
@@ -34,11 +33,20 @@ export async function PUT(
 
     await dbConnect();
 
-    await updateString(params["projectId"], params["stringId"], body);
+    const newString = await updateString(
+      params["projectId"],
+      params["stringId"],
+      body
+    );
 
     await session.commitTransaction();
-    return resolveSuccess({});
+    return resolveSuccess(newString);
   } catch (error) {
+    if (session && session.inTransaction()) {
+      session.abortTransaction();
+    }
     return resolveErrors(error);
+  } finally {
+    session?.endSession();
   }
 }

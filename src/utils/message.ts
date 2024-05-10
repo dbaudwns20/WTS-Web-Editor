@@ -26,7 +26,7 @@ type ConfirmOptions = {
 };
 
 function setMessageBox() {
-  if (messageBox) clearMessageBox;
+  if (messageBox) clearMessageBox();
   messageBox = createRoot(document.getElementById("message-box")!);
 }
 
