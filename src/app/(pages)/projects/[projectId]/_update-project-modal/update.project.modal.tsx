@@ -24,12 +24,13 @@ import { callApi } from "@/utils/common";
 
 type UpdateProjectModalProps = {
   project: Project;
+  setStringListKey: Dispatch<SetStateAction<number>>;
   closeModal: Dispatch<SetStateAction<boolean>>;
   completeFunction: (...arg: any) => void;
 };
 
 const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
-  const { project, closeModal, completeFunction } = props;
+  const { project, closeModal, setStringListKey, completeFunction } = props;
 
   // ref
   const titleRef = useRef<TextType>();
@@ -55,11 +56,17 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         {
           title: project.title,
           language: project.language,
-          version: project.version,
-          source: project.source,
+          version: project.version ?? "",
+          source: project.source ?? "",
         },
-        { title: title, language: language, version: version, source: source }
-      )
+        {
+          title,
+          language,
+          version,
+          source,
+        }
+      ) &&
+      wtsStringList.length === 0
     ) {
       showNotificationMessage({
         message: "No data edited.",
@@ -76,11 +83,13 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: title,
-        language: language,
-        version: version,
-        source: source,
-        wtsStringList: wtsStringList,
+        title,
+        language,
+        version,
+        source,
+        ...(wtsStringList.length > 0 && {
+          wtsStringList,
+        }),
       }),
     });
 
@@ -103,6 +112,8 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
       });
       // 모달 닫기
       closeModal(false);
+      // wts 가 변경되면 string list 갱신
+      if (wtsStringList.length > 0) setStringListKey((pre) => pre + 1);
     });
   };
 

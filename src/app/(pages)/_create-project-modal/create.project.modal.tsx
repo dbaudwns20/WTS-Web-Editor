@@ -56,11 +56,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: title,
-        language: language,
-        version: version,
-        source: source,
-        wtsStringList: wtsStringList,
+        title,
+        language,
+        version,
+        source,
+        wtsStringList,
       }),
     });
 

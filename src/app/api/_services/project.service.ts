@@ -1,6 +1,9 @@
 import ProjectModel from "@/db/models/project";
 
-import { deleteProjectStrings } from "@/app/api/_services/string.service";
+import {
+  deleteProjectStrings,
+  updateProjectStrings,
+} from "@/app/api/_services/string.service";
 
 export async function createProject(createData: any): Promise<any> {
   const newProject = new ProjectModel({
@@ -26,7 +29,9 @@ export async function deleteProject(projectId: string) {
 }
 
 export async function updateProject(projectId: string, updateData: any) {
+  // wtsStringList 가 존재할 경우
   if (updateData["wtsStringList"]) {
+    await updateProjectStrings(projectId, updateData["wtsStringList"]);
   }
   const instance = await ProjectModel.findByIdAndUpdate(
     projectId,

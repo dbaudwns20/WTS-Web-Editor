@@ -24,7 +24,7 @@ export interface IString {
   /**
    * 번역된텍스트
    */
-  translatedText: string | null;
+  translatedText: string;
 
   /**
    * 주석

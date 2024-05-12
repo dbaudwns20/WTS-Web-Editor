@@ -32,6 +32,9 @@ export default function ProjectDetail() {
   const stringListRef = useRef<StringListType>(null);
   const stringEditorRef = useRef<StringEditorType>(null);
 
+  // keys
+  const [stringListKey, setStringListKey] = useState<number>(0);
+
   // values
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEdited, setIsEdited] = useState<boolean>(false);
@@ -94,7 +97,7 @@ export default function ProjectDetail() {
     }
 
     showNotificationMessage({
-      message: "삭제되었습니다",
+      message: "deleted.",
       messageType: "success",
     });
 
@@ -126,7 +129,7 @@ export default function ProjectDetail() {
     stringListRef.current!.componentElement!.style.height = `${
       mainHeight - projectInfoSectionHeight - 32 // -2rem
     }px`;
-  }, [isLoading]);
+  }, [isLoading, stringListKey]);
 
   useEffect(() => {
     if (project) setIsLoading(false);
@@ -197,6 +200,7 @@ export default function ProjectDetail() {
           </section>
           <section className="string-content-section">
             <StringList
+              key={stringListKey}
               ref={stringListRef}
               projectId={projectId as string}
               setStringGroup={setStringGroup}
@@ -216,6 +220,7 @@ export default function ProjectDetail() {
           {isModalOpen ? (
             <UpdateProjectModal
               project={project!}
+              setStringListKey={setStringListKey}
               completeFunction={completeFunction}
               closeModal={setIsModalOpen}
             />

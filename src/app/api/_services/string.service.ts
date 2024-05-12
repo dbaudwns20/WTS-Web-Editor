@@ -4,6 +4,12 @@ import StringModel, { IString } from "@/db/models/string";
 
 import { updateProjectProcess } from "./project.service";
 
+type StringInstance = {
+  stringNumber: number;
+  content: string;
+  comment: string | null;
+};
+
 export async function createString(newStringData: IString) {
   await new StringModel({
     ...newStringData,
@@ -21,8 +27,6 @@ export async function createStrings(newProjectId: any, wtsStringList: any[]) {
       stringNumber: wtsString.stringNumber,
       originalText: wtsString.content,
       comment: wtsString.comment,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     } as IString);
   }
 }
@@ -90,4 +94,85 @@ export async function updateString(
     throw new Error(error.message);
   }
   return instance;
+}
+
+export async function updateProjectStrings(
+  projectId: string,
+  newWtsStringList: any
+) {
+  // upsert 용 list
+  const upsertList: StringInstance[] = [];
+  // 삭제용 list
+  const deleteList: StringInstance[] = [];
+
+  // 사용중인 string 리스트
+  const usingStringList: IString[] = await StringModel.find({
+    projectId: projectId,
+  });
+
+  // 업데이트 할 string hash map
+  const updateStringMap: Map<number, StringInstance> = new Map<
+    number,
+    StringInstance
+  >();
+  for (const wtsString of newWtsStringList) {
+    updateStringMap.set(wtsString.stringNumber, wtsString);
+  }
+
+  for (const string of usingStringList) {
+    const instance: StringInstance | undefined = updateStringMap.get(
+      string.stringNumber
+    );
+    if (!instance) {
+      deleteList.push({
+        stringNumber: string.stringNumber,
+        content: string.originalText,
+        comment: string.comment,
+      } as StringInstance);
+      continue;
+    } else {
+      // map 에서 대상 삭제
+      updateStringMap.delete(string.stringNumber);
+    }
+    // 기존 string 과 다른 경우에만 갱신
+    if (
+      string.originalText !== instance.content ||
+      string.comment !== instance.comment
+    )
+      upsertList.push(instance);
+  }
+
+  // 추가 되어야 할 string map 이 존재한다면 upsert 배열에 추가
+  if (updateStringMap.size > 0) {
+    Array.from(updateStringMap.values()).forEach((value) =>
+      upsertList.push(value)
+    );
+  }
+
+  // upsert
+  for (const wtsString of upsertList) {
+    await StringModel.findOneAndUpdate(
+      { stringNumber: wtsString.stringNumber },
+      {
+        $setOnInsert: {
+          createdAt: new Date(),
+          projectId: projectId,
+          stringNumber: wtsString.stringNumber,
+        },
+        $set: {
+          originalText: wtsString.content,
+          comment: wtsString.comment,
+          updatedAt: new Date(),
+        },
+      },
+      { upsert: true, setDefaultsOnInsert: true }
+    );
+  }
+
+  // delete
+  for (const wtsString of deleteList) {
+    await StringModel.findOneAndDelete({
+      stringNumber: wtsString.stringNumber,
+    });
+  }
 }
