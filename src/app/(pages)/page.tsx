@@ -26,7 +26,7 @@ const defaultPageInfo: PageInfo = {
 };
 
 const defaultOrderInfo: OrderInfo = {
-  sort: "dateCreated",
+  sort: "createdAt",
   order: "DESC",
 };
 

@@ -4,10 +4,8 @@ import { type NextRequest } from "next/server";
 import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
-import {
-  createProject,
-  createStrings,
-} from "@/app/api/_services/project.service";
+import { createProject } from "@/app/api/_services/project.service";
+import { createStrings } from "@/app/api/_services/string.service";
 
 import {
   checkRequestBody,

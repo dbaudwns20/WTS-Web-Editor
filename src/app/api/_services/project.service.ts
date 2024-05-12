@@ -1,25 +1,13 @@
 import ProjectModel from "@/db/models/project";
-import { type IString } from "@/db/models/string";
 
-import {
-  createString,
-  deleteProjectStrings,
-} from "@/app/api/_services/string.service";
+import { deleteProjectStrings } from "@/app/api/_services/string.service";
 
-export async function createProject(body: any): Promise<any> {
-  const newProject = new ProjectModel(body);
+export async function createProject(createData: any): Promise<any> {
+  const newProject = new ProjectModel({
+    ...createData,
+    ...{ createdAt: new Date(), updatedAt: new Date() },
+  });
   return await newProject.save();
-}
-
-export async function createStrings(newProjectId: any, wtsStringList: any[]) {
-  for (let wtsString of wtsStringList) {
-    await createString({
-      projectId: newProjectId,
-      stringNumber: wtsString.stringNumber,
-      originalText: wtsString.content,
-      comment: wtsString.comment,
-    } as IString);
-  }
 }
 
 export async function getProject(projectId: string) {
@@ -44,7 +32,7 @@ export async function updateProject(projectId: string, updateData: any) {
     projectId,
     {
       ...updateData,
-      ...{ lastUpdated: new Date() },
+      ...{ updatedAt: new Date() },
     },
     { new: true }
   );
@@ -57,9 +45,8 @@ export async function updateProjectProcess(
   process: string,
   stringNumber: number
 ) {
-  await ProjectModel.findByIdAndUpdate(projectId, {
+  await updateProject(projectId, {
     process: process,
     lastModifiedStringNumber: stringNumber,
-    lastUpdated: new Date(),
   });
 }

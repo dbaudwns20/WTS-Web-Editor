@@ -57,7 +57,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
 
   // values
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [translatedText, setTranslatedText] = useState<string>();
+  const [translatedText, setTranslatedText] = useState<string>("");
   const [currentString, setCurrentString] = useState<String>();
   const [moveButtonState, setMoveButtonState] = useState<boolean[]>([
     false,
@@ -87,7 +87,6 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
         },
         body: JSON.stringify({
           translatedText: translatedText,
-          isCompleted: true,
         }),
       }
     );
@@ -170,7 +169,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       // 편집할 string set
       setCurrentString(stringGroup[1]);
       // 번역할 string text set
-      setTranslatedText(stringGroup[1].translatedText);
+      setTranslatedText(
+        stringGroup[1].translatedText ? stringGroup[1].translatedText : ""
+      );
       // 이동 버튼 disabled 여부 set
       setMoveButtonState([!stringGroup[0], !stringGroup[2]]);
     }

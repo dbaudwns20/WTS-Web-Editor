@@ -7,7 +7,7 @@ import {
   SetStateAction,
 } from "react";
 
-import Language, { getLangOptions } from "@/types/language";
+import { getLangOptions } from "@/types/language";
 import WtsString from "@/types/wts.string";
 import Project from "@/types/project";
 
@@ -38,9 +38,9 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
 
   // values
   const [title, setTitle] = useState<string>(project.title);
-  const [language, setLanguage] = useState<Language>(project.language);
-  const [version, setVersion] = useState<string>(project.version!);
-  const [source, setSource] = useState<string>(project.source);
+  const [language, setLanguage] = useState<number>(project.language);
+  const [version, setVersion] = useState<string>(project.version ?? "");
+  const [source, setSource] = useState<string>(project.source ?? "");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -149,7 +149,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
               labelText="LANGUAGE"
               options={getLangOptions()}
               value={language}
-              onChange={(val) => setLanguage(val)}
+              onChange={(val) => setLanguage(Number(val))}
               invalidMsg="Please select your language."
               isRequired={true}
             />

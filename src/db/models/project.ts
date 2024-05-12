@@ -1,15 +1,17 @@
 import mongoose, { models, Schema } from "mongoose";
 
+import { emptyToNull } from "@/utils/common";
+
 export interface IProject {
   _id: string;
   title: string;
   language: number;
   process: string;
-  version: string;
+  version: string | null;
   lastModifiedStringNumber: number;
-  source: string;
-  dateCreated: Date;
-  lastUpdated: Date;
+  source: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ProjectSchema: Schema<IProject> = new Schema({
@@ -31,6 +33,9 @@ const ProjectSchema: Schema<IProject> = new Schema({
   version: {
     type: String,
     default: null,
+    set: emptyToNull,
+    maxlength: 10,
+    trim: true,
   },
   lastModifiedStringNumber: {
     type: Number,
@@ -39,15 +44,17 @@ const ProjectSchema: Schema<IProject> = new Schema({
   source: {
     type: String,
     default: null,
+    set: emptyToNull,
     maxlength: 100,
+    trim: true,
   },
-  dateCreated: {
+  createdAt: {
     type: Date,
-    default: new Date(),
+    required: true,
   },
-  lastUpdated: {
+  updatedAt: {
     type: Date,
-    default: new Date(),
+    required: true,
   },
 });
 

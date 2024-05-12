@@ -164,7 +164,7 @@ export default function ProjectDetail() {
                     <span className="last-updated">
                       <span className="material-icons-outlined">history</span>
                       {convertDateToString(
-                        project!.lastUpdated,
+                        project!.updatedAt,
                         DATE_FORMAT.DATE_TIME
                       )}
                     </span>

@@ -313,14 +313,14 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                 >
                   <p className="number">
                     <span>STRING {string.stringNumber}</span>
-                    {string.isCompleted ? (
+                    {string.completedAt ? (
                       <span className="complete">COMPLETE</span>
                     ) : (
                       <></>
                     )}
                   </p>
                   <p className="content">
-                    {string.isCompleted
+                    {string.completedAt
                       ? string.translatedText
                       : string.originalText}
                   </p>

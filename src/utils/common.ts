@@ -80,3 +80,13 @@ export async function callApi(url: string, opt?: any): Promise<any> {
   const response = await fetch(url, opt);
   return await response.json();
 }
+
+export function emptyToNull(value: string | object | any[]): any {
+  switch (typeof value) {
+    case "string":
+      return value === "" ? null : value;
+    case "object":
+      if (Array.isArray(value)) return value.length === 0 ? null : value;
+      else return Object.keys(value).length === 0 ? null : value;
+  }
+}

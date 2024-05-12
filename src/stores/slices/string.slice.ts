@@ -7,8 +7,9 @@ const initialState = {
   originalText: "",
   translatedText: "",
   comment: "",
-  isCompleted: false,
-  lastUpdated: null,
+  createdAt: null,
+  updatedAt: null,
+  completedAt: null,
 };
 
 const StringSlice = createSlice({
@@ -23,8 +24,9 @@ const StringSlice = createSlice({
       state.originalText = action.payload.originalText;
       state.translatedText = action.payload.translatedText;
       state.comment = action.payload.comment;
-      state.isCompleted = action.payload.isCompleted;
-      state.lastUpdated = action.payload.lastUpdated;
+      state.createdAt = action.payload.createdAt;
+      state.updatedAt = action.payload.updatedAt;
+      state.completedAt = action.payload.completedAt;
     },
   },
 });
