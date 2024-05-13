@@ -40,11 +40,8 @@ export default function ConfirmTest() {
     <section className="w-full mb-12">
       <p className="text-2xl font-semibold text-gray-500">Confirm</p>
       <hr className="mt-4" />
-      <div className="w-full flex mt-5">
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white text-md font-bold p-2 rounded-lg mr-2"
-          onClick={confirm}
-        >
+      <div className="w-full flex mt-5 gap-2">
+        <button className="button is-primary" onClick={confirm}>
           show confirm dialog
         </button>
       </div>

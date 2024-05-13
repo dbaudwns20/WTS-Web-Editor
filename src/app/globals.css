@@ -82,3 +82,120 @@ body {
   @apply gap-4;
   @apply [&>.block]:w-full;
 }
+
+.button {
+  @apply bg-gray-300;
+  @apply p-2;
+  @apply rounded-lg;
+  @apply text-black/65;
+  @apply font-semibold;
+  @apply text-sm;
+  @apply transition;
+  @apply duration-300;
+  @apply focus:outline-none;
+  @apply focus:ring;
+  @apply focus:ring-gray-200;
+  @apply dark:border-2;
+  @apply dark:bg-transparent;
+  @apply dark:border-white/60;
+  @apply dark:text-white/60;
+  @apply dark:focus:ring-gray-500;
+  @apply shadow-md;
+}
+
+.button:not(:disabled) {
+  @apply hover:bg-gray-400/70;
+  @apply active:bg-gray-200;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button:disabled {
+  @apply opacity-50;
+  @apply cursor-not-allowed;
+}
+
+.button.is-info {
+  @apply bg-sky-500;
+  @apply text-white;
+  @apply focus:ring-sky-300/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-sky-500;
+  @apply dark:text-sky-500;
+  @apply dark:focus:ring-sky-500/50;
+}
+
+.button.is-info:not(:disabled) {
+  @apply hover:bg-sky-600;
+  @apply active:bg-sky-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-danger {
+  @apply bg-red-500;
+  @apply text-white;
+  @apply focus:ring-red-300/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-red-500;
+  @apply dark:text-red-500;
+  @apply dark:focus:ring-red-500/50;
+}
+
+.button.is-danger:not(:disabled) {
+  @apply hover:bg-red-600;
+  @apply active:bg-red-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-warning {
+  @apply bg-yellow-500;
+  @apply text-white;
+  @apply focus:ring-yellow-400/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-yellow-600;
+  @apply dark:text-yellow-600;
+  @apply dark:focus:ring-yellow-500/50;
+}
+
+.button.is-warning:not(:disabled) {
+  @apply hover:bg-yellow-600;
+  @apply active:bg-yellow-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-success {
+  @apply bg-green-600;
+  @apply text-white;
+  @apply focus:ring-green-400/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-green-700;
+  @apply dark:text-green-700;
+  @apply dark:focus:ring-green-500/50;
+}
+
+.button.is-success:not(:disabled) {
+  @apply hover:bg-green-700;
+  @apply active:bg-green-700;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-primary {
+  @apply bg-blue-500;
+  @apply text-white;
+  @apply focus:ring-blue-300/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-blue-600;
+  @apply dark:text-blue-600;
+  @apply dark:focus:ring-blue-500/50;
+}
+
+.button.is-primary:not(:disabled) {
+  @apply hover:bg-blue-600;
+  @apply active:bg-blue-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}

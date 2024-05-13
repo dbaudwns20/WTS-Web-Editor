@@ -178,22 +178,16 @@ export default function ProjectDetail() {
                 <button
                   type="button"
                   onClick={updateProject}
-                  className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                  className="button is-info"
                 >
                   UPDATE
                 </button>
                 <button
                   type="button"
                   onClick={handleDeleteProject}
-                  className="w-full bg-red-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                  className="button is-danger"
                 >
                   REMOVE
-                </button>
-                <button
-                  type="button"
-                  className="w-full bg-slate-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-                >
-                  DOWNLOAD
                 </button>
               </div>
             </div>

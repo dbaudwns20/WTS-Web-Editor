@@ -10,7 +10,8 @@
   @apply focus:border-blue-500;
   @apply block;
   @apply w-full;
-  @apply p-2.5;
+  @apply py-2;
+  @apply px-2.5;
   @apply dark:bg-gray-700;
   @apply dark:border-gray-600;
   @apply dark:placeholder-gray-400;

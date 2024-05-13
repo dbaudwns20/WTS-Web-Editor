@@ -38,29 +38,17 @@ export default function NotificationTest() {
     <section className="w-full mb-12">
       <p className="text-2xl font-semibold text-gray-500">Notifications</p>
       <hr className="mt-4" />
-      <div className="w-full flex mt-5">
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white text-md font-bold p-2 rounded-lg mr-2"
-          onClick={info}
-        >
+      <div className="w-full flex mt-5 gap-2">
+        <button className="button is-info" onClick={info}>
           info default
         </button>
-        <button
-          className="bg-green-600 hover:bg-green-700 text-white text-md font-bold p-2 rounded-lg mr-2"
-          onClick={success}
-        >
+        <button className="button is-success" onClick={success}>
           success 10 second
         </button>
-        <button
-          className="bg-yellow-500 hover:bg-yellow-600 text-white text-md font-bold p-2 rounded-lg mr-2"
-          onClick={warning}
-        >
+        <button className="button is-warning" onClick={warning}>
           warning right
         </button>
-        <button
-          className="bg-red-500 hover:bg-red-600 text-white text-md font-bold p-2 rounded-lg"
-          onClick={danger}
-        >
+        <button className="button is-danger" onClick={danger}>
           danger left
         </button>
       </div>

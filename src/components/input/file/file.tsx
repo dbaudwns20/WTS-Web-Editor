@@ -6,6 +6,7 @@ import {
   Dispatch,
   useImperativeHandle,
   useRef,
+  useMemo,
   useState,
   useEffect,
 } from "react";
@@ -49,7 +50,7 @@ const File = forwardRef((props: FileProps, ref) => {
   const reuploadButtonRef = useRef<HTMLButtonElement>(null);
 
   // values
-  const elId = useRef(`file_${generateRandomText()}`);
+  const elId = useMemo(() => `file_${generateRandomText()}`, []);
   const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
   const [displayFile, setDisplayFile] = useState<string>("");
   const [isDragEnter, setIsDragEnter] = useState<boolean>(false);
@@ -130,10 +131,10 @@ const File = forwardRef((props: FileProps, ref) => {
 
   // set element id
   useEffect(() => {
-    labelRef.current!.setAttribute("for", elId.current);
-    fileRef.current?.setAttribute("id", elId.current);
-    reuploadButtonRef.current?.setAttribute("id", elId.current);
-  }, [displayFile]);
+    labelRef.current!.setAttribute("for", elId);
+    fileRef.current?.setAttribute("id", elId);
+    reuploadButtonRef.current?.setAttribute("id", elId);
+  }, [displayFile, elId]);
 
   return (
     <>

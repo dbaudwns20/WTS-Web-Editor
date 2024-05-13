@@ -165,7 +165,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
           />
         </div>
         <div className="block text-center">
-          <Submit ref={submitRef} buttonText="CREATE" />
+          <Submit
+            ref={submitRef}
+            buttonText="CREATE"
+            buttonClass="button is-primary"
+          />
         </div>
       </form>
     </Modal>

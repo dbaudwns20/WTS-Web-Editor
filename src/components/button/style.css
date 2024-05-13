@@ -1,0 +1,6 @@
+.submit {
+  @apply w-full;
+  @apply inline-flex;
+  @apply justify-center;
+  @apply items-center;
+}

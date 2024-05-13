@@ -17,7 +17,8 @@
   @apply rounded-lg;
   @apply block;
   @apply w-full;
-  @apply p-2.5;
+  @apply py-2;
+  @apply px-2.5;
 }
 
 .input.is-invalid {
