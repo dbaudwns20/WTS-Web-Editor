@@ -67,9 +67,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   // String update
   const updateString = async () => {
     // 변경사항이 없을 경우
-    if (currentString?.translatedText === translatedText) {
+    if (!translatedText) {
       showNotificationMessage({
-        message: "There are no changes.",
+        message: "The value is empty!",
         messageType: "warning",
         position: "right",
       });
