@@ -24,6 +24,7 @@
   @apply -translate-x-1/2;
   @apply -translate-y-1/2;
   @apply min-w-[400px];
+  @apply max-w-[480px];
   @apply rounded-lg;
   @apply transition;
   @apply duration-150;
@@ -76,7 +77,6 @@
 
 .confirm > .content > .message {
   @apply text-gray-500;
-  @apply text-lg;
   @apply min-h-8;
   @apply mb-4;
   @apply dark:text-white/75;
@@ -90,6 +90,7 @@
 
 .confirm > .content > .buttons-wrapper > .buttons {
   @apply flex;
+  @apply flex-wrap;
   @apply gap-2;
 }
 

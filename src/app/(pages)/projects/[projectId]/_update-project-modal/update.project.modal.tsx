@@ -19,7 +19,7 @@ import File, { type FileType } from "@/components/input/file/file";
 
 import { checkDataEdited, validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
-import { showNotificationMessage } from "@/utils/message";
+import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
 type UpdateProjectModalProps = {
@@ -44,6 +44,31 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
   const [source, setSource] = useState<string>(project.source ?? "");
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const handleUpdateProject = (e: any) => {
+    e.preventDefault();
+
+    if (wtsStringList.length > 0) {
+      showConfirmMessage({
+        title: "Update Project",
+        message:
+          "You have uploaded a WTS file. The existing string data will be updated with the new data, and re-translation may be necessary.",
+        buttons: [
+          {
+            label: "No",
+            onClick: () => null,
+          },
+          {
+            label: "Yes",
+            class: "info",
+            onClick: async () => await updateProject(e),
+          },
+        ],
+      });
+    } else {
+      updateProject(e);
+    }
+  };
 
   const updateProject = async (e: any) => {
     e.preventDefault();
@@ -140,7 +165,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
     >
       <form
         className="grid gap-6 md:grid-cols-1 p-6"
-        onSubmit={updateProject}
+        onSubmit={handleUpdateProject}
         noValidate
       >
         <div className="block">
