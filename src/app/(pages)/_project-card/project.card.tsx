@@ -20,7 +20,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
 
   // values
   const bgImage: BgImage = useMemo(() => getRandomBgImage(), []);
-  const isCompleted: boolean = project.process === "100" ? true : false;
+  const isCompleted: boolean = project.process === "100.0" ? true : false;
 
   return (
     <article className="project">
@@ -41,7 +41,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           </div>
           <p className="date-created">
             <span className="material-icons-outlined">schedule</span>
-            {convertDateToString(project.lastUpdated)}
+            {convertDateToString(project.updatedAt)}
           </p>
         </div>
         <div

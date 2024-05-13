@@ -19,10 +19,10 @@ import { callApi } from "@/utils/common";
 import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
 
 const defaultPageInfo: PageInfo = {
-  offset: 10,
   currentPage: 1,
-  totalPage: 1,
+  offset: 10,
   totalCount: 0,
+  totalPage: 1,
 };
 
 type StringListProps = {
@@ -35,7 +35,6 @@ type StringListProps = {
 type _String = String & { index: number; isActive: boolean };
 
 export type StringListType = {
-  getStringList: () => void;
   componentElement: HTMLElement;
 };
 
@@ -47,7 +46,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
-    getStringList,
     componentElement: stringWrapperRef.current!,
   }));
 
@@ -313,14 +311,20 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                 >
                   <p className="number">
                     <span>STRING {string.stringNumber}</span>
-                    {string.isCompleted ? (
-                      <span className="complete">COMPLETE</span>
-                    ) : (
-                      <></>
-                    )}
+                    {(() => {
+                      if (string.completedAt) {
+                        if (string.completedAt >= string.updatedAt) {
+                          return <span className="complete">COMPLETE</span>;
+                        } else {
+                          return <span className="update">UPDATED</span>;
+                        }
+                      } else {
+                        return <></>;
+                      }
+                    })()}
                   </p>
                   <p className="content">
-                    {string.isCompleted
+                    {string.completedAt
                       ? string.translatedText
                       : string.originalText}
                   </p>

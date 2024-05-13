@@ -3,7 +3,7 @@ import WtsString from "@/types/wts.string";
 export function readWtsFile(wtsFile: File): WtsString[] {
   const result: WtsString[] = [];
 
-  const reader = new FileReader();
+  const reader: FileReader = new FileReader();
   reader.onload = (e: ProgressEvent<FileReader>) => {
     if (!e.target) throw new Error("Target is not exist!");
 

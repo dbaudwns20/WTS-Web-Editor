@@ -1,25 +1,16 @@
 import ProjectModel from "@/db/models/project";
-import { type IString } from "@/db/models/string";
 
 import {
-  createString,
   deleteProjectStrings,
+  updateProjectStrings,
 } from "@/app/api/_services/string.service";
 
-export async function createProject(body: any): Promise<any> {
-  const newProject = new ProjectModel(body);
+export async function createProject(createData: any): Promise<any> {
+  const newProject = new ProjectModel({
+    ...createData,
+    ...{ createdAt: new Date(), updatedAt: new Date() },
+  });
   return await newProject.save();
-}
-
-export async function createStrings(newProjectId: any, wtsStringList: any[]) {
-  for (let wtsString of wtsStringList) {
-    await createString({
-      projectId: newProjectId,
-      stringNumber: wtsString.stringNumber,
-      originalText: wtsString.content,
-      comment: wtsString.comment,
-    } as IString);
-  }
 }
 
 export async function getProject(projectId: string) {
@@ -37,15 +28,30 @@ export async function deleteProject(projectId: string) {
   await ProjectModel.findByIdAndDelete(projectId);
 }
 
+export async function updateProject(projectId: string, updateData: any) {
+  // wtsStringList 가 존재할 경우
+  if (updateData["wtsStringList"]) {
+    await updateProjectStrings(projectId, updateData["wtsStringList"]);
+  }
+  const instance = await ProjectModel.findByIdAndUpdate(
+    projectId,
+    {
+      ...updateData,
+      ...{ updatedAt: new Date() },
+    },
+    { new: true }
+  );
+  return instance;
+}
+
 // 프로젝트 진행률 갱신
 export async function updateProjectProcess(
   projectId: string,
   process: string,
   stringNumber: number
 ) {
-  await ProjectModel.findByIdAndUpdate(projectId, {
+  await updateProject(projectId, {
     process: process,
     lastModifiedStringNumber: stringNumber,
-    lastUpdated: new Date(),
   });
 }

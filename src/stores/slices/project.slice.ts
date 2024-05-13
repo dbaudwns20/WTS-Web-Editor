@@ -7,8 +7,8 @@ const initialState = {
   process: null,
   version: null,
   lastModifiedStringNumber: -1,
-  dateCreated: null,
-  lastUpdated: null,
+  createdAt: null,
+  updatedAt: null,
 };
 
 const ProjectSlice = createSlice({
@@ -23,8 +23,8 @@ const ProjectSlice = createSlice({
       state.process = action.payload.process;
       state.version = action.payload.version;
       state.lastModifiedStringNumber = action.payload.lastModifiedStringNumber;
-      state.dateCreated = action.payload.dateCreated;
-      state.lastUpdated = action.payload.lastUpdated;
+      state.createdAt = action.payload.createdAt;
+      state.updatedAt = action.payload.updatedAt;
     },
   },
 });

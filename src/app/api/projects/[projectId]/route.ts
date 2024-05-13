@@ -1,11 +1,20 @@
 import { startSession } from "mongoose";
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
 
-import { deleteProject, getProject } from "@/app/api/_services/project.service";
+import {
+  deleteProject,
+  getProject,
+  updateProject,
+} from "@/app/api/_services/project.service";
 
-import { checkRequestParams, resolveSuccess, resolveErrors } from "@/app/api";
+import {
+  checkRequestParams,
+  checkRequestBody,
+  resolveSuccess,
+  resolveErrors,
+} from "@/app/api";
 
 type Params = {
   projectId: string;
@@ -18,11 +27,9 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
     await dbConnect();
-
     const project = await getProject(params.projectId);
-
     return resolveSuccess(project);
-  } catch (error) {
+  } catch (error: any) {
     return resolveErrors(error);
   }
 }
@@ -33,21 +40,20 @@ export async function PUT(
 ) {
   let session;
   try {
-    session = await startSession();
-    session.startTransaction();
-
     const body = await request.json();
     checkRequestParams(["projectId"], params);
-
+    checkRequestBody(["title", "language"], body);
+    session = await startSession();
+    session.startTransaction();
     await dbConnect();
-
+    const instance = await updateProject(params.projectId, body);
     await session.commitTransaction();
-    return Response.json("the project is updated");
+    return resolveSuccess(instance);
   } catch (error: any) {
     if (session && session.inTransaction()) {
       session.abortTransaction();
     }
-    return NextResponse.json(error);
+    return resolveErrors(error);
   } finally {
     session?.endSession();
   }
@@ -59,16 +65,12 @@ export async function DELETE(
 ) {
   let session;
   try {
+    checkRequestParams(["projectId"], params);
     session = await startSession();
     session.startTransaction();
-
-    checkRequestParams(["projectId"], params);
-
     await dbConnect();
-
     // 프로젝트와 하위 string 제거
     await deleteProject(params.projectId);
-
     await session.commitTransaction();
     return resolveSuccess("the project is deleted");
   } catch (error) {

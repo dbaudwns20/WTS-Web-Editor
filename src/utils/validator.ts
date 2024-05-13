@@ -29,3 +29,13 @@ export function checkUploadedFileSize(fileSize: number): boolean {
     return true;
   }
 }
+
+/**
+ * 기존 Object 데이터가 변경되었는지 체크
+ * @param preObj
+ * @param newObj
+ * @returns
+ */
+export function checkDataEdited(preObj: Object, newObj: Object): boolean {
+  return JSON.stringify(preObj) !== JSON.stringify(newObj);
+}

@@ -1,16 +1,16 @@
 enum Language {
-  en_US = 0,
-  ko_KR = 1,
-  zh_CN = 2,
-  zh_TW = 3,
-  de_DE = 4,
-  es_ES = 5,
-  es_MX = 6,
-  fr_FR = 7,
-  it_IT = 8,
-  pl_PL = 9,
-  ru_RU = 10,
-  ja_JP = 11,
+  en_US = 1,
+  ko_KR = 2,
+  zh_CN = 3,
+  zh_TW = 4,
+  de_DE = 5,
+  es_ES = 6,
+  es_MX = 7,
+  fr_FR = 8,
+  it_IT = 9,
+  pl_PL = 10,
+  ru_RU = 11,
+  ja_JP = 12,
 }
 
 export function getLangList() {

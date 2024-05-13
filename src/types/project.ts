@@ -4,11 +4,12 @@ export default class Project {
   id: string;
   title: string;
   language: number;
-  process: string | null;
+  process: string;
   version: string | null;
+  source: string | null;
   lastModifiedStringNumber: number;
-  dateCreated: Date;
-  lastUpdated: Date;
+  createdAt: Date;
+  updatedAt: Date;
 
   constructor(project: IProject) {
     this.id = project._id;
@@ -16,9 +17,10 @@ export default class Project {
     this.language = project.language;
     this.process = project.process;
     this.version = project.version;
+    this.source = project.source;
     this.lastModifiedStringNumber = project.lastModifiedStringNumber;
-    this.dateCreated = new Date(project.dateCreated);
-    this.lastUpdated = new Date(project.dateCreated);
+    this.createdAt = new Date(project.createdAt);
+    this.updatedAt = new Date(project.updatedAt);
   }
 }
 

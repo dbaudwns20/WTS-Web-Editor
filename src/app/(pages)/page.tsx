@@ -16,8 +16,6 @@ import { type OrderInfo, type PageInfo } from "@/types/pagination";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
-import { useDispatch } from "react-redux";
-
 import LogoMain from "@/assets/logo.png";
 
 const defaultPageInfo: PageInfo = {
@@ -28,7 +26,7 @@ const defaultPageInfo: PageInfo = {
 };
 
 const defaultOrderInfo: OrderInfo = {
-  sort: "dateCreated",
+  sort: "createdAt",
   order: "DESC",
 };
 
@@ -48,13 +46,14 @@ export default function RootPage() {
   const [orderInfo, setOrderInfo] = useState<OrderInfo>(defaultOrderInfo);
 
   // 프로젝트 생성 모달창 열기
-  const newProject = async () => {
+  const newProject = () => {
     setIsModalOpen(true);
   };
 
-  const createProjectCallback = () => {
-    // 모달 닫기
-    setIsModalOpen(false);
+  // 함수 호출 후 처리
+  const completeFunction = (callbacks: Function) => {
+    // 콜백함수 호출
+    callbacks();
 
     // 조회정보 초기화
     setPageInfo(defaultPageInfo);
@@ -105,7 +104,7 @@ export default function RootPage() {
     }
 
     setPageInfo(response.pageInfo);
-    setProjectList((prev) => prev!.concat(bindProjectList(response.data)));
+    setProjectList(projectList.concat(bindProjectList(response.data)));
 
     setIsMoreLoading(false);
   };
@@ -191,7 +190,7 @@ export default function RootPage() {
       {isModalOpen ? (
         <CreateProjectModal
           closeModal={setIsModalOpen}
-          createProjectCallback={createProjectCallback}
+          completeFunction={completeFunction}
         />
       ) : (
         <></>

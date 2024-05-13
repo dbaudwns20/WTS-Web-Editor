@@ -7,8 +7,9 @@ export default class String {
   originalText: string;
   translatedText: string;
   comment: string | null;
-  isCompleted: boolean;
-  lastUpdated: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  completedAt: Date | null;
 
   constructor(string: IString) {
     this.id = string._id;
@@ -17,8 +18,9 @@ export default class String {
     this.originalText = string.originalText;
     this.translatedText = string.translatedText;
     this.comment = string.comment;
-    this.isCompleted = string.isCompleted;
-    this.lastUpdated = string.lastUpdated;
+    this.createdAt = new Date(string.createdAt);
+    this.updatedAt = new Date(string.updatedAt);
+    this.completedAt = string.completedAt ? new Date(string.completedAt) : null;
   }
 }
 

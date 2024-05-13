@@ -117,6 +117,5 @@ const Text = forwardRef((props: TextProps, ref) => {
   );
 });
 
-// 컴포넌트 이름 설정
 Text.displayName = "Text";
 export default Text;
