@@ -39,3 +39,18 @@ export function checkUploadedFileSize(fileSize: number): boolean {
 export function checkDataEdited(preObj: Object, newObj: Object): boolean {
   return JSON.stringify(preObj) !== JSON.stringify(newObj);
 }
+
+/**
+ * 업로드 파일 타입 체크
+ * @param file
+ * @param accepts
+ * @returns
+ */
+export function checkFileType(file: File, accepts: string[]) {
+  // 확장자 추출
+  const extension: string | undefined = file.name.slice(
+    ((file.name.lastIndexOf(".") - 1) >>> 0) + 1
+  );
+  if (extension && accepts.includes(extension)) return true;
+  return false;
+}
