@@ -29,6 +29,7 @@ type StringEditorProps = {
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
   setIsEdited: Dispatch<SetStateAction<boolean>>;
+  handleResetScroll: () => void;
   completeFunction: (...arg: any) => void;
 };
 
@@ -39,6 +40,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     setStringGroup,
     isEdited,
     setIsEdited,
+    handleResetScroll,
     completeFunction,
   } = props;
 
@@ -159,6 +161,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
   };
 
+  const resetTranslateTest = () => {
+    setTranslatedText(
+      currentString?.translatedText ? currentString.translatedText : ""
+    );
+  };
+
   useEffect(() => {
     // 변경사항 감지
     setIsEdited(translatedText !== currentString?.translatedText);
@@ -191,24 +199,24 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
           updateString();
         }}
       >
-        <div className="flex justify-between items-center mb-2">
-          <p className="flex items-center text-xl font-semibold text-sky-500">
+        <div className="string-editor-header">
+          <a className="string-number" onClick={handleResetScroll}>
             STRING {currentString?.stringNumber}
-          </p>
-          <div className="flex gap-3 pr-1">
-            <a className="text-xs text-gray-500 flex items-center">
+          </a>
+          <div className="string-editor-functions">
+            <a className="function" onClick={resetTranslateTest}>
               <span className="icon">
                 <i className="material-icons md-18">refresh</i>
               </span>
               <span>Reset</span>
             </a>
-            <a className="text-xs text-gray-500 flex items-center">
+            <a className="function">
               <span className="icon">
-                <i className="material-icons md-18">view_agenda</i>
+                <i className="material-icons md-18">space_dashboard</i>
               </span>
               <span>View Mode</span>
             </a>
-            <a className="text-xs text-gray-500 flex items-center">
+            <a className="function">
               <span className="icon">
                 <i className="material-icons md-18">settings</i>
               </span>

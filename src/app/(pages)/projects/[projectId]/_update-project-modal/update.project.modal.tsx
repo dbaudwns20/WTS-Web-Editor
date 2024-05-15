@@ -218,7 +218,11 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
           />
         </div>
         <div className="block text-center">
-          <Submit ref={submitRef} buttonText="UPDATE" />
+          <Submit
+            ref={submitRef}
+            buttonText="UPDATE"
+            buttonClass="button is-primary"
+          />
         </div>
       </form>
     </Modal>

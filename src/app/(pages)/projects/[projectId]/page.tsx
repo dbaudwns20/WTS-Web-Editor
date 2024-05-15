@@ -105,6 +105,10 @@ export default function ProjectDetail() {
     router.push("/");
   };
 
+  const handleResetScroll = () => {
+    stringListRef.current?.setStringListScrollPosition();
+  };
+
   // string list component 에서 호출 용
   const handleUpdateString = async () => {
     await stringEditorRef.current?.updateString();
@@ -148,7 +152,7 @@ export default function ProjectDetail() {
       ) : (
         <>
           <section ref={projectInfoSectionRef} className="project-info-section">
-            <div className="wrapper">
+            <div className="project-info-wrapper">
               <div className="project-info">
                 <figure className="image-wrapper">
                   <Image className="image" src={image.path} alt={image.name} />
@@ -156,44 +160,60 @@ export default function ProjectDetail() {
                 <div className="info-wrapper">
                   <p className="title">{project?.title}</p>
                   <div className="tag-group">
-                    <span className="language">
+                    <span className="tag language">
                       {getLangTextByValue(project!.language)}
                     </span>
                     {project!.version ? (
-                      <span className="version">v{project!.version}</span>
+                      <span className="tag version">v{project!.version}</span>
                     ) : (
                       <></>
                     )}
-                    <span className="last-updated">
-                      <span className="material-icons-outlined">history</span>
-                      {convertDateToString(
-                        project!.updatedAt,
-                        DATE_FORMAT.DATE_TIME
-                      )}
+                    <span className="tag updated-at">
+                      <span className="icon">
+                        <i className="material-icons md-18">history</i>
+                      </span>
+                      <span className="text-sm font-semibold">
+                        {convertDateToString(
+                          project!.updatedAt,
+                          DATE_FORMAT.DATE_TIME
+                        )}
+                      </span>
                     </span>
                   </div>
+                  {project?.source ? (
+                    <a
+                      className="resource-link"
+                      href={project!.source!}
+                      target="_blank"
+                    >
+                      <span className="tag resource">
+                        <span className="icon">
+                          <i className="material-icons md-18">link</i>
+                        </span>
+                        <span className="text-sm font-semibold">
+                          Resource Link
+                        </span>
+                      </span>
+                    </a>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
-              <div className="flex justify-center items-end gap-2">
+              <div className="buttons">
                 <button
                   type="button"
                   onClick={updateProject}
-                  className="w-full bg-blue-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                  className="button is-info"
                 >
                   UPDATE
                 </button>
                 <button
                   type="button"
                   onClick={handleDeleteProject}
-                  className="w-full bg-red-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+                  className="button is-danger"
                 >
                   REMOVE
-                </button>
-                <button
-                  type="button"
-                  className="w-full bg-slate-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
-                >
-                  DOWNLOAD
                 </button>
               </div>
             </div>
@@ -214,6 +234,7 @@ export default function ProjectDetail() {
               setStringGroup={setStringGroup}
               isEdited={isEdited}
               setIsEdited={setIsEdited}
+              handleResetScroll={handleResetScroll}
               completeFunction={completeFunction}
             />
           </section>

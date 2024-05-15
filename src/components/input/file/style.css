@@ -55,32 +55,26 @@
 .file > .file-content > .text {
   @apply text-sm;
   @apply mb-2;
+  @apply font-semibold;
   @apply text-gray-500;
   @apply dark:text-gray-400;
 }
 
-.file.is-uploaded > .file-content > .reupload-button {
+.file.is-uploaded > .file-content > .button.delete-button {
   @apply inline-flex;
   @apply items-center;
   @apply justify-center;
   @apply text-gray-600;
   @apply bg-neutral-100;
-  @apply hover:bg-neutral-200;
-  @apply border;
-  @apply rounded-lg;
   @apply py-1;
-  @apply px-3;
-  @apply text-sm;
+  @apply px-2.5;
+  @apply text-xs;
   @apply pointer-events-auto;
-  @apply cursor-pointer;
   @apply z-20;
-  @apply shadow-md;
 }
 
-.file.is-uploaded > .file-content > .reupload-button.is-disabled {
-  @apply opacity-50;
-  @apply cursor-not-allowed;
-  @apply hover:bg-neutral-100;
+.file.is-uploaded > .file-content > .button.delete-button:not(:disabled):hover {
+  @apply bg-neutral-200;
 }
 
 .file.is-invalid {

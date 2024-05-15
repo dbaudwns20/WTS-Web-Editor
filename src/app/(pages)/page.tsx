@@ -157,7 +157,7 @@ export default function RootPage() {
         <div className="">
           <div className="w-full flex justify-center">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold p-5 rounded-lg m-3.5"
+              className="button is-primary !text-xl !p-5 !m-3.5"
               onClick={newProject}
             >
               CREATE NEW PROJECT

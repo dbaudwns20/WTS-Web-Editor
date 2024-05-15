@@ -35,6 +35,7 @@ type StringListProps = {
 type _String = String & { index: number; isActive: boolean };
 
 export type StringListType = {
+  setStringListScrollPosition: () => void;
   componentElement: HTMLElement;
 };
 
@@ -46,6 +47,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
+    setStringListScrollPosition,
     componentElement: stringWrapperRef.current!,
   }));
 
