@@ -105,6 +105,10 @@ export default function ProjectDetail() {
     router.push("/");
   };
 
+  const handleResetScroll = () => {
+    stringListRef.current?.setStringListScrollPosition();
+  };
+
   // string list component 에서 호출 용
   const handleUpdateString = async () => {
     await stringEditorRef.current?.updateString();
@@ -230,6 +234,7 @@ export default function ProjectDetail() {
               setStringGroup={setStringGroup}
               isEdited={isEdited}
               setIsEdited={setIsEdited}
+              handleResetScroll={handleResetScroll}
               completeFunction={completeFunction}
             />
           </section>

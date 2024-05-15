@@ -10,6 +10,49 @@
   @apply h-full;
 }
 
+.string-editor-wrapper > .string-editor-form > .string-editor-header {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply mb-2;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-header
+  > .string-number {
+  @apply text-xl;
+  @apply font-semibold;
+  @apply text-sky-500;
+  @apply hover:text-sky-600;
+  @apply hover:cursor-pointer;
+  @apply duration-300;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-header
+  > .string-editor-functions {
+  @apply flex;
+  @apply gap-2;
+  @apply pr-2;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-header
+  > .string-editor-functions
+  > .function {
+  @apply text-xs;
+  @apply text-gray-500;
+  @apply flex;
+  @apply items-center;
+  @apply dark:text-gray-300;
+  @apply hover:text-sky-500;
+  @apply hover:cursor-pointer;
+  @apply duration-300;
+}
+
 .translate-textarea {
   @apply w-full;
   @apply border;
