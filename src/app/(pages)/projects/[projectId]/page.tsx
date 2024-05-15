@@ -148,7 +148,7 @@ export default function ProjectDetail() {
       ) : (
         <>
           <section ref={projectInfoSectionRef} className="project-info-section">
-            <div className="wrapper">
+            <div className="project-info-wrapper">
               <div className="project-info">
                 <figure className="image-wrapper">
                   <Image className="image" src={image.path} alt={image.name} />
@@ -156,25 +156,47 @@ export default function ProjectDetail() {
                 <div className="info-wrapper">
                   <p className="title">{project?.title}</p>
                   <div className="tag-group">
-                    <span className="language">
+                    <span className="tag language">
                       {getLangTextByValue(project!.language)}
                     </span>
                     {project!.version ? (
-                      <span className="version">v{project!.version}</span>
+                      <span className="tag version">v{project!.version}</span>
                     ) : (
                       <></>
                     )}
-                    <span className="last-updated">
-                      <span className="material-icons-outlined">history</span>
-                      {convertDateToString(
-                        project!.updatedAt,
-                        DATE_FORMAT.DATE_TIME
-                      )}
+                    <span className="tag updated-at">
+                      <span className="icon">
+                        <i className="material-icons md-18">history</i>
+                      </span>
+                      <span className="text-sm font-semibold">
+                        {convertDateToString(
+                          project!.updatedAt,
+                          DATE_FORMAT.DATE_TIME
+                        )}
+                      </span>
                     </span>
                   </div>
+                  {project?.source ? (
+                    <a
+                      className="resource-link"
+                      href={project!.source!}
+                      target="_blank"
+                    >
+                      <span className="tag resource">
+                        <span className="icon">
+                          <i className="material-icons md-18">link</i>
+                        </span>
+                        <span className="text-sm font-semibold">
+                          Resource Link
+                        </span>
+                      </span>
+                    </a>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
-              <div className="flex justify-center items-end gap-2">
+              <div className="buttons">
                 <button
                   type="button"
                   onClick={updateProject}

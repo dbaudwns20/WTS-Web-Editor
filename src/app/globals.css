@@ -199,3 +199,20 @@ body {
   @apply dark:hover:bg-transparent/30;
   @apply dark:active:bg-transparent/30;
 }
+
+.tag {
+  @apply bg-slate-100;
+  @apply text-gray-600;
+  @apply rounded-lg;
+  @apply px-2.5;
+  @apply py-0.5;
+  @apply font-semibold;
+  @apply text-sm;
+  @apply flex;
+  @apply items-center;
+  @apply shadow-md;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-slate-100;
+  @apply dark:text-slate-100;
+}

@@ -1,22 +1,28 @@
 .project-info-section {
-  @apply pb-5;
-  @apply border-gray-300;
-  @apply min-h-[171px];
+  @apply min-h-[142px];
   @apply h-fit;
+  @apply pb-5;
 }
 
-.project-info-section > .wrapper {
+.project-info-section > .project-info-wrapper {
   @apply flex;
   @apply w-full;
 }
 
-.project-info-section > .wrapper > .project-info {
+.project-info-section > .project-info-wrapper > .project-info {
   @apply flex;
   @apply justify-center;
   @apply w-full;
 }
 
-.project-info-section > .wrapper > .project-info > .image-wrapper {
+.project-info-section > .project-info-wrapper > .buttons {
+  @apply flex;
+  @apply justify-center;
+  @apply items-end;
+  @apply gap-2;
+}
+
+.project-info-section > .project-info-wrapper > .project-info > .image-wrapper {
   @apply overflow-hidden;
   @apply flex-shrink-0;
   @apply flex;
@@ -26,95 +32,115 @@
   @apply pt-2;
 }
 
-.project-info-section > .wrapper > .project-info > .image-wrapper > .image {
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .image-wrapper
+  > .image {
   @apply object-cover;
   @apply aspect-square;
   @apply w-full;
   @apply rounded-lg;
 }
 
-.project-info-section > .wrapper > .project-info > .info-wrapper {
+.project-info-section > .project-info-wrapper > .project-info > .info-wrapper {
   @apply py-3;
   @apply px-5;
   @apply w-full;
 }
 
-.project-info-section > .wrapper > .project-info > .info-wrapper > .title {
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .title {
   @apply text-3xl;
   @apply font-bold;
   @apply text-gray-600;
+  @apply dark:text-gray-300;
   @apply mb-3.5;
 }
 
-.project-info-section > .wrapper > .project-info > .info-wrapper > .tag-group {
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .tag-group {
   @apply flex;
   @apply gap-2;
   @apply mb-3;
 }
 
 .project-info-section
-  > .wrapper
+  > .project-info-wrapper
   > .project-info
   > .info-wrapper
   > .tag-group
-  > .language {
+  > .tag.language {
   @apply bg-blue-400;
   @apply text-white;
-  @apply rounded-lg;
-  @apply px-2;
-  @apply py-1;
-  @apply font-semibold;
-  @apply text-sm;
-  @apply shadow-md;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-blue-400;
+  @apply dark:text-blue-400;
 }
 
 .project-info-section
-  > .wrapper
+  > .project-info-wrapper
   > .project-info
   > .info-wrapper
   > .tag-group
-  > .version {
+  > .tag.version {
   @apply bg-orange-400;
   @apply text-white;
-  @apply rounded-lg;
-  @apply px-2;
-  @apply py-1;
-  @apply font-semibold;
-  @apply text-sm;
-  @apply shadow-md;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-orange-400;
+  @apply dark:text-orange-400;
 }
 
 .project-info-section
-  > .wrapper
+  > .project-info-wrapper
   > .project-info
   > .info-wrapper
   > .tag-group
-  > .last-updated {
+  > .tag.updated-at {
   @apply bg-violet-500/90;
-  @apply rounded-lg;
   @apply text-white;
-  @apply px-2.5;
-  @apply py-1;
-  @apply flex;
-  @apply items-center;
-  @apply text-sm;
-  @apply font-semibold;
-  @apply shadow-md;
+  @apply pl-1;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-violet-400;
+  @apply dark:text-violet-400;
 }
 
 .project-info-section
-  > .wrapper
+  > .project-info-wrapper
   > .project-info
   > .info-wrapper
-  > .tag-group
-  > .last-updated
-  > .material-icons-outlined {
-  @apply mr-1;
-  font-size: 1rem;
+  > .resource-link {
+  @apply flex;
+  @apply w-fit;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .resource-link
+  > .tag.resource {
+  @apply bg-cyan-500;
+  @apply text-white;
+  @apply pl-1;
+  @apply hover:bg-cyan-600;
+  @apply duration-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-cyan-500;
+  @apply dark:text-cyan-500;
+  @apply dark:hover:bg-transparent/30;
 }
 
 .string-content-section {
   @apply flex;
-  /* @apply h-[500px]; */
-  /* @apply h-[611px]; */
 }
