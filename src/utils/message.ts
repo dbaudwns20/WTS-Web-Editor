@@ -33,7 +33,6 @@ function setMessageBox() {
 export function clearMessageBox() {
   if (!messageBox) return;
   messageBox!.unmount();
-  messageBox = null;
 }
 
 export function showNotificationMessage(options: NotificationOptions) {

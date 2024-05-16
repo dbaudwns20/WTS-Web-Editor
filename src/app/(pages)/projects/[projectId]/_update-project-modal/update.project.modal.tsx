@@ -159,8 +159,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
   return (
     <Modal
       title="Update Project"
-      isCloseOnOverlay={false}
-      isOpen={true}
+      isCloseOnOverlay={true}
       setIsModalOpen={closeModal}
     >
       <form

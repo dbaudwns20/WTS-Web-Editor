@@ -76,9 +76,6 @@
   @apply rounded-full;
   @apply p-1;
   @apply text-gray-400;
-  @apply transition;
-  @apply duration-150;
-  @apply ease-in-out;
   @apply opacity-75;
   @apply hover:opacity-100;
 }

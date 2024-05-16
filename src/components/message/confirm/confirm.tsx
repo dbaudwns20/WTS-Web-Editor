@@ -42,7 +42,7 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
       <div ref={wrapper} className="confirm">
         <header className="header">
           <p className="title">{title}</p>
-          <button className="close-button" onClick={closeConfirm}>
+          <button type="button" className="close-button" onClick={closeConfirm}>
             <svg
               className="h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"

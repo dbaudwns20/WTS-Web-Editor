@@ -14,7 +14,6 @@ import "./style.css";
 
 type ModalProps = {
   children: ReactNode;
-  isOpen: boolean;
   title?: string;
   isCloseOnOverlay?: boolean;
   setIsModalOpen?: Dispatch<SetStateAction<boolean>>;
@@ -26,7 +25,6 @@ export default function Modal(props: ModalProps) {
 
   const {
     children,
-    isOpen,
     title = "Modal",
     isCloseOnOverlay = false,
     setIsModalOpen,
@@ -75,7 +73,7 @@ export default function Modal(props: ModalProps) {
       <div ref={wrapper} className="modal">
         <header className="header">
           <p className="title">{title}</p>
-          <button className="close-button" onClick={closeModal}>
+          <button type="button" className="close-button" onClick={closeModal}>
             <svg
               className="h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"

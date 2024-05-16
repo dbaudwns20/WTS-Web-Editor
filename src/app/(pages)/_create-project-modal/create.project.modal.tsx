@@ -106,7 +106,6 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
     <Modal
       title="New Project"
       isCloseOnOverlay={false}
-      isOpen={true}
       setIsModalOpen={closeModal}
     >
       <form
