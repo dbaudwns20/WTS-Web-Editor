@@ -49,7 +49,12 @@ const Dropdown = forwardRef((props: DropdownProps, ref: any) => {
 
   const handleDropdownTriggerClick = () => {
     if (dropdownMenuRef.current?.classList.contains("is-active")) {
-      closeDropdownMenu();
+      // is-active -> is-hiding 변경
+      dropdownMenuRef.current?.classList.replace("is-active", "is-hiding");
+      setTimeout(() => {
+        // 0.2초 후 제거
+        dropdownMenuRef.current?.classList.remove("is-hiding");
+      }, 200);
     } else {
       dropdownMenuRef.current?.classList.add("is-active");
     }
