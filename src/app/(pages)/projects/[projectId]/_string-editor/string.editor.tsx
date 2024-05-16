@@ -216,7 +216,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span className="icon">
                   <i className="material-icons md-18">space_dashboard</i>
                 </span>
-                <span>View Mode</span>
+                <span>View</span>
               </a>
               <ul className="py-1" role="none">
                 <li
@@ -239,13 +239,34 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 </li>
               </ul>
             </Dropdown>
-
-            <a className="anchor-has-icon">
-              <span className="icon">
-                <i className="material-icons md-18">settings</i>
-              </span>
-              <span>Settings</span>
-            </a>
+            <Dropdown position="right">
+              <a className="anchor-has-icon">
+                <span className="icon">
+                  <i className="material-icons md-18">settings</i>
+                </span>
+                <span>Settings</span>
+              </a>
+              <ul className="py-1" role="none">
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                >
+                  menu 1
+                </li>
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                >
+                  menu 2
+                </li>
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                >
+                  menu 3
+                </li>
+              </ul>
+            </Dropdown>
           </div>
         </div>
         <textarea
