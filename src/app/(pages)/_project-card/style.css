@@ -11,6 +11,9 @@
   @apply duration-300;
   @apply hover:scale-110;
   @apply hover:shadow-2xl;
+  @apply ring-1;
+  @apply ring-black/5;
+  @apply focus:outline-none;
 }
 
 .project > .complete {

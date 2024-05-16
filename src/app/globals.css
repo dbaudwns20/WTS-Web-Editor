@@ -216,3 +216,15 @@ body {
   @apply dark:border-slate-100;
   @apply dark:text-slate-100;
 }
+
+.anchor-has-icon {
+  @apply text-xs;
+  @apply text-gray-500;
+  @apply flex;
+  @apply items-center;
+  @apply px-1;
+  @apply dark:text-gray-300;
+  @apply hover:text-sky-500;
+  @apply hover:cursor-pointer;
+  @apply duration-300;
+}

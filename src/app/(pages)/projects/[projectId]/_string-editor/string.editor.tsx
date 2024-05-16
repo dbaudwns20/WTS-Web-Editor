@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import "./style.css";
 
 import Submit, { SubmitType } from "@/components/button/submit";
+import Dropdown from "@/components/common/dropdown/dropdown";
 
 import String, { bindString } from "@/types/string";
 
@@ -204,19 +205,42 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             STRING {currentString?.stringNumber}
           </a>
           <div className="string-editor-functions">
-            <a className="function" onClick={resetTranslateTest}>
+            <a className="anchor-has-icon" onClick={resetTranslateTest}>
               <span className="icon">
                 <i className="material-icons md-18">refresh</i>
               </span>
               <span>Reset</span>
             </a>
-            <a className="function">
-              <span className="icon">
-                <i className="material-icons md-18">space_dashboard</i>
-              </span>
-              <span>View Mode</span>
-            </a>
-            <a className="function">
+            <Dropdown position="right">
+              <a className="anchor-has-icon">
+                <span className="icon">
+                  <i className="material-icons md-18">space_dashboard</i>
+                </span>
+                <span>View Mode</span>
+              </a>
+              <ul className="py-1" role="none">
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                >
+                  menu 1
+                </li>
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                >
+                  menu 2
+                </li>
+                <li
+                  className="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                >
+                  menu 3
+                </li>
+              </ul>
+            </Dropdown>
+
+            <a className="anchor-has-icon">
               <span className="icon">
                 <i className="material-icons md-18">settings</i>
               </span>

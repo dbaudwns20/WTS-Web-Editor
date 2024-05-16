@@ -1,0 +1,36 @@
+.dropdown {
+  @apply relative;
+}
+
+.dropdown > .dropdown-menu {
+  @apply absolute;
+  @apply z-10;
+  @apply mt-2;
+  @apply w-52;
+  @apply rounded-md;
+  @apply bg-white;
+  @apply shadow-lg;
+  @apply ring-1;
+  @apply ring-black;
+  @apply ring-opacity-5;
+  @apply focus:outline-none;
+}
+
+.dropdown > .dropdown-menu.is-up {
+  @apply mt-0;
+  @apply mb-2;
+  @apply top-auto;
+  @apply bottom-full;
+}
+
+.dropdown > .dropdown-menu.is-left {
+  @apply left-0;
+}
+
+.dropdown > .dropdown-menu.is-right {
+  @apply right-0;
+}
+
+.dropdown > .dropdown-menu.is-center {
+  @apply left-1/2 transform -translate-x-1/2;
+}
