@@ -16,12 +16,16 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
   const { title = "Confirm", message, buttons } = props;
 
   // refs
-  const overlay = useRef(null);
-  const wrapper = useRef(null);
+  const overlay = useRef<HTMLDivElement>(null);
+  const wrapper = useRef<HTMLDivElement>(null);
 
   // 모달 닫기
   const closeConfirm = () => {
-    clearMessageBox();
+    overlay.current?.classList.add("is-hiding");
+    wrapper.current?.classList.add("is-hiding");
+    setTimeout(() => {
+      clearMessageBox();
+    }, 200);
   };
 
   // 키 이벤트 등록
@@ -34,7 +38,7 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
   });
 
   return (
-    <div ref={overlay} className="confirm-background is-active">
+    <div ref={overlay} className="confirm-background">
       <div ref={wrapper} className="confirm">
         <header className="header">
           <p className="title">{title}</p>

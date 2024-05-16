@@ -1,6 +1,9 @@
 "use client";
 
 import React, {
+  ReactNode,
+  Dispatch,
+  SetStateAction,
   useEffect,
   useCallback,
   useRef,
@@ -10,16 +13,16 @@ import React, {
 import "./style.css";
 
 type ModalProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   isOpen: boolean;
   title?: string;
   isCloseOnOverlay?: boolean;
-  setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalOpen?: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function Modal(props: ModalProps) {
-  const overlay: React.RefObject<HTMLDivElement> = useRef(null);
-  const wrapper: React.RefObject<HTMLDivElement> = useRef(null);
+  const overlay = useRef<HTMLDivElement>(null);
+  const wrapper = useRef<HTMLDivElement>(null);
 
   const {
     children,
@@ -30,10 +33,15 @@ export default function Modal(props: ModalProps) {
   }: ModalProps = props;
 
   // 모달 닫기
-  const closeModal = useCallback(
-    () => setIsModalOpen!(false),
-    [setIsModalOpen]
-  );
+  const closeModal = useCallback(() => {
+    overlay.current?.classList.add("is-hiding");
+    wrapper.current?.classList.add("is-hiding");
+    setTimeout(() => {
+      overlay.current?.classList.remove("is-hiding");
+      wrapper.current?.classList.remove("is-hiding");
+      setIsModalOpen!(false);
+    }, 200);
+  }, [setIsModalOpen]);
 
   // Esc 키를 누르면 모달 닫기
   const onKeyDown = useCallback(
@@ -55,11 +63,6 @@ export default function Modal(props: ModalProps) {
     },
     [isCloseOnOverlay, closeModal, overlay, wrapper]
   );
-
-  useEffect(() => {
-    if (isOpen) overlay.current?.classList.add("is-active");
-    else overlay.current?.classList.remove("is-active");
-  }, [isOpen]);
 
   // 키 이벤트 등록
   useEffect(() => {

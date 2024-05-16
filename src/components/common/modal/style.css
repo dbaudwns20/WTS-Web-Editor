@@ -1,5 +1,23 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .modal-background {
-  @apply hidden;
+  @apply opacity-0;
   @apply fixed;
   @apply z-10;
   @apply left-0;
@@ -8,13 +26,15 @@
   @apply bottom-0;
   @apply mx-auto;
   @apply bg-black/60;
+  animation: fadeIn 0.2s ease-out forwards;
 }
 
-.modal-background.is-active {
-  @apply block;
+.modal-background.is-hiding {
+  animation: fadeOut 0.2s ease forwards;
 }
 
 .modal {
+  @apply opacity-0;
   @apply bg-white;
   @apply dark:bg-gray-800;
   @apply absolute;
@@ -27,10 +47,12 @@
   @apply md:w-8/12;
   @apply lg:w-1/3;
   @apply rounded-lg;
-  @apply transition;
-  @apply duration-150;
-  @apply ease-in-out;
   @apply overflow-hidden;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.modal.is-hiding {
+  animation: fadeOut 0.2s ease forwards;
 }
 
 .modal > .header {

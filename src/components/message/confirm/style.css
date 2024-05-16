@@ -1,5 +1,23 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .confirm-background {
-  @apply hidden;
+  @apply opacity-0;
   @apply fixed;
   @apply z-10;
   @apply left-0;
@@ -9,13 +27,15 @@
   @apply mx-auto;
   @apply bg-black/35;
   @apply dark:bg-black/65;
+  animation: fadeIn 0.2s ease forwards;
 }
 
-.confirm-background.is-active {
-  @apply block;
+.confirm-background.is-hiding {
+  animation: fadeOut 0.2s ease forwards;
 }
 
 .confirm {
+  @apply opacity-0;
   @apply bg-white;
   @apply dark:bg-gray-800;
   @apply absolute;
@@ -26,11 +46,13 @@
   @apply min-w-[400px];
   @apply max-w-[480px];
   @apply rounded-lg;
-  @apply transition;
-  @apply duration-150;
-  @apply ease-in-out;
   @apply overflow-hidden;
   @apply shadow-2xl;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.confirm.is-hiding {
+  animation: fadeOut 0.2s ease forwards;
 }
 
 .confirm > .header {
