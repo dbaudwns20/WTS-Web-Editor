@@ -55,6 +55,13 @@ body {
   font-size: 48px;
 }
 
+.undraggable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .label {
   @apply block;
   @apply text-sm;
@@ -227,4 +234,33 @@ body {
   @apply hover:text-sky-500;
   @apply hover:cursor-pointer;
   @apply duration-300;
+}
+
+.toggle {
+  @apply relative;
+  @apply inline-flex;
+  @apply cursor-pointer;
+  @apply items-center;
+  @apply w-full;
+}
+
+.toggle > .trigger {
+  @apply flex;
+  @apply items-center;
+  @apply h-5;
+  @apply w-9;
+  @apply rounded-full;
+  @apply border;
+  @apply bg-slate-200;
+  @apply after:absolute;
+  @apply after:left-[2px];
+  @apply after:h-4;
+  @apply after:w-4;
+  @apply after:rounded-full;
+  @apply after:border;
+  @apply after:border-gray-300;
+  @apply after:bg-white;
+  @apply after:transition-all;
+  @apply after:content-[''];
+  @apply mr-3;
 }

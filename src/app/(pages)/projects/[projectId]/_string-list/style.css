@@ -9,6 +9,12 @@
   @apply rounded-lg;
 }
 
+.string-list-wrapper.is-hide {
+  @apply invisible;
+  @apply w-0;
+  @apply mr-0;
+}
+
 .string-list-wrapper > .is-loading {
   @apply w-full;
   @apply h-full;

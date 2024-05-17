@@ -18,6 +18,7 @@ import String, { bindString } from "@/types/string";
 
 import { callApi } from "@/utils/common";
 import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
+import { ViewState, ViewAction } from "@/reducers/view.reducer";
 
 export type StringEditorType = {
   updateString: () => Promise<void>;
@@ -30,6 +31,8 @@ type StringEditorProps = {
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
   setIsEdited: Dispatch<SetStateAction<boolean>>;
+  viewState: ViewState;
+  viewDispatch: Dispatch<ViewAction>;
   handleResetScroll: () => void;
   completeFunction: (...arg: any) => void;
 };
@@ -41,6 +44,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     setStringGroup,
     isEdited,
     setIsEdited,
+    viewState,
+    viewDispatch,
     handleResetScroll,
     completeFunction,
   } = props;
@@ -56,6 +61,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   // refs
   const stringEditorWrapperRef = useRef<HTMLDivElement>(null);
   const stringEditorFormRef = useRef<HTMLFormElement>(null);
+  const stringEditorMainRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef<SubmitType>(null);
 
   // values
@@ -187,6 +193,22 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   }, [stringGroup]);
 
   useEffect(() => {
+    if (viewState.showStringList) {
+      stringEditorWrapperRef.current?.classList.remove("is-expand");
+    } else {
+      stringEditorWrapperRef.current?.classList.add("is-expand");
+    }
+  }, [viewState.showStringList]);
+
+  useEffect(() => {
+    if (viewState.stringEditorMode === "horizontal") {
+      stringEditorMainRef.current?.classList.remove("is-vertical");
+    } else {
+      stringEditorMainRef.current?.classList.add("is-vertical");
+    }
+  }, [viewState.stringEditorMode]);
+
+  useEffect(() => {
     submitRef.current!.setFetchState(isFetching);
   }, [isFetching]);
 
@@ -205,83 +227,168 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             STRING {currentString?.stringNumber}
           </a>
           <div className="string-editor-functions">
-            <a className="anchor-has-icon" onClick={resetTranslateTest}>
+            <a
+              className="anchor-has-icon undraggable"
+              onClick={resetTranslateTest}
+            >
               <span className="icon">
                 <i className="material-icons md-18">refresh</i>
               </span>
               <span>Reset</span>
             </a>
             <Dropdown position="right">
-              <a className="anchor-has-icon">
+              <a className="anchor-has-icon undraggable">
                 <span className="icon">
                   <i className="material-icons md-18">space_dashboard</i>
                 </span>
                 <span>View</span>
               </a>
-              <ul className="py-1" role="none">
-                <li
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                >
-                  menu 1
-                </li>
-                <li
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                >
-                  menu 2
-                </li>
-                <li
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                >
-                  menu 3
+              <ul className="px-4 py-3.5" role="none">
+                <li role="menuitem">
+                  <label className="toggle">
+                    <input
+                      id="switch"
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={viewState.showStringList}
+                      onChange={(e: any) => {
+                        viewDispatch({
+                          type: "showStringList",
+                          payload: e.target.checked,
+                        });
+                      }}
+                    />
+                    <label htmlFor="switch" className="hidden" />
+                    <div
+                      className="trigger
+                                 peer
+                                 peer-checked:border-2
+                                 peer-checked:after:translate-x-full
+                               peer-checked:bg-sky-400
+                               peer-checked:border-sky-300
+                               peer-checked:after:border-white"
+                    />
+                    <p className="text-gray-500 text-xs undraggable">
+                      String 목록 보이기
+                    </p>
+                  </label>
                 </li>
               </ul>
             </Dropdown>
             <Dropdown position="right">
-              <a className="anchor-has-icon">
+              <a className="anchor-has-icon undraggable">
                 <span className="icon">
                   <i className="material-icons md-18">settings</i>
                 </span>
                 <span>Settings</span>
               </a>
-              <ul className="py-1" role="none">
-                <li
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                >
-                  menu 1
+              <ul className="px-4 py-3.5" role="none">
+                <li role="menuitem">
+                  <label className="toggle">
+                    <input
+                      id="switch"
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={viewState.showStringList}
+                      onChange={(e: any) => {
+                        viewDispatch({
+                          type: "showStringList",
+                          payload: e.target.checked,
+                        });
+                      }}
+                    />
+                    <label htmlFor="switch" className="hidden" />
+                    <div
+                      className="trigger
+                                 peer
+                                 peer-checked:border-2
+                                 peer-checked:after:translate-x-full
+                               peer-checked:bg-sky-400
+                               peer-checked:border-sky-300
+                               peer-checked:after:border-white"
+                    />
+                    <p className="text-gray-500 text-xs undraggable">
+                      저장 후 다음 String 으로 이동
+                    </p>
+                  </label>
                 </li>
-                <li
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                >
-                  menu 2
+                <li role="menuitem">
+                  <label className="toggle">
+                    <input
+                      id="switch"
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={viewState.showStringList}
+                      onChange={(e: any) => {
+                        viewDispatch({
+                          type: "showStringList",
+                          payload: e.target.checked,
+                        });
+                      }}
+                    />
+                    <label htmlFor="switch" className="hidden" />
+                    <div
+                      className="trigger
+                                 peer
+                                 peer-checked:border-2
+                                 peer-checked:after:translate-x-full
+                               peer-checked:bg-sky-400
+                               peer-checked:border-sky-300
+                               peer-checked:after:border-white"
+                    />
+                    <p className="text-gray-500 text-xs undraggable">
+                      완료된 String 건너뛰기
+                    </p>
+                  </label>
                 </li>
-                <li
-                  className="text-gray-700 block px-4 py-2 text-sm"
-                  role="menuitem"
-                >
-                  menu 3
+                <li role="menuitem">
+                  <label className="toggle">
+                    <input
+                      id="switch"
+                      type="checkbox"
+                      className="peer sr-only"
+                      checked={viewState.showStringList}
+                      onChange={(e: any) => {
+                        viewDispatch({
+                          type: "showStringList",
+                          payload: e.target.checked,
+                        });
+                      }}
+                    />
+                    <label htmlFor="switch" className="hidden" />
+                    <div
+                      className="trigger
+                                 peer
+                                 peer-checked:border-2
+                                 peer-checked:after:translate-x-full
+                               peer-checked:bg-sky-400
+                               peer-checked:border-sky-300
+                               peer-checked:after:border-white"
+                    />
+                    <p className="text-gray-500 text-xs undraggable">
+                      String 이동 시 저장여부 묻지 않기
+                    </p>
+                  </label>
                 </li>
               </ul>
             </Dropdown>
           </div>
         </div>
-        <textarea
-          className="w-full border border-gray-300 bg-gray-100 rounded-lg p-4 h-full text-lg text-gray-500"
-          placeholder="Enter your text here..."
-          readOnly
-          tabIndex={-1}
-          value={currentString?.originalText}
-        ></textarea>
-        <textarea
-          className="translate-textarea"
-          placeholder="Enter your text here..."
-          onChange={(e) => setTranslatedText(e.target.value)}
-          value={translatedText}
-        ></textarea>
+        <div className="string-editor-main" ref={stringEditorMainRef}>
+          <textarea
+            className="w-full border border-gray-300 bg-gray-100 rounded-lg p-4 h-full text-lg text-gray-500"
+            placeholder="Enter your text here..."
+            readOnly
+            tabIndex={-1}
+            value={currentString?.originalText}
+          ></textarea>
+          <textarea
+            className="translate-textarea"
+            placeholder="Enter your text here..."
+            onChange={(e) => setTranslatedText(e.target.value)}
+            value={translatedText}
+          ></textarea>
+        </div>
         <div className="flex justify-center gap-2">
           <button
             type="button"

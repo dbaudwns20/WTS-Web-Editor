@@ -4,6 +4,10 @@
   @apply w-[70%];
 }
 
+.string-editor-wrapper.is-expand {
+  @apply w-full;
+}
+
 .string-editor-wrapper > .string-editor-form {
   @apply flex;
   @apply flex-col;
@@ -36,6 +40,17 @@
   @apply flex;
   @apply gap-2;
   @apply pr-2;
+}
+
+.string-editor-wrapper > .string-editor-form > .string-editor-main {
+  @apply h-full;
+  @apply flex;
+  @apply gap-4;
+  @apply mb-4;
+}
+
+.string-editor-wrapper > .string-editor-form > .string-editor-main.is-vertical {
+  @apply flex-col;
 }
 
 .translate-textarea {

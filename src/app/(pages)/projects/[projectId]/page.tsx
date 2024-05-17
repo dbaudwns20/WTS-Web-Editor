@@ -2,13 +2,20 @@
 
 import "./style.css";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useReducer, Reducer } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
 import Project, { bindProject } from "@/types/project";
 import String from "@/types/string";
 import { getLangTextByValue } from "@/types/language";
+
+import {
+  type ViewState,
+  type ViewAction,
+  viewInitState,
+  viewReducer,
+} from "@/reducers/view.reducer";
 
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
@@ -42,6 +49,12 @@ export default function ProjectDetail() {
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
+
+  // 보기 설정 reducer
+  const [viewState, viewDispatch] = useReducer<Reducer<ViewState, ViewAction>>(
+    viewReducer,
+    viewInitState
+  );
 
   // 프로젝트 가져오기
   const getProject = async () => {
@@ -225,6 +238,7 @@ export default function ProjectDetail() {
               projectId={projectId as string}
               setStringGroup={setStringGroup}
               isEdited={isEdited}
+              showStringList={viewState.showStringList}
               handleUpdateString={handleUpdateString}
             />
             <StringEditor
@@ -234,6 +248,8 @@ export default function ProjectDetail() {
               setStringGroup={setStringGroup}
               isEdited={isEdited}
               setIsEdited={setIsEdited}
+              viewState={viewState}
+              viewDispatch={viewDispatch}
               handleResetScroll={handleResetScroll}
               completeFunction={completeFunction}
             />

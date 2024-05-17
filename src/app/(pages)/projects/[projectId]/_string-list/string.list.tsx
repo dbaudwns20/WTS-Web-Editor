@@ -29,6 +29,7 @@ type StringListProps = {
   projectId: string;
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
+  showStringList: boolean;
   handleUpdateString: () => Promise<void>;
 };
 
@@ -40,7 +41,13 @@ export type StringListType = {
 };
 
 const StringList = forwardRef((props: StringListProps, ref) => {
-  const { projectId, setStringGroup, isEdited, handleUpdateString } = props;
+  const {
+    projectId,
+    setStringGroup,
+    isEdited,
+    showStringList,
+    handleUpdateString,
+  } = props;
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -270,6 +277,15 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     replaceCurrentString,
     setStringListScrollPosition,
   ]);
+
+  useEffect(() => {
+    // string list 숨김여부
+    if (showStringList) {
+      stringWrapperRef.current?.classList.remove("is-hide");
+    } else {
+      stringWrapperRef.current?.classList.add("is-hide");
+    }
+  }, [showStringList]);
 
   // mount 시 스트링 리스트 조회
   useEffect(() => {
