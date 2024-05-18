@@ -37,6 +37,7 @@
   @apply ring-black;
   @apply ring-opacity-5;
   @apply focus:outline-none;
+  @apply dark:bg-gray-700;
 }
 
 .dropdown > .dropdown-menu.is-active {

@@ -47,10 +47,11 @@
   @apply flex;
   @apply gap-4;
   @apply mb-4;
+  @apply flex-col;
 }
 
 .string-editor-wrapper > .string-editor-form > .string-editor-main.is-vertical {
-  @apply flex-col;
+  @apply flex-row;
 }
 
 .translate-textarea {
@@ -61,4 +62,43 @@
   @apply p-4;
   @apply h-full;
   @apply text-lg;
+}
+
+.view-mode {
+  @apply w-full;
+  @apply h-12;
+}
+
+.view-mode > input {
+  @apply hidden;
+}
+
+.view-mode > label {
+  @apply cursor-pointer;
+  @apply inline-flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply justify-center;
+  @apply w-full;
+  @apply h-full;
+  @apply text-gray-400;
+  @apply bg-white;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-md;
+  @apply duration-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-gray-400;
+}
+
+.view-mode > input:not(:checked) + label:hover {
+  @apply bg-gray-100;
+  @apply dark:bg-transparent/20;
+}
+
+.view-mode > input:checked + label {
+  @apply border-sky-400;
+  @apply text-sky-400;
+  @apply font-semibold;
+  @apply shadow-md;
 }

@@ -7,12 +7,12 @@ export type ViewState = {
 // 액션 타입 정의
 export type ViewAction =
   | { type: "showStringList"; payload: boolean }
-  | { type: "setStringEditorMode"; payload: "vertical" | "horizontal" };
+  | { type: "stringEditorMode"; payload: "vertical" | "horizontal" };
 
 // 초기 상태 정의
 export const viewInitState: ViewState = {
   showStringList: true,
-  stringEditorMode: "vertical",
+  stringEditorMode: "horizontal",
 };
 
 // 리듀서 함수 정의
@@ -23,7 +23,7 @@ export function viewReducer(state: ViewState, action: ViewAction) {
         ...state,
         showStringList: action.payload,
       };
-    case "setStringEditorMode":
+    case "stringEditorMode":
       return {
         ...state,
         stringEditorMode: action.payload,

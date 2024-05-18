@@ -241,7 +241,11 @@ body {
   @apply inline-flex;
   @apply cursor-pointer;
   @apply items-center;
-  @apply w-full;
+  @apply w-fit;
+}
+
+.toggle > .toggle-input {
+  @apply sr-only;
 }
 
 .toggle > .trigger {
@@ -251,7 +255,9 @@ body {
   @apply w-9;
   @apply rounded-full;
   @apply border;
+  @apply dark:border-slate-300;
   @apply bg-slate-200;
+  @apply dark:bg-transparent;
   @apply after:absolute;
   @apply after:left-[2px];
   @apply after:h-4;
@@ -260,7 +266,25 @@ body {
   @apply after:border;
   @apply after:border-gray-300;
   @apply after:bg-white;
+  @apply dark:after:bg-slate-300;
+  @apply dark:after:border-slate-700;
   @apply after:transition-all;
   @apply after:content-[''];
   @apply mr-3;
+}
+
+/* 체크된 상태 스타일링 */
+.toggle > .toggle-input:checked + .trigger {
+  @apply border-2;
+  @apply bg-sky-400;
+  @apply border-sky-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-sky-500;
+}
+
+.toggle > .toggle-input:checked + .trigger::after {
+  @apply translate-x-full;
+  @apply border-white;
+  @apply dark:bg-sky-400;
+  @apply dark:border-sky-400;
 }

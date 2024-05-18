@@ -168,7 +168,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
   };
 
-  const resetTranslateTest = () => {
+  const resetTranslateText = () => {
     setTranslatedText(
       currentString?.translatedText ? currentString.translatedText : ""
     );
@@ -229,7 +229,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
           <div className="string-editor-functions">
             <a
               className="anchor-has-icon undraggable"
-              onClick={resetTranslateTest}
+              onClick={resetTranslateText}
             >
               <span className="icon">
                 <i className="material-icons md-18">refresh</i>
@@ -241,15 +241,16 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span className="icon">
                   <i className="material-icons md-18">space_dashboard</i>
                 </span>
-                <span>View</span>
+                <span>Layout</span>
               </a>
               <ul className="px-4 py-3.5" role="none">
-                <li role="menuitem">
+                <li className="py-1 mb-1" role="menuitem">
+                  <label className="label !text-xs">String List</label>
                   <label className="toggle">
                     <input
                       id="switch"
                       type="checkbox"
-                      className="peer sr-only"
+                      className="toggle-input"
                       checked={viewState.showStringList}
                       onChange={(e: any) => {
                         viewDispatch({
@@ -258,20 +259,64 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                         });
                       }}
                     />
-                    <label htmlFor="switch" className="hidden" />
-                    <div
-                      className="trigger
-                                 peer
-                                 peer-checked:border-2
-                                 peer-checked:after:translate-x-full
-                               peer-checked:bg-sky-400
-                               peer-checked:border-sky-300
-                               peer-checked:after:border-white"
-                    />
-                    <p className="text-gray-500 text-xs undraggable">
+                    <div className="trigger" />
+                    <p className="text-gray-400 text-xs undraggable">
                       String 목록 보이기
                     </p>
                   </label>
+                </li>
+                <li>
+                  <label className="label !text-xs">Editor View</label>
+                  <ul className="grid w-full gap-3 grid-cols-2">
+                    <li>
+                      <div className="view-mode">
+                        <input
+                          type="radio"
+                          id="horizontal-view"
+                          value="horizontal"
+                          checked={viewState.stringEditorMode === "horizontal"}
+                          onChange={(e: any) => {
+                            viewDispatch({
+                              type: "stringEditorMode",
+                              payload: e.target.value,
+                            });
+                          }}
+                        />
+                        <label htmlFor="horizontal-view">
+                          <span className="icon">
+                            <i className="material-icons-outlined md-18">
+                              view_agenda
+                            </i>
+                          </span>
+                          <span className="text-xs">Horizontal</span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="view-mode">
+                        <input
+                          type="radio"
+                          id="vertical-view"
+                          value="vertical"
+                          checked={viewState.stringEditorMode === "vertical"}
+                          onChange={(e: any) => {
+                            viewDispatch({
+                              type: "stringEditorMode",
+                              payload: e.target.value,
+                            });
+                          }}
+                        />
+                        <label htmlFor="vertical-view">
+                          <span className="icon">
+                            <i className="material-icons-outlined md-18 rotate-90">
+                              view_agenda
+                            </i>
+                          </span>
+                          <span className="text-xs">Vertical</span>
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </Dropdown>
@@ -366,7 +411,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                                peer-checked:after:border-white"
                     />
                     <p className="text-gray-500 text-xs undraggable">
-                      String 이동 시 저장여부 묻지 않기
+                      String 이동 시 자동저장
                     </p>
                   </label>
                 </li>
