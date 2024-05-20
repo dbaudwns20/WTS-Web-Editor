@@ -12,7 +12,7 @@ export type PreferenceAction =
 // 초기 상태 정의
 export const preferenceInitState: PreferenceState = {
   autoMove: false,
-  skipCompleted: true,
+  skipCompleted: false,
 };
 
 // 리듀서 함수 정의

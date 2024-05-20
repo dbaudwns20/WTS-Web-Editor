@@ -137,13 +137,17 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       });
       // 편집 상태 해제
       setIsEdited(false);
+      // 자동이동 옵션이 켜져있다면
+      if (preferenceState.autoMove) {
+        moveString(false);
+      }
     });
   };
 
   // string 이동 핸들링
   const handleMove = (isForward: boolean) => {
-    // 편집된 정보가 존재한다면
-    if (isEdited) {
+    // 편집된 정보가 존재한다면 & 자동이동 옵션이 꺼져있다면
+    if (isEdited && !preferenceState.autoMove) {
       showConfirmMessage({
         title: "Warning",
         message: "Changes exist. Would you like to save?",
@@ -173,7 +177,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   // string 이동
   const moveString = (isForward: boolean) => {
     const string: String = isForward ? stringGroup[0]! : stringGroup[2]!;
-    router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
+    if (string)
+      router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
   };
 
   // 초기화
