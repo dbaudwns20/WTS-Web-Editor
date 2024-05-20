@@ -13,6 +13,7 @@ import "./style.css";
 
 import Submit, { SubmitType } from "@/components/button/submit";
 import Dropdown from "@/components/common/dropdown/dropdown";
+import Translator from "./_translator/translator";
 
 import String, { bindString } from "@/types/string";
 
@@ -241,15 +242,6 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             STRING {currentString?.stringNumber}
           </a>
           <div className="string-editor-functions">
-            {/* <a
-              className="anchor-has-icon undraggable"
-              onClick={resetTranslateText}
-            >
-              <span className="icon">
-                <i className="material-icons md-18">refresh</i>
-              </span>
-              <span>Reset</span>
-            </a> */}
             <Dropdown position="right">
               <a className="anchor-has-icon undraggable">
                 <span className="icon">
@@ -400,19 +392,11 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
           </div>
         </header>
         <div className="string-editor-main" ref={stringEditorMainRef}>
-          <textarea
-            className="w-full border border-gray-300 bg-gray-100 rounded-lg p-4 h-full text-lg text-gray-500"
-            placeholder="Enter your text here..."
-            readOnly
-            tabIndex={-1}
-            value={currentString?.originalText}
-          ></textarea>
-          <textarea
-            className="translate-textarea"
-            placeholder="Enter your text here..."
-            onChange={(e) => setTranslatedText(e.target.value)}
-            value={translatedText}
-          ></textarea>
+          <Translator
+            originalText={currentString?.originalText}
+            translatedText={translatedText}
+            setTranslatedText={setTranslatedText}
+          />
         </div>
         <footer className="string-editor-footer">
           <button
