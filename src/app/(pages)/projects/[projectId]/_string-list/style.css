@@ -62,9 +62,9 @@
   @apply relative;
   @apply p-4;
   @apply block;
-  @apply border-b border-gray-200;
-  @apply last:border-b-0;
+  @apply border-b border-gray-200 last:border-b-0;
   @apply hover:bg-slate-100;
+  @apply dark:hover:bg-slate-700;
   @apply hover:cursor-pointer;
   @apply transition;
   @apply duration-500;
@@ -152,8 +152,8 @@
   > .string-list-wrapper
   > .string-list
   > .string.is-active {
-  @apply bg-sky-100;
-  @apply bg-opacity-50;
+  @apply bg-sky-100/50;
+  @apply dark:bg-sky-700/30;
 }
 
 .string-content-section

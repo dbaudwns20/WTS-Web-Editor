@@ -236,7 +236,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
           updateString();
         }}
       >
-        <div className="string-editor-header">
+        <header className="string-editor-header">
           <a className="string-number" onClick={handleResetScroll}>
             STRING {currentString?.stringNumber}
           </a>
@@ -398,7 +398,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
               </ul>
             </Dropdown>
           </div>
-        </div>
+        </header>
         <div className="string-editor-main" ref={stringEditorMainRef}>
           <textarea
             className="w-full border border-gray-300 bg-gray-100 rounded-lg p-4 h-full text-lg text-gray-500"
@@ -414,29 +414,29 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             value={translatedText}
           ></textarea>
         </div>
-        <div className="flex justify-center gap-2">
+        <footer className="string-editor-footer">
           <button
             type="button"
             disabled={moveButtonState[0]}
             onClick={() => handleMove(true)}
-            className="w-full bg-gray-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+            className="button move-button"
           >
             PREV
           </button>
           <Submit
             ref={submitRef}
-            buttonClass="w-full bg-green-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+            buttonClass="button is-success"
             buttonText="SAVE"
           />
           <button
             type="button"
             disabled={moveButtonState[1]}
             onClick={() => handleMove(false)}
-            className="w-full bg-gray-500 p-2 rounded-lg text-white font-semibold h-fit text-sm"
+            className="button move-button"
           >
             NEXT
           </button>
-        </div>
+        </footer>
       </form>
     </div>
   );

@@ -53,6 +53,33 @@
   @apply flex-row;
 }
 
+.string-editor-wrapper > .string-editor-form > .string-editor-footer {
+  @apply flex;
+  @apply gap-4;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-footer
+  > .button.move-button {
+  @apply bg-gray-500;
+  @apply text-white;
+  @apply w-full;
+  @apply dark:bg-transparent;
+  @apply dark:border-2 border-gray-400;
+  @apply dark:text-gray-400;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-footer
+  > .button.move-button:not(:disabled):hover {
+  @apply bg-gray-600;
+  @apply active:bg-gray-200;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
 .translate-textarea {
   @apply w-full;
   @apply border;

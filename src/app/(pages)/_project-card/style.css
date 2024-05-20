@@ -5,7 +5,7 @@
   @apply bg-white;
   @apply rounded-lg;
   @apply shadow-xl;
-  @apply dark:bg-gray-800;
+  @apply dark:bg-gray-700;
   @apply dark:border-gray-700;
   @apply transition;
   @apply duration-300;
@@ -24,14 +24,13 @@
   @apply border-2;
   @apply bg-teal-500;
   @apply border-teal-500;
-  @apply dark:bg-gray-700;
+  @apply dark:bg-transparent;
   @apply text-white;
   @apply rounded-full;
   @apply px-2;
   @apply py-1;
   @apply font-semibold;
   @apply text-xs;
-  @apply z-10;
 }
 
 .project.is-completed {
@@ -54,7 +53,7 @@
   @apply font-bold;
   @apply leading-6;
   @apply text-gray-500;
-  @apply dark:text-white;
+  @apply dark:text-gray-300;
   @apply h-[48px];
   @apply mb-4;
   @apply overflow-hidden;
@@ -125,7 +124,7 @@
   @apply overflow-hidden;
   @apply bg-gray-500;
   @apply bg-opacity-35;
-  @apply dark:bg-gray-700;
+  @apply dark:bg-gray-600;
 }
 
 .project-content > .progress-bar > .percent {

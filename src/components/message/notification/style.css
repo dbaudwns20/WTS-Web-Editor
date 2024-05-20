@@ -125,9 +125,9 @@
 }
 
 .notification.is-success {
-  @apply bg-green-600;
+  @apply bg-green-500;
   @apply text-white;
-  @apply dark:bg-green-800;
+  @apply dark:bg-green-700;
 }
 
 .notification.is-danger {
