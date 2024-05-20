@@ -30,6 +30,7 @@ type StringListProps = {
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
   showStringList: boolean;
+  skipCompleted: boolean;
   handleUpdateString: () => Promise<void>;
 };
 
@@ -46,6 +47,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     setStringGroup,
     isEdited,
     showStringList,
+    skipCompleted,
     handleUpdateString,
   } = props;
 
@@ -83,6 +85,10 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     // 마지막 수정 string number 가 존재할 경우
     if (currentStringNumber !== -1) {
       url += `&lastModifiedStringNumber=${currentStringNumber}`;
+    }
+    // 자동이동 설정 옵션이 켜져있는 경우
+    if (skipCompleted) {
+      url += "&skipCompleted=true";
     }
 
     const response = await callApi(url);
@@ -179,7 +185,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     node.scrollTo(options);
   }, [currentStringNumber]);
 
-  const handleMove = (stringGroup: (_String | null)[]) => {
+  const handleMove = (string: _String) => {
     // 편집된 상태인 경우
     if (isEdited) {
       showConfirmMessage({
@@ -189,32 +195,30 @@ const StringList = forwardRef((props: StringListProps, ref) => {
           {
             label: "Ignore",
             class: "default",
-            onClick: () => replaceCurrentString(stringGroup),
+            onClick: () => replaceCurrentString(string),
           },
           {
             label: "Save",
             class: "success",
             onClick: async () => {
               await handleUpdateString();
-              replaceCurrentString(stringGroup);
+              replaceCurrentString(string);
             },
           },
         ],
       });
     } else {
-      replaceCurrentString(stringGroup);
+      replaceCurrentString(string);
     }
   };
 
   const replaceCurrentString = useCallback(
-    (stringGroup: (_String | null)[]) => {
-      if (!stringGroup[1]) return;
-      const string: _String = stringGroup[1];
-      setStringGroup(stringGroup);
+    (string: _String) => {
+      if (!string) return;
       setCurrentIndex(string.index);
       router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
     },
-    [projectId, router, setStringGroup]
+    [projectId, router]
   );
 
   // 스크롤이 맨 밑으로 갈 경우 추가 데이터 로딩
@@ -242,38 +246,75 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     };
   });
 
-  const defineStringGroup = useCallback((): (_String | null)[] => {
+  const setGroupAndGetCurrent = useCallback((): _String => {
     let stringGroup: (_String | null)[] = [null, stringList[0], null];
-    if (stringList.length > 1) {
+
+    if (stringList.length <= 1) return stringList[0];
+
+    const findNextIncomplete = (
+      startIndex: number,
+      direction: 1 | -1
+    ): _String | null => {
+      let result: _String | null = null;
+      for (
+        let i = startIndex;
+        i >= 0 && i < stringList.length;
+        i += direction
+      ) {
+        if (!stringList[i].completedAt) {
+          result = stringList[i];
+          break;
+        }
+      }
+      return result;
+    };
+
+    if (skipCompleted) {
+      if (currentStringNumber === -1) {
+        stringGroup[2] = findNextIncomplete(1, 1);
+      } else {
+        const currentStringIndex: number = stringList.findIndex(
+          (string) => string.stringNumber === currentStringNumber
+        );
+        if (currentStringIndex !== -1) {
+          stringGroup[0] = findNextIncomplete(currentStringIndex - 1, -1);
+          stringGroup[1] = stringList[currentStringIndex];
+          stringGroup[2] = findNextIncomplete(currentStringIndex + 1, 1);
+        }
+      }
+    } else {
       if (currentStringNumber === -1) {
         stringGroup[2] = stringList[1];
       } else {
-        for (let i = 0; i < stringList.length; i++) {
-          if (stringList[i].stringNumber === currentStringNumber) {
-            stringGroup = [
-              stringList[i - 1] ?? null,
-              stringList[i],
-              stringList[i + 1] ?? null,
-            ];
-            break;
-          }
+        const currentStringIndex: number = stringList.findIndex(
+          (string) => string.stringNumber === currentStringNumber
+        );
+        if (currentStringIndex !== -1) {
+          stringGroup = [
+            stringList[currentStringIndex - 1] ?? null,
+            stringList[currentStringIndex],
+            stringList[currentStringIndex + 1] ?? null,
+          ];
         }
       }
     }
-    return stringGroup;
-  }, [stringList, currentStringNumber]);
+    // set stringGroup
+    setStringGroup(stringGroup);
+    // return string
+    return stringGroup[1]!;
+  }, [stringList, currentStringNumber, skipCompleted, setStringGroup]);
 
   useEffect(() => {
     if (stringList.length === 0) return;
     // string group 정의
-    const stringGroup: (_String | null)[] = defineStringGroup();
+    const string: _String = setGroupAndGetCurrent();
     // string 설정
-    replaceCurrentString(stringGroup);
+    replaceCurrentString(string);
     // 스크롤 위치 조정
     setStringListScrollPosition();
   }, [
     stringList,
-    defineStringGroup,
+    setGroupAndGetCurrent,
     replaceCurrentString,
     setStringListScrollPosition,
   ]);
@@ -282,10 +323,12 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     // string list 숨김여부
     if (showStringList) {
       stringWrapperRef.current?.classList.remove("is-hide");
+      // string list 보이기 후 스크롤 위치 이동
+      setStringListScrollPosition();
     } else {
       stringWrapperRef.current?.classList.add("is-hide");
     }
-  }, [showStringList]);
+  }, [showStringList, setStringListScrollPosition]);
 
   // mount 시 스트링 리스트 조회
   useEffect(() => {
@@ -308,7 +351,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       ) : (
         <>
           <header className="string-list-header">
-            <span>STRINGS</span>
             <span>{currentIndex + " / " + pageInfo.totalCount}</span>
           </header>
           <div className="string-list" ref={stringListRef}>
@@ -317,13 +359,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                 string.stringNumber === currentStringNumber;
               return (
                 <a
-                  onClick={() => {
-                    handleMove([
-                      stringList[string.index - 1] ?? null,
-                      string,
-                      stringList[string.index + 1] ?? null,
-                    ]);
-                  }}
+                  onClick={() => handleMove(string)}
                   key={string.index}
                   className={isActive ? "string is-active" : "string"}
                 >

@@ -250,6 +250,7 @@ body {
 
 .toggle > .trigger {
   @apply flex;
+  @apply shrink-0;
   @apply items-center;
   @apply h-5;
   @apply w-9;

@@ -54,29 +54,44 @@ export async function resolveStringModelPagination(
   let currentPage = Number(req.nextUrl.searchParams.get("currentPage"));
   // 제한
   let offset: number = Number(req.nextUrl.searchParams.get("offset"));
-
   // 마지막 수정된 string number
   const lastModifiedStringNumber: string | null = req.nextUrl.searchParams.get(
     "lastModifiedStringNumber"
   );
+  // 자동이동 설정 여부
+  const skipCompleted: boolean =
+    req.nextUrl.searchParams.get("skipCompleted") === "true";
 
   if (lastModifiedStringNumber) {
     let target: number = Number(lastModifiedStringNumber);
-    while (true) {
-      target += 1;
-      if (target % 10 === 0) break;
-    }
-    offset = target;
+    offset = target + (10 - (target % 10));
   }
 
   // 정렬
   const order = setOrder(req);
-
-  const data = await model
+  // 조회
+  let data = await model
     .find(query)
     .sort(order) // 정렬
     .skip((currentPage - 1) * offset)
     .limit(offset);
+
+  // skipCompleted 가 true 일 경우
+  if (skipCompleted) {
+    // 미완료된 String 찾기
+    while (data.findIndex((item: any) => item.completedAt === null) === -1) {
+      // data 길이가 모든 도큐먼트의 길이와 동일하다면 break
+      if (data.length >= totalCount) break;
+      // offset 2배 증가
+      offset *= 2;
+      // 다시 조회
+      data = await model
+        .find(query)
+        .sort(order) // 정렬
+        .skip((currentPage - 1) * offset)
+        .limit(offset);
+    }
+  }
 
   if (lastModifiedStringNumber) {
     currentPage = offset / 10;

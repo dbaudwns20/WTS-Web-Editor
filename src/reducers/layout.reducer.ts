@@ -1,22 +1,22 @@
 // 상태 타입 정의
-export type ViewState = {
+export type LayoutState = {
   showStringList: boolean;
   stringEditorMode: "vertical" | "horizontal";
 };
 
 // 액션 타입 정의
-export type ViewAction =
+export type LayoutAction =
   | { type: "showStringList"; payload: boolean }
   | { type: "stringEditorMode"; payload: "vertical" | "horizontal" };
 
 // 초기 상태 정의
-export const viewInitState: ViewState = {
+export const layoutInitState: LayoutState = {
   showStringList: true,
   stringEditorMode: "horizontal",
 };
 
 // 리듀서 함수 정의
-export function viewReducer(state: ViewState, action: ViewAction) {
+export function layoutReducer(state: LayoutState, action: LayoutAction) {
   switch (action.type) {
     case "showStringList":
       return {

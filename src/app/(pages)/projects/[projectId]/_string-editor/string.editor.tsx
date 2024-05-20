@@ -18,7 +18,11 @@ import String, { bindString } from "@/types/string";
 
 import { callApi } from "@/utils/common";
 import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
-import { ViewState, ViewAction } from "@/reducers/view.reducer";
+import { type LayoutState, type LayoutAction } from "@/reducers/layout.reducer";
+import {
+  type PreferenceState,
+  type PreferenceAction,
+} from "@/reducers/preference.reducer";
 
 export type StringEditorType = {
   updateString: () => Promise<void>;
@@ -31,8 +35,10 @@ type StringEditorProps = {
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
   setIsEdited: Dispatch<SetStateAction<boolean>>;
-  viewState: ViewState;
-  viewDispatch: Dispatch<ViewAction>;
+  layoutState: LayoutState;
+  layoutDispatch: Dispatch<LayoutAction>;
+  preferenceState: PreferenceState;
+  preferenceDispatch: Dispatch<PreferenceAction>;
   handleResetScroll: () => void;
   completeFunction: (...arg: any) => void;
 };
@@ -44,8 +50,10 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     setStringGroup,
     isEdited,
     setIsEdited,
-    viewState,
-    viewDispatch,
+    layoutState,
+    layoutDispatch,
+    preferenceState,
+    preferenceDispatch,
     handleResetScroll,
     completeFunction,
   } = props;
@@ -168,6 +176,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     router.replace(`/projects/${projectId}?strings=${string.stringNumber}`);
   };
 
+  // 초기화
   const resetTranslateText = () => {
     setTranslatedText(
       currentString?.translatedText ? currentString.translatedText : ""
@@ -193,20 +202,20 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   }, [stringGroup]);
 
   useEffect(() => {
-    if (viewState.showStringList) {
+    if (layoutState.showStringList) {
       stringEditorWrapperRef.current?.classList.remove("is-expand");
     } else {
       stringEditorWrapperRef.current?.classList.add("is-expand");
     }
-  }, [viewState.showStringList]);
+  }, [layoutState.showStringList]);
 
   useEffect(() => {
-    if (viewState.stringEditorMode === "horizontal") {
+    if (layoutState.stringEditorMode === "horizontal") {
       stringEditorMainRef.current?.classList.remove("is-vertical");
     } else {
       stringEditorMainRef.current?.classList.add("is-vertical");
     }
-  }, [viewState.stringEditorMode]);
+  }, [layoutState.stringEditorMode]);
 
   useEffect(() => {
     submitRef.current!.setFetchState(isFetching);
@@ -227,7 +236,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             STRING {currentString?.stringNumber}
           </a>
           <div className="string-editor-functions">
-            <a
+            {/* <a
               className="anchor-has-icon undraggable"
               onClick={resetTranslateText}
             >
@@ -235,7 +244,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <i className="material-icons md-18">refresh</i>
               </span>
               <span>Reset</span>
-            </a>
+            </a> */}
             <Dropdown position="right">
               <a className="anchor-has-icon undraggable">
                 <span className="icon">
@@ -244,16 +253,16 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span>Layout</span>
               </a>
               <ul className="px-4 py-3.5" role="none">
-                <li className="py-1 mb-1" role="menuitem">
+                <li className="mb-2" role="menuitem">
                   <label className="label !text-xs">String List</label>
                   <label className="toggle">
                     <input
                       id="switch"
                       type="checkbox"
                       className="toggle-input"
-                      checked={viewState.showStringList}
+                      checked={layoutState.showStringList}
                       onChange={(e: any) => {
-                        viewDispatch({
+                        layoutDispatch({
                           type: "showStringList",
                           payload: e.target.checked,
                         });
@@ -274,9 +283,11 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                           type="radio"
                           id="horizontal-view"
                           value="horizontal"
-                          checked={viewState.stringEditorMode === "horizontal"}
+                          checked={
+                            layoutState.stringEditorMode === "horizontal"
+                          }
                           onChange={(e: any) => {
-                            viewDispatch({
+                            layoutDispatch({
                               type: "stringEditorMode",
                               payload: e.target.value,
                             });
@@ -298,9 +309,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                           type="radio"
                           id="vertical-view"
                           value="vertical"
-                          checked={viewState.stringEditorMode === "vertical"}
+                          checked={layoutState.stringEditorMode === "vertical"}
                           onChange={(e: any) => {
-                            viewDispatch({
+                            layoutDispatch({
                               type: "stringEditorMode",
                               payload: e.target.value,
                             });
@@ -325,36 +336,33 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span className="icon">
                   <i className="material-icons md-18">settings</i>
                 </span>
-                <span>Settings</span>
+                <span>Preferences</span>
               </a>
-              <ul className="px-4 py-3.5" role="none">
-                <li role="menuitem">
+              <ul className="w-[230px] px-4 py-3.5" role="none">
+                <li className="mb-2" role="menuitem">
+                  <label className="label !text-xs">Editor Preference</label>
                   <label className="toggle">
                     <input
                       id="switch"
                       type="checkbox"
-                      className="peer sr-only"
-                      checked={viewState.showStringList}
+                      className="toggle-input"
+                      checked={preferenceState.autoMove}
                       onChange={(e: any) => {
-                        viewDispatch({
-                          type: "showStringList",
+                        preferenceDispatch({
+                          type: "autoMove",
                           payload: e.target.checked,
                         });
                       }}
                     />
-                    <label htmlFor="switch" className="hidden" />
-                    <div
-                      className="trigger
-                                 peer
-                                 peer-checked:border-2
-                                 peer-checked:after:translate-x-full
-                               peer-checked:bg-sky-400
-                               peer-checked:border-sky-300
-                               peer-checked:after:border-white"
-                    />
-                    <p className="text-gray-500 text-xs undraggable">
-                      저장 후 다음 String 으로 이동
-                    </p>
+                    <div className="trigger" />
+                    <div className="leading-4 undraggable">
+                      <label className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
+                        자동이동
+                      </label>
+                      <p className="text-xs text-gray-400 dark:text-gray-300">
+                        String 데이터 저장 시 자동으로 다음 항목으로 이동
+                      </p>
+                    </div>
                   </label>
                 </li>
                 <li role="menuitem">
@@ -362,57 +370,24 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                     <input
                       id="switch"
                       type="checkbox"
-                      className="peer sr-only"
-                      checked={viewState.showStringList}
+                      className="toggle-input"
+                      checked={preferenceState.skipCompleted}
                       onChange={(e: any) => {
-                        viewDispatch({
-                          type: "showStringList",
+                        preferenceDispatch({
+                          type: "skipCompleted",
                           payload: e.target.checked,
                         });
                       }}
                     />
-                    <label htmlFor="switch" className="hidden" />
-                    <div
-                      className="trigger
-                                 peer
-                                 peer-checked:border-2
-                                 peer-checked:after:translate-x-full
-                               peer-checked:bg-sky-400
-                               peer-checked:border-sky-300
-                               peer-checked:after:border-white"
-                    />
-                    <p className="text-gray-500 text-xs undraggable">
-                      완료된 String 건너뛰기
-                    </p>
-                  </label>
-                </li>
-                <li role="menuitem">
-                  <label className="toggle">
-                    <input
-                      id="switch"
-                      type="checkbox"
-                      className="peer sr-only"
-                      checked={viewState.showStringList}
-                      onChange={(e: any) => {
-                        viewDispatch({
-                          type: "showStringList",
-                          payload: e.target.checked,
-                        });
-                      }}
-                    />
-                    <label htmlFor="switch" className="hidden" />
-                    <div
-                      className="trigger
-                                 peer
-                                 peer-checked:border-2
-                                 peer-checked:after:translate-x-full
-                               peer-checked:bg-sky-400
-                               peer-checked:border-sky-300
-                               peer-checked:after:border-white"
-                    />
-                    <p className="text-gray-500 text-xs undraggable">
-                      String 이동 시 자동저장
-                    </p>
+                    <div className="trigger" />
+                    <div className="leading-4 undraggable">
+                      <label className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
+                        건너뛰기
+                      </label>
+                      <p className="text-xs text-gray-400 dark:text-gray-300">
+                        String 변경 시 완료된 항목은 건너뛰기
+                      </p>
+                    </div>
                   </label>
                 </li>
               </ul>

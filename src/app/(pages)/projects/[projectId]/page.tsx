@@ -11,11 +11,17 @@ import String from "@/types/string";
 import { getLangTextByValue } from "@/types/language";
 
 import {
-  type ViewState,
-  type ViewAction,
-  viewInitState,
-  viewReducer,
-} from "@/reducers/view.reducer";
+  type LayoutState,
+  type LayoutAction,
+  layoutInitState,
+  layoutReducer,
+} from "@/reducers/layout.reducer";
+import {
+  type PreferenceState,
+  type PreferenceAction,
+  preferenceInitState,
+  preferenceReducer,
+} from "@/reducers/preference.reducer";
 
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
@@ -50,11 +56,14 @@ export default function ProjectDetail() {
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
 
-  // 보기 설정 reducer
-  const [viewState, viewDispatch] = useReducer<Reducer<ViewState, ViewAction>>(
-    viewReducer,
-    viewInitState
-  );
+  // 레이아웃 reducer
+  const [layoutState, layoutDispatch] = useReducer<
+    Reducer<LayoutState, LayoutAction>
+  >(layoutReducer, layoutInitState);
+  // 옵션 reducer
+  const [preferenceState, preferenceDispatch] = useReducer<
+    Reducer<PreferenceState, PreferenceAction>
+  >(preferenceReducer, preferenceInitState);
 
   // 프로젝트 가져오기
   const getProject = async () => {
@@ -118,6 +127,7 @@ export default function ProjectDetail() {
     router.push("/");
   };
 
+  // string editor 에서 호출 용
   const handleResetScroll = () => {
     stringListRef.current?.setStringListScrollPosition();
   };
@@ -134,6 +144,11 @@ export default function ProjectDetail() {
     // 프로젝트 재조회
     getProject();
   };
+
+  useEffect(() => {
+    // 자동이동 설정이 변경될 경우 string list 리로드
+    setStringListKey((pre) => pre + 1);
+  }, [preferenceState.skipCompleted]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -238,7 +253,8 @@ export default function ProjectDetail() {
               projectId={projectId as string}
               setStringGroup={setStringGroup}
               isEdited={isEdited}
-              showStringList={viewState.showStringList}
+              showStringList={layoutState.showStringList}
+              skipCompleted={preferenceState.skipCompleted}
               handleUpdateString={handleUpdateString}
             />
             <StringEditor
@@ -248,8 +264,10 @@ export default function ProjectDetail() {
               setStringGroup={setStringGroup}
               isEdited={isEdited}
               setIsEdited={setIsEdited}
-              viewState={viewState}
-              viewDispatch={viewDispatch}
+              layoutState={layoutState}
+              layoutDispatch={layoutDispatch}
+              preferenceState={preferenceState}
+              preferenceDispatch={preferenceDispatch}
               handleResetScroll={handleResetScroll}
               completeFunction={completeFunction}
             />
