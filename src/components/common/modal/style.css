@@ -26,7 +26,7 @@
   @apply bottom-0;
   @apply mx-auto;
   @apply bg-black/60;
-  animation: fadeIn 0.2s ease-out forwards;
+  animation: fadeIn 0.2s ease forwards;
 }
 
 .modal-background.is-hiding {

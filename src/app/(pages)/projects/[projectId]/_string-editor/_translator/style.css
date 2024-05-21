@@ -1,0 +1,71 @@
+.translator {
+  @apply h-full;
+  @apply w-full;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+  @apply px-4;
+  @apply relative;
+  @apply duration-200;
+}
+
+.translator.is-original-text {
+  @apply bg-gray-100;
+}
+
+.translator.is-disabled {
+  @apply pointer-events-none;
+  @apply opacity-60;
+}
+
+.translator.is-focused {
+  @apply border-sky-300;
+  @apply ring-2;
+  @apply ring-sky-100;
+  @apply [&>.translator-header]:text-sky-400;
+}
+
+.translator > .translator-header {
+  @apply pt-3;
+  @apply mb-2.5;
+  @apply text-xs;
+  @apply text-gray-400;
+}
+
+.translator > .translator-footer {
+  @apply w-full;
+  @apply absolute;
+  @apply bottom-2;
+  @apply right-0;
+  @apply px-4;
+}
+
+.translator > .translator-footer > .translator-footer-functions {
+  @apply flex;
+  @apply items-center;
+  @apply justify-end;
+}
+
+.translator > .original-text {
+  @apply w-full;
+  @apply text-gray-500;
+  @apply bg-gray-100;
+  @apply break-all;
+  @apply resize-none;
+  @apply outline-none;
+  @apply mb-6;
+}
+
+.translator > .translate-text {
+  @apply w-full;
+  @apply text-gray-500;
+  @apply resize-none;
+  @apply break-all;
+  @apply outline-none;
+  @apply mb-6;
+  @apply bg-transparent;
+}
+
+.translator > .translate-text:disabled {
+  @apply cursor-not-allowed;
+}

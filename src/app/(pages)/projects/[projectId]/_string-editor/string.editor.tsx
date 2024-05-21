@@ -11,9 +11,9 @@ import { useRouter } from "next/navigation";
 
 import "./style.css";
 
-import Submit, { SubmitType } from "@/components/button/submit";
+import Submit, { type SubmitType } from "@/components/button/submit";
 import Dropdown from "@/components/common/dropdown/dropdown";
-import Translator from "./_translator/translator";
+import Translator, { type TranslatorType } from "./_translator/translator";
 
 import String, { bindString } from "@/types/string";
 
@@ -72,6 +72,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   const stringEditorFormRef = useRef<HTMLFormElement>(null);
   const stringEditorMainRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef<SubmitType>(null);
+  const translatorRef = useRef<TranslatorType>(null);
 
   // values
   const [isFetching, setIsFetching] = useState<boolean>(false);
@@ -187,6 +188,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     setTranslatedText(
       currentString?.translatedText ? currentString.translatedText : ""
     );
+    // 편집기 focus
+    translatorRef.current?.setFocus();
   };
 
   useEffect(() => {
@@ -204,6 +207,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       );
       // 이동 버튼 disabled 여부 set
       setMoveButtonState([!stringGroup[0], !stringGroup[2]]);
+      // 편집기 focus
+      translatorRef.current?.setFocus();
     }
   }, [stringGroup]);
 
@@ -213,6 +218,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     } else {
       stringEditorWrapperRef.current?.classList.add("is-expand");
     }
+    // 편집기 focus
+    translatorRef.current?.setFocus();
   }, [layoutState.showStringList]);
 
   useEffect(() => {
@@ -221,6 +228,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     } else {
       stringEditorMainRef.current?.classList.add("is-vertical");
     }
+    // 편집기 focus
+    translatorRef.current?.setFocus();
   }, [layoutState.stringEditorMode]);
 
   useEffect(() => {
@@ -393,9 +402,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
         </header>
         <div className="string-editor-main" ref={stringEditorMainRef}>
           <Translator
+            ref={translatorRef}
             originalText={currentString?.originalText}
             translatedText={translatedText}
             setTranslatedText={setTranslatedText}
+            stringEditorMode={layoutState.stringEditorMode}
+            resetTranslateText={resetTranslateText}
           />
         </div>
         <footer className="string-editor-footer">
@@ -405,12 +417,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             onClick={() => handleMove(true)}
             className="button move-button"
           >
-            PREV
+            BACK
           </button>
           <Submit
             ref={submitRef}
             buttonClass="button is-success"
-            buttonText="SAVE"
+            buttonText="COMPLETE"
           />
           <button
             type="button"
