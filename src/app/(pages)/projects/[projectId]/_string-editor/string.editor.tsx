@@ -155,8 +155,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
 
   // string 이동 핸들링
   const handleMove = (isForward: boolean) => {
-    // 편집된 정보가 존재한다면 & 자동이동 옵션이 꺼져있다면
-    if (isEdited && !preferenceState.autoMove) {
+    // 편집된 정보가 존재한다면
+    if (isEdited) {
       const buttons: FuncButton[] = [
         {
           label: "Ignore",
