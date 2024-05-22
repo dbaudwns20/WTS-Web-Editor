@@ -33,10 +33,8 @@ export default function Modal(props: ModalProps) {
   // 모달 닫기
   const closeModal = useCallback(() => {
     overlay.current?.classList.add("is-hiding");
-    wrapper.current?.classList.add("is-hiding");
     setTimeout(() => {
       overlay.current?.classList.remove("is-hiding");
-      wrapper.current?.classList.remove("is-hiding");
       setIsModalOpen!(false);
     }, 200);
   }, [setIsModalOpen]);

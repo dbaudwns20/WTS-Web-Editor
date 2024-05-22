@@ -35,7 +35,6 @@
 }
 
 .confirm {
-  @apply opacity-0;
   @apply bg-white;
   @apply dark:bg-gray-800;
   @apply absolute;
@@ -48,11 +47,6 @@
   @apply rounded-lg;
   @apply overflow-hidden;
   @apply shadow-2xl;
-  animation: fadeIn 0.2s ease forwards;
-}
-
-.confirm.is-hiding {
-  animation: fadeOut 0.2s ease forwards;
 }
 
 .confirm > .header {

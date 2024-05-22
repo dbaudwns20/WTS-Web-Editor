@@ -11,26 +11,31 @@ import {
 
 import "./style.css";
 
+import String from "@/types/string";
+
 export type TranslatorType = {
   setFocus: () => void;
-  setDisabled: () => void;
+  setDisabled: (val: boolean) => void;
+  setHeight: () => void;
 };
 
 type TranslatorProps = {
+  currentString: String | undefined;
   originalText: string | undefined;
   translatedText: string;
   setTranslatedText: Dispatch<SetStateAction<string>>;
-  stringEditorMode: string;
   resetTranslateText: () => void;
+  updateString: (isDraft: boolean) => Promise<void>;
 };
 
 const Translator = forwardRef((props: TranslatorProps, ref) => {
   const {
+    currentString,
     originalText = "",
     translatedText = "",
     setTranslatedText,
-    stringEditorMode,
     resetTranslateText,
+    updateString,
   } = props;
 
   // refs
@@ -45,10 +50,11 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   useImperativeHandle(ref, () => ({
     setFocus,
     setDisabled,
+    setHeight,
   }));
 
-  const setDisabled = () => {
-    setIsDisabled((pre) => !pre);
+  const setDisabled = (val: boolean) => {
+    setIsDisabled(val);
   };
 
   const setFocus = () => {
@@ -71,6 +77,11 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     setFocus();
   };
 
+  const saveDraft = async () => {
+    await updateString(true);
+    setFocus();
+  };
+
   const getFontSize = useCallback((textLength: number): string => {
     let fontSize: string = "text-2xl";
     if (textLength === 0) return fontSize;
@@ -88,11 +99,22 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     return fontSize;
   }, []);
 
+  const setHeight = useCallback((target: any) => {
+    if (!target) {
+      setHeight(originalTextAreaRef.current);
+      setHeight(translateTextAreaRef.current);
+    } else {
+      target.style.height = "0px";
+      const scrollHeight: number = target.scrollHeight;
+      target.style.height = scrollHeight + "px";
+    }
+  }, []);
+
   useEffect(() => {
     if (isDisabled) {
-      translateTextAreaRef.current?.classList.add("is-disabled");
+      translatorRef.current?.classList.add("is-disabled");
     } else {
-      translateTextAreaRef.current?.classList.remove("is-disabled");
+      translatorRef.current?.classList.remove("is-disabled");
     }
   }, [isDisabled]);
 
@@ -100,41 +122,35 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     // textarea 높이 조정
     if (originalTextAreaRef.current) {
       // 폰트
-      const fontSize: string = getFontSize(originalText.length);
-      // translateTextAreaRef.current.classList 마지막 클래스를 fontSize 로 교체
-      const classList = originalTextAreaRef.current.classList;
-      classList.remove(classList[classList.length - 1]);
-      classList.add(fontSize);
-      originalTextAreaRef.current!.style.height = "0px";
-      originalTextAreaRef.current!.style.height =
-        originalTextAreaRef.current!.scrollHeight + "px";
+      // const fontSize: string = getFontSize(originalText.length);
+      // // translateTextAreaRef.current.classList 마지막 클래스를 fontSize 로 교체
+      // const classList = originalTextAreaRef.current.classList;
+      // classList.remove(classList[classList.length - 1]);
+      // classList.add(fontSize);
+      setHeight(originalTextAreaRef.current);
     }
-  }, [originalText, getFontSize, stringEditorMode]);
+  }, [originalText, getFontSize, setHeight]);
 
   useEffect(() => {
     // textarea 높이 조정
     if (translateTextAreaRef.current) {
       // 폰트
-      const fontSize: string = getFontSize(translatedText.length);
-      // translateTextAreaRef.current.classList 마지막 클래스를 fontSize 로 교체
-      const classList = translateTextAreaRef.current.classList;
-      classList.remove(classList[classList.length - 1]);
-      classList.add(fontSize);
-      // 초기화
-      translateTextAreaRef.current.style.height = "0px";
-      // 높이 재조정
-      const scrollHeight: number = translateTextAreaRef.current!.scrollHeight;
-      translateTextAreaRef.current!.style.height = scrollHeight + "px";
+      // const fontSize: string = getFontSize(translatedText.length);
+      // // translateTextAreaRef.current.classList 마지막 클래스를 fontSize 로 교체
+      // const classList = translateTextAreaRef.current.classList;
+      // classList.remove(classList[classList.length - 1]);
+      // classList.add(fontSize);
+      setHeight(translateTextAreaRef.current);
     }
-  }, [translatedText, getFontSize, stringEditorMode]);
+  }, [translatedText, getFontSize, setHeight]);
 
   return (
     <>
       <div className="translator is-original-text">
-        <header className="translator-header">Original Text</header>
+        <header className="translator-header undraggable">Original Text</header>
         <textarea
           ref={originalTextAreaRef}
-          className="original-text text-2xl"
+          className="original-text text-3xl"
           spellCheck={false}
           readOnly
           tabIndex={-1}
@@ -143,15 +159,19 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
         />
         <footer className="translator-footer">
           <div className="translator-footer-functions">
-            <a
-              className="anchor-has-icon undraggable"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <span className="icon">
-                <i className="material-icons-outlined md-18">sticky_note_2</i>
-              </span>
-              <span>Comment</span>
-            </a>
+            {currentString?.comment ? (
+              <a
+                className="anchor-has-icon undraggable"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span className="icon">
+                  <i className="material-icons-outlined md-18">sticky_note_2</i>
+                </span>
+                <span>Comment</span>
+              </a>
+            ) : (
+              <></>
+            )}
             <a
               className="anchor-has-icon undraggable"
               onClick={(e) => {
@@ -177,10 +197,12 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
         </footer>
       </div>
       <div className="translator" ref={translatorRef} onClick={setFocus}>
-        <header className="translator-header">Translate Text</header>
+        <header className="translator-header undraggable">
+          Translate Text
+        </header>
         <textarea
           ref={translateTextAreaRef}
-          className="translate-text text-2xl"
+          className="translate-text text-3xl"
           placeholder="번역할 내용을 입력하세요"
           spellCheck={false}
           onFocus={handleFocus}
@@ -193,15 +215,22 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
         />
         <footer className="translator-footer">
           <div className="translator-footer-functions">
-            <a
-              className="anchor-has-icon undraggable"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <span className="icon">
-                <i className="material-icons-outlined md-18">save_as</i>
-              </span>
-              <span>Save Draft</span>
-            </a>
+            {currentString?.completedAt ? (
+              <></>
+            ) : (
+              <a
+                className="anchor-has-icon undraggable"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  saveDraft();
+                }}
+              >
+                <span className="icon">
+                  <i className="material-icons-outlined md-18">save_as</i>
+                </span>
+                <span>Save Draft</span>
+              </a>
+            )}
             <a
               className="anchor-has-icon undraggable"
               onClick={(e) => {

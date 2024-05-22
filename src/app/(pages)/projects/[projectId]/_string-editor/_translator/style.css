@@ -48,7 +48,7 @@
 
 .translator > .original-text {
   @apply w-full;
-  @apply text-gray-500;
+  @apply text-slate-500;
   @apply bg-gray-100;
   @apply break-all;
   @apply resize-none;
@@ -58,7 +58,7 @@
 
 .translator > .translate-text {
   @apply w-full;
-  @apply text-gray-500;
+  @apply text-slate-500;
   @apply resize-none;
   @apply break-all;
   @apply outline-none;

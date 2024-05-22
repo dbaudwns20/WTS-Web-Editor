@@ -8,7 +8,7 @@ export default class String {
   translatedText: string;
   comment: string | null;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | null;
   completedAt: Date | null;
 
   constructor(string: IString) {
@@ -19,7 +19,7 @@ export default class String {
     this.translatedText = string.translatedText;
     this.comment = string.comment;
     this.createdAt = new Date(string.createdAt);
-    this.updatedAt = new Date(string.updatedAt);
+    this.updatedAt = string.updatedAt ? new Date(string.updatedAt) : null;
     this.completedAt = string.completedAt ? new Date(string.completedAt) : null;
   }
 }

@@ -18,7 +18,11 @@ import Translator, { type TranslatorType } from "./_translator/translator";
 import String, { bindString } from "@/types/string";
 
 import { callApi } from "@/utils/common";
-import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
+import {
+  type FuncButton,
+  showConfirmMessage,
+  showNotificationMessage,
+} from "@/utils/message";
 import { type LayoutState, type LayoutAction } from "@/reducers/layout.reducer";
 import {
   type PreferenceState,
@@ -26,7 +30,7 @@ import {
 } from "@/reducers/preference.reducer";
 
 export type StringEditorType = {
-  updateString: () => Promise<void>;
+  updateString: (isDraft: boolean) => Promise<void>;
   componentElement: HTMLElement;
 };
 
@@ -84,8 +88,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   ]);
 
   // String update
-  const updateString = async () => {
-    // 변경사항이 없을 경우
+  const updateString = async (isSaveDraft: boolean = false) => {
+    // 번역 텍스트가 없을 경우
     if (!translatedText) {
       showNotificationMessage({
         message: "The value is empty!",
@@ -106,6 +110,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
         },
         body: JSON.stringify({
           translatedText: translatedText,
+          isCompleted: isSaveDraft ? false : true,
         }),
       }
     );
@@ -143,6 +148,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       if (preferenceState.autoMove) {
         moveString(false);
       }
+      // 편집기 focus
+      translatorRef.current?.setFocus();
     });
   };
 
@@ -150,26 +157,43 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   const handleMove = (isForward: boolean) => {
     // 편집된 정보가 존재한다면 & 자동이동 옵션이 꺼져있다면
     if (isEdited && !preferenceState.autoMove) {
+      const buttons: FuncButton[] = [
+        {
+          label: "Ignore",
+          class: "default",
+          onClick: () => moveString(isForward),
+        },
+        {
+          label: "Save Draft",
+          class: "warning",
+          onClick: async () => {
+            // submit event 실행
+            await updateString(true);
+            // string 이동
+            moveString(isForward);
+          },
+        },
+        {
+          label: "Complete",
+          class: "success",
+          onClick: async () => {
+            // submit event 실행
+            await updateString();
+            // string 이동
+            moveString(isForward);
+          },
+        },
+      ];
+
+      // 완료 여부로 임시저장 버튼 제거
+      if (currentString?.completedAt) {
+        buttons.splice(1, 1);
+      }
+
       showConfirmMessage({
         title: "Warning",
         message: "Changes exist. Would you like to save?",
-        buttons: [
-          {
-            label: "Ignore",
-            class: "default",
-            onClick: () => moveString(isForward),
-          },
-          {
-            label: "Save",
-            class: "success",
-            onClick: async () => {
-              // submit event 실행
-              await updateString();
-              // string 이동
-              moveString(isForward);
-            },
-          },
-        ],
+        buttons: buttons,
       });
     } else {
       moveString(isForward);
@@ -228,12 +252,19 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     } else {
       stringEditorMainRef.current?.classList.add("is-vertical");
     }
+    // 편집기 높이 재설정
+    translatorRef.current?.setHeight();
     // 편집기 focus
     translatorRef.current?.setFocus();
   }, [layoutState.stringEditorMode]);
 
   useEffect(() => {
+    // 이동 버튼 비활성화
+    setMoveButtonState([isFetching, isFetching]);
+    // submit 버튼 fetching
     submitRef.current!.setFetchState(isFetching);
+    // translator 비활성화
+    translatorRef.current!.setDisabled(isFetching);
   }, [isFetching]);
 
   return (
@@ -403,11 +434,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
         <div className="string-editor-main" ref={stringEditorMainRef}>
           <Translator
             ref={translatorRef}
+            currentString={currentString}
             originalText={currentString?.originalText}
             translatedText={translatedText}
             setTranslatedText={setTranslatedText}
-            stringEditorMode={layoutState.stringEditorMode}
             resetTranslateText={resetTranslateText}
+            updateString={updateString}
           />
         </div>
         <footer className="string-editor-footer">

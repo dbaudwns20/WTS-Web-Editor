@@ -133,8 +133,8 @@ export default function ProjectDetail() {
   };
 
   // string list component 에서 호출 용
-  const handleUpdateString = async () => {
-    await stringEditorRef.current?.updateString();
+  const handleUpdateString = async (isDraft: boolean = false) => {
+    await stringEditorRef.current?.updateString(isDraft);
   };
 
   // 함수 호출 후 처리

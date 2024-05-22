@@ -39,7 +39,7 @@ export interface IString {
   /**
    * 수정일
    */
-  updatedAt: Date;
+  updatedAt: Date | null;
 
   /**
    * 완료일
@@ -77,7 +77,7 @@ const StringSchema: Schema<IString> = new Schema({
   },
   updatedAt: {
     type: Date,
-    required: true,
+    default: null,
   },
   completedAt: {
     type: Date,
