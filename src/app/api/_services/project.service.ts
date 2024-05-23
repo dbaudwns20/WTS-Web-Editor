@@ -43,15 +43,3 @@ export async function updateProject(projectId: string, updateData: any) {
   );
   return instance;
 }
-
-// 프로젝트 진행률 갱신
-export async function updateProjectProcess(
-  projectId: string,
-  process: string,
-  stringNumber: number
-) {
-  await updateProject(projectId, {
-    process: process,
-    lastModifiedStringNumber: stringNumber,
-  });
-}

@@ -13,6 +13,10 @@
   @apply bg-gray-100;
 }
 
+.translator.is-preview {
+  @apply bg-slate-700;
+}
+
 .translator.is-disabled {
   @apply pointer-events-none;
   @apply opacity-60;
@@ -49,7 +53,7 @@
 .translator > .original-text {
   @apply w-full;
   @apply text-slate-500;
-  @apply bg-gray-100;
+  @apply bg-transparent;
   @apply break-all;
   @apply resize-none;
   @apply outline-none;

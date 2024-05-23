@@ -1,8 +1,6 @@
-import mongoose from "mongoose";
-
 import StringModel, { IString } from "@/db/models/string";
 
-import { updateProjectProcess } from "./project.service";
+import { updateProject } from "./project.service";
 
 type StringInstance = {
   stringNumber: number;
@@ -41,6 +39,9 @@ export async function updateString(
   stringId: string,
   updateData: any
 ) {
+  // 프로젝트 업데이트 데이터
+  let projectUpdateData = {};
+
   // 완료 여부 확인
   if (updateData["isCompleted"]) {
     // 완료된 string 이라면 project 의 process 값, 마지막 수정 string 번호 갱신
@@ -48,15 +49,6 @@ export async function updateString(
       const result = await StringModel.aggregate([
         {
           $facet: {
-            stringNumber: [
-              {
-                $match: {
-                  projectId: projectId,
-                  _id: new mongoose.Types.ObjectId(stringId),
-                },
-              },
-              { $project: { stringNumber: 1, _id: 0 } },
-            ],
             totalCount: [
               { $match: { projectId: projectId } },
               { $count: "totalCount" },
@@ -69,7 +61,6 @@ export async function updateString(
         },
         {
           $project: {
-            stringNumber: { $arrayElemAt: ["$stringNumber.stringNumber", 0] },
             totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
             completedCount: {
               $arrayElemAt: ["$completedCount.completedCount", 0],
@@ -77,9 +68,9 @@ export async function updateString(
           },
         },
       ]).exec();
-      const { stringNumber, completedCount, totalCount } = result[0];
+      const { completedCount, totalCount } = result[0];
       const process: string = ((completedCount / totalCount) * 100).toFixed(1);
-      await updateProjectProcess(projectId, process, stringNumber);
+      projectUpdateData = { ...projectUpdateData, ...{ process: process } };
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -96,6 +87,14 @@ export async function updateString(
     },
     { new: true }
   );
+
+  // 마지막 수정 String number 갱신
+  await updateProject(projectId, {
+    ...projectUpdateData,
+    ...{
+      lastModifiedStringNumber: instance.stringNumber,
+    },
+  });
 
   return instance;
 }
