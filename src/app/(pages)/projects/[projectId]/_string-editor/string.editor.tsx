@@ -289,7 +289,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 </span>
                 <span>Layout</span>
               </a>
-              <ul className="px-4 py-3.5" role="none">
+              <ul className="px-4 py-3.5 w-52" role="none">
                 <li className="mb-2" role="menuitem">
                   <label className="label !text-xs">String List</label>
                   <label className="toggle">

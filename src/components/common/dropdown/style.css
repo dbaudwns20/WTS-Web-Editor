@@ -29,7 +29,6 @@
   @apply absolute;
   @apply z-10;
   @apply mt-2;
-  @apply min-w-52;
   @apply w-auto;
   @apply rounded-md;
   @apply bg-white;

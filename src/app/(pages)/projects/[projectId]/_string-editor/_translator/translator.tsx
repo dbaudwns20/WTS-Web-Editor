@@ -76,10 +76,10 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   const copy = async () => {
     await window.navigator.clipboard.writeText(originalText);
     showNotificationMessage({
-      message: "Copied",
+      message: "Copied.",
       messageType: "info",
       position: "right",
-      timeout: 1000,
+      timeout: 1500,
     });
   };
 
@@ -197,18 +197,6 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
               className="anchor-has-icon undraggable"
               onClick={(e) => {
                 e.stopPropagation();
-                copy();
-              }}
-            >
-              <span className="icon">
-                <i className="material-icons md-18">content_copy</i>
-              </span>
-              <span>Copy</span>
-            </a>
-            <a
-              className="anchor-has-icon undraggable"
-              onClick={(e) => {
-                e.stopPropagation();
                 sync();
               }}
             >
@@ -216,6 +204,18 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                 <i className="material-icons md-18">sync</i>
               </span>
               <span>Sync</span>
+            </a>
+            <a
+              className="anchor-has-icon undraggable"
+              onClick={(e) => {
+                e.stopPropagation();
+                copy();
+              }}
+            >
+              <span className="icon">
+                <i className="material-icons md-18">content_copy</i>
+              </span>
+              <span>Copy</span>
             </a>
             <a
               className="anchor-has-icon undraggable"

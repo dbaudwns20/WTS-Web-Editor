@@ -2,7 +2,14 @@
 
 import "./style.css";
 
-import { useEffect, useState, useRef, useReducer, Reducer } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  useReducer,
+  Reducer,
+  useCallback,
+} from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -26,6 +33,7 @@ import {
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
 import UpdateProjectModal from "./_update-project-modal/update.project.modal";
+import Dropdown from "@/components/common/dropdown/dropdown";
 import {
   BgImage,
   getBgImageById,
@@ -143,16 +151,12 @@ export default function ProjectDetail() {
     callbacks();
     // 프로젝트 재조회
     getProject();
+    // string content 높이 재조정
+    setStringContentSectionHeight();
   };
 
-  useEffect(() => {
-    // 자동이동 설정이 변경될 경우 string list 리로드
-    setStringListKey((pre) => pre + 1);
-  }, [preferenceState.skipCompleted]);
-
-  useEffect(() => {
-    if (isLoading) return;
-
+  // string content 높이 재조정
+  const setStringContentSectionHeight = useCallback(() => {
     const projectInfoSectionHeight: number =
       projectInfoSectionRef.current!.clientHeight;
     const mainHeight: number = document.querySelector(".main")!.clientHeight;
@@ -161,7 +165,17 @@ export default function ProjectDetail() {
     stringListRef.current!.componentElement!.style.height = `${
       mainHeight - projectInfoSectionHeight - 32 // -2rem
     }px`;
-  }, [isLoading, stringListKey]);
+  }, []);
+
+  useEffect(() => {
+    // 자동이동 설정이 변경될 경우 string list 리로드
+    setStringListKey((pre) => pre + 1);
+  }, [preferenceState.skipCompleted]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    setStringContentSectionHeight();
+  }, [isLoading, stringListKey, setStringContentSectionHeight]);
 
   useEffect(() => {
     if (project) setIsLoading(false);
@@ -228,21 +242,49 @@ export default function ProjectDetail() {
                   )}
                 </div>
               </div>
-              <div className="buttons">
-                <button
-                  type="button"
-                  onClick={updateProject}
-                  className="button is-info"
-                >
-                  UPDATE
-                </button>
-                <button
-                  type="button"
-                  onClick={handleDeleteProject}
-                  className="button is-danger"
-                >
-                  REMOVE
-                </button>
+              <div className="functions">
+                <Dropdown position="right">
+                  <a className="more-button">
+                    <span className="icon">
+                      <i className="material-icons !text-3xl">more_vert</i>
+                    </span>
+                  </a>
+                  <ul className="w-[180px] py-1.5 px-2">
+                    <li className="hover:bg-gray-100 duration-200">
+                      <a
+                        className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
+                        onClick={updateProject}
+                      >
+                        <span className="icon mr-1.5">
+                          <i className="material-icons md-18">edit</i>
+                        </span>
+                        <span>Update</span>
+                      </a>
+                    </li>
+                    <li className="hover:bg-gray-100 duration-200">
+                      <a
+                        className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
+                        onClick={handleDeleteProject}
+                      >
+                        <span className="icon mr-1.5">
+                          <i className="material-icons md-18">delete</i>
+                        </span>
+                        <span>Delete</span>
+                      </a>
+                    </li>
+                    <li className="hover:bg-gray-100 duration-200">
+                      <a
+                        className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
+                        onClick={handleDeleteProject}
+                      >
+                        <span className="icon mr-1.5">
+                          <i className="material-icons md-18">file_upload</i>
+                        </span>
+                        <span>Patch WTS</span>
+                      </a>
+                    </li>
+                  </ul>
+                </Dropdown>
               </div>
             </div>
           </section>
