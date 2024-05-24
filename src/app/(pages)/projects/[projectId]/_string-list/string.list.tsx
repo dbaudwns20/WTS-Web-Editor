@@ -16,7 +16,11 @@ import String, { bindStringList } from "@/types/string";
 import { type PageInfo } from "@/types/pagination";
 
 import { callApi } from "@/utils/common";
-import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
+import {
+  showNotificationMessage,
+  showConfirmMessage,
+  FuncButton,
+} from "@/utils/message";
 
 const defaultPageInfo: PageInfo = {
   currentPage: 1,
@@ -31,7 +35,7 @@ type StringListProps = {
   isEdited: boolean;
   showStringList: boolean;
   skipCompleted: boolean;
-  handleUpdateString: () => Promise<void>;
+  handleUpdateString: (isDraft: boolean) => Promise<void>;
 };
 
 type _String = String & { index: number; isActive: boolean };
@@ -188,24 +192,39 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   const handleMove = (string: _String) => {
     // 편집된 상태인 경우
     if (isEdited) {
+      const buttons: FuncButton[] = [
+        {
+          label: "Ignore",
+          class: "default",
+          onClick: () => replaceCurrentString(string),
+        },
+        {
+          label: "Save Draft",
+          class: "warning",
+          onClick: async () => {
+            await handleUpdateString(true);
+            replaceCurrentString(string);
+          },
+        },
+        {
+          label: "Complete",
+          class: "success",
+          onClick: async () => {
+            await handleUpdateString(false);
+            replaceCurrentString(string);
+          },
+        },
+      ];
+
+      // 완료 여부로 임시저장 버튼 제거
+      if (stringList[currentIndex - 1].completedAt) {
+        buttons.splice(1, 1);
+      }
+
       showConfirmMessage({
         title: "Warning",
         message: "Changes exist. Would you like to save?",
-        buttons: [
-          {
-            label: "Ignore",
-            class: "default",
-            onClick: () => replaceCurrentString(string),
-          },
-          {
-            label: "Save",
-            class: "success",
-            onClick: async () => {
-              await handleUpdateString();
-              replaceCurrentString(string);
-            },
-          },
-        ],
+        buttons: buttons,
       });
     } else {
       replaceCurrentString(string);
@@ -305,7 +324,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   }, [stringList, currentStringNumber, skipCompleted, setStringGroup]);
 
   useEffect(() => {
-    if (stringList.length === 0) return;
     // string group 정의
     const string: _String = setGroupAndGetCurrent();
     // string 설정
@@ -313,11 +331,15 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     // 스크롤 위치 조정
     setStringListScrollPosition();
   }, [
-    stringList,
     setGroupAndGetCurrent,
     replaceCurrentString,
     setStringListScrollPosition,
   ]);
+
+  useEffect(() => {
+    // 추가 조회 시 StringGroup 다시 설정
+    setGroupAndGetCurrent();
+  }, [isMoreLoading, setGroupAndGetCurrent]);
 
   useEffect(() => {
     // string list 숨김여부
@@ -366,14 +388,20 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                   <p className="number">
                     <span>STRING {string.stringNumber}</span>
                     {(() => {
-                      if (string.completedAt) {
-                        if (string.completedAt >= string.updatedAt) {
+                      if (!string.completedAt && !string.updatedAt) {
+                        return <></>;
+                      } else if (string.completedAt) {
+                        if (string.completedAt >= string.updatedAt!) {
                           return <span className="complete">COMPLETE</span>;
                         } else {
-                          return <span className="update">UPDATED</span>;
+                          return <span className="update">UPDATE</span>;
                         }
-                      } else {
-                        return <></>;
+                      } else if (string.updatedAt) {
+                        if (string.updatedAt > string.createdAt) {
+                          return (
+                            <span className="in-progress">IN PROGRESS</span>
+                          );
+                        }
                       }
                     })()}
                   </p>

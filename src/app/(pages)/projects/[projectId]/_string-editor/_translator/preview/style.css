@@ -1,0 +1,29 @@
+.translator > .preview {
+  @apply w-full;
+  @apply bg-transparent;
+  @apply text-white;
+  @apply mb-6;
+}
+
+.translator > .preview-header {
+  @apply pt-3;
+  @apply mb-2.5;
+  @apply text-xs;
+  @apply text-orange-400;
+}
+
+.translator > .preview-footer {
+  @apply w-full;
+  @apply absolute;
+  @apply bottom-2;
+  @apply right-0;
+  @apply px-4;
+}
+
+.translator > .preview-footer > .preview-footer-functions {
+  @apply flex;
+  @apply items-center;
+  @apply justify-end;
+  @apply [&>a]:text-gray-300;
+  @apply [&>a]:hover:text-gray-100;
+}

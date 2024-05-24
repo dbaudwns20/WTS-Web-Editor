@@ -22,7 +22,6 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
   // 모달 닫기
   const closeConfirm = () => {
     overlay.current?.classList.add("is-hiding");
-    wrapper.current?.classList.add("is-hiding");
     setTimeout(() => {
       clearMessageBox();
     }, 200);

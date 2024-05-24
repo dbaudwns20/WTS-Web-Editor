@@ -95,7 +95,6 @@
   @apply border;
   @apply bg-transparent;
   @apply border-teal-500;
-  @apply dark:bg-gray-700;
   @apply text-teal-500;
   @apply rounded-full;
   @apply px-1.5;
@@ -114,13 +113,29 @@
   @apply border;
   @apply bg-transparent;
   @apply border-red-500;
-  @apply dark:bg-gray-700;
   @apply text-red-500;
   @apply rounded-full;
   @apply px-1.5;
   font-size: 0.65rem;
 }
 
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .number
+  > .in-progress {
+  @apply absolute;
+  @apply top-3.5;
+  @apply right-4;
+  @apply border;
+  @apply bg-transparent;
+  @apply border-yellow-500;
+  @apply text-yellow-500;
+  @apply rounded-full;
+  @apply px-1.5;
+  font-size: 0.65rem;
+}
 .string-content-section
   > .string-list-wrapper
   > .string-list

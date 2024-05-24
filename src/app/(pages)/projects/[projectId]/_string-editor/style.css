@@ -65,9 +65,11 @@
   @apply bg-gray-500;
   @apply text-white;
   @apply w-full;
+  @apply focus:ring-gray-300;
   @apply dark:bg-transparent;
   @apply dark:border-2 border-gray-400;
   @apply dark:text-gray-400;
+  @apply dark:focus:ring-gray-400/50;
 }
 
 .string-editor-wrapper
@@ -75,7 +77,7 @@
   > .string-editor-footer
   > .button.move-button:not(:disabled):hover {
   @apply bg-gray-600;
-  @apply active:bg-gray-200;
+  @apply active:bg-gray-600;
   @apply dark:hover:bg-transparent/30;
   @apply dark:active:bg-transparent/30;
 }

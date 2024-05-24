@@ -79,7 +79,9 @@ export async function resolveStringModelPagination(
   // skipCompleted 가 true 일 경우
   if (skipCompleted) {
     // 미완료된 String 찾기
-    while (data.findIndex((item: any) => item.completedAt === null) === -1) {
+    while (
+      data.findIndex((item: any) => !item.completedAt && !item.updatedAt) === -1
+    ) {
       // data 길이가 모든 도큐먼트의 길이와 동일하다면 break
       if (data.length >= totalCount) break;
       // offset 2배 증가
