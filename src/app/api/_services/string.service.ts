@@ -68,8 +68,12 @@ export async function updateString(
           },
         },
       ]).exec();
-      const { completedCount, totalCount } = result[0];
-      const process: string = ((completedCount / totalCount) * 100).toFixed(1);
+      const { completedCount = 0, totalCount } = result[0];
+      // process 계산 기존 완료된 건수 + 1
+      const process: string = (
+        ((completedCount + 1) / totalCount) *
+        100
+      ).toFixed(1);
       projectUpdateData = { ...projectUpdateData, ...{ process: process } };
     } catch (error: any) {
       throw new Error(error.message);

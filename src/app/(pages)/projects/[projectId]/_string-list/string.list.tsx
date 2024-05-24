@@ -324,7 +324,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   }, [stringList, currentStringNumber, skipCompleted, setStringGroup]);
 
   useEffect(() => {
-    if (stringList.length === 0) return;
     // string group 정의
     const string: _String = setGroupAndGetCurrent();
     // string 설정
@@ -332,11 +331,15 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     // 스크롤 위치 조정
     setStringListScrollPosition();
   }, [
-    stringList,
     setGroupAndGetCurrent,
     replaceCurrentString,
     setStringListScrollPosition,
   ]);
+
+  useEffect(() => {
+    // 추가 조회 시 StringGroup 다시 설정
+    setGroupAndGetCurrent();
+  }, [isMoreLoading, setGroupAndGetCurrent]);
 
   useEffect(() => {
     // string list 숨김여부
