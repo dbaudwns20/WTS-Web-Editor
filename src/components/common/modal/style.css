@@ -19,7 +19,7 @@
 .modal-background {
   @apply opacity-0;
   @apply fixed;
-  @apply z-10;
+  @apply z-30;
   @apply left-0;
   @apply right-0;
   @apply top-0;
@@ -72,6 +72,7 @@
   @apply text-gray-400;
   @apply opacity-75;
   @apply hover:opacity-100;
+  @apply outline-none;
 }
 
 .modal > hr {

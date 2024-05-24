@@ -19,7 +19,7 @@
 .confirm-background {
   @apply opacity-0;
   @apply fixed;
-  @apply z-10;
+  @apply z-40;
   @apply left-0;
   @apply right-0;
   @apply top-0;

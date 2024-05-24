@@ -27,15 +27,15 @@
 .dropdown > .dropdown-menu {
   @apply hidden;
   @apply absolute;
-  @apply z-10;
+  @apply z-20;
   @apply mt-2;
   @apply w-auto;
   @apply rounded-md;
   @apply bg-white;
   @apply shadow-lg;
   @apply ring-1;
-  @apply ring-black;
-  @apply ring-opacity-5;
+  @apply ring-black/5;
+  @apply dark:ring-white/20;
   @apply focus:outline-none;
   @apply dark:bg-gray-700;
 }

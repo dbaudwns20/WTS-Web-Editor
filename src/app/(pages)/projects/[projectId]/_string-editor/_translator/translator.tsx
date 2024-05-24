@@ -59,6 +59,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
 
   // values
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [showComment, setShowComment] = useState<boolean>(false);
   const [previewState, previewDispatch] = useReducer<
     Reducer<PreviewState, PreviewAction>
   >(previewReducer, previewInitState);
@@ -152,17 +153,17 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   }, [isDisabled]);
 
   useEffect(() => {
-    // textarea 높이 조정
     if (originalTextAreaRef.current) {
-      // 높이
+      // textarea 높이 조정
       setHeight(originalTextAreaRef.current);
+      // String 이 갱신될때 주석 숨기기
+      setShowComment(false);
     }
   }, [originalText, setHeight]);
 
   useEffect(() => {
-    // textarea 높이 조정
     if (translateTextAreaRef.current) {
-      // 높이
+      // textarea 높이 조정
       setHeight(translateTextAreaRef.current);
     }
   }, [translatedText, setHeight]);
@@ -214,7 +215,10 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                 {currentString?.comment ? (
                   <a
                     className="anchor-has-icon undraggable"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowComment(!showComment);
+                    }}
                   >
                     <span className="icon">
                       <i className="material-icons-outlined md-18">
@@ -269,6 +273,36 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                 </a>
               </div>
             </footer>
+            {showComment ? (
+              <div className="comment">
+                <header className="header">
+                  <label className="label">Comment</label>
+                  <button
+                    type="button"
+                    className="close"
+                    onClick={() => setShowComment(false)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </header>
+                <p className="content">{currentString?.comment}</p>
+              </div>
+            ) : (
+              <></>
+            )}
           </>
         )}
       </div>
