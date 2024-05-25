@@ -51,8 +51,11 @@ export function readWtsFile(wtsFile: File): WtsString[] {
 
 export function parseToHtml(wtsString: string): string {
   let result: string = "";
-  // \r 제거, \n => <br /> 변환
-  wtsString = wtsString.replace(/[\r]/g, "").replace(/[\n]/g, "<br />");
+  // \r 제거, \n => <br /> 변환, |n => <br /> 변환
+  wtsString = wtsString
+    .replace(/[\r]/g, "")
+    .replace(/[\n]/g, "<br />")
+    .replace(/\|n/g, "<br />");
 
   // 정규 표현식으로 색상 코드와 텍스트를 분리
   const regex: RegExp = /\|c([0-9a-fA-F]{8})([^|]*)\|r/g;
