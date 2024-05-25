@@ -210,17 +210,11 @@ export default function ProjectDetail() {
                     ) : (
                       <></>
                     )}
-                    <span className="tag updated-at">
-                      <span className="icon">
-                        <i className="material-icons md-18">history</i>
-                      </span>
-                      <span className="text-sm font-semibold">
-                        {convertDateToString(
-                          project!.updatedAt,
-                          DATE_FORMAT.DATE_TIME
-                        )}
-                      </span>
-                    </span>
+                    {project?.process === "100.0" ? (
+                      <span className="tag complete">Complete</span>
+                    ) : (
+                      <span className="tag progress">{`${project?.process}% Translated`}</span>
+                    )}
                   </div>
                   {project?.source ? (
                     <a
@@ -229,8 +223,8 @@ export default function ProjectDetail() {
                       target="_blank"
                     >
                       <span className="tag resource">
-                        <span className="icon">
-                          <i className="material-icons md-18">link</i>
+                        <span className="icon mr-0.5">
+                          <i className="material-icons md-18">launch</i>
                         </span>
                         <span className="text-sm font-semibold">
                           Resource Link
@@ -240,6 +234,24 @@ export default function ProjectDetail() {
                   ) : (
                     <></>
                   )}
+                </div>
+                <div className="last-edited-wrapper">
+                  <div className="last-edited">
+                    <span className="flex items-center">
+                      <span className="icon mr-0.5">
+                        <i className="material-icons md-18 text-gray-400">
+                          update
+                        </i>
+                      </span>
+                      <span className="text-xs text-gray-400">Last Edited</span>
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {`${convertDateToString(
+                        project!.updatedAt,
+                        DATE_FORMAT.DATE_TIME
+                      )}`}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="functions">
@@ -280,7 +292,7 @@ export default function ProjectDetail() {
                         <span className="icon mr-1.5">
                           <i className="material-icons md-18">file_upload</i>
                         </span>
-                        <span>Patch WTS</span>
+                        <span>Overwrite WTS</span>
                       </a>
                     </li>
                   </ul>

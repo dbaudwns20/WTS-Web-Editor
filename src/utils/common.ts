@@ -57,7 +57,13 @@ export function convertDateToString(
       break;
     case DATE_FORMAT.TIME:
       const times: string[] = date.toTimeString().split(" ")[0].split(":");
-      result = times[0] + ":" + times[1];
+      // AM/PM 처리
+      let meridiem: string = "AM";
+      if (Number(times[0]) >= 12) {
+        times[0] = String(Number(times[0]) - 12).padStart(2, "0");
+        meridiem = "PM";
+      }
+      result = times[0] + ":" + times[1] + ":" + times[2] + " " + meridiem;
       break;
     case DATE_FORMAT.DATE_TIME:
       result =

@@ -1,6 +1,4 @@
 .project-info-section {
-  @apply min-h-[142px];
-  @apply h-fit;
   @apply pb-5;
 }
 
@@ -16,8 +14,27 @@
   @apply w-full;
 }
 
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .last-edited-wrapper {
+  @apply absolute;
+  @apply bottom-0;
+  @apply right-2.5;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .last-edited-wrapper
+  > .last-edited {
+  @apply flex;
+  @apply items-center;
+  @apply gap-2;
+}
+
 .project-info-section > .project-info-wrapper > .functions {
-  @apply pt-2;
+  @apply pt-3;
   @apply absolute;
   @apply right-0;
 }
@@ -28,7 +45,7 @@
   @apply flex;
   @apply justify-center;
   @apply items-start;
-  @apply w-[135px];
+  @apply w-[120px];
   @apply pt-2;
 }
 
@@ -44,7 +61,7 @@
 }
 
 .project-info-section > .project-info-wrapper > .project-info > .info-wrapper {
-  @apply py-3;
+  @apply pt-3;
   @apply pl-5;
   @apply pr-10;
   @apply w-full;
@@ -106,10 +123,9 @@
   > .project-info
   > .info-wrapper
   > .tag-group
-  > .tag.updated-at {
+  > .tag.progress {
   @apply bg-violet-500/90;
   @apply text-white;
-  @apply pl-1;
   @apply dark:bg-transparent;
   @apply dark:border-2;
   @apply dark:border-violet-400;
@@ -120,9 +136,24 @@
   > .project-info-wrapper
   > .project-info
   > .info-wrapper
+  > .tag-group
+  > .tag.complete {
+  @apply bg-teal-500;
+  @apply text-white;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-teal-500;
+  @apply dark:text-teal-500;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
   > .resource-link {
   @apply flex;
   @apply w-fit;
+  @apply outline-none;
 }
 
 .project-info-section

@@ -14,6 +14,9 @@
   @apply ring-1;
   @apply ring-black/5;
   @apply focus:outline-none;
+  @apply ring-1;
+  @apply ring-black/5;
+  @apply dark:ring-white/20;
 }
 
 .project > .complete {
