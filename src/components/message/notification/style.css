@@ -64,6 +64,16 @@
   }
 }
 
+.notification-background {
+  @apply fixed;
+  @apply top-0;
+  @apply left-0;
+  @apply right-0;
+  @apply bottom-0;
+  @apply pointer-events-none;
+  @apply z-40;
+}
+
 .notification-wrapper {
   @apply flex;
   @apply w-full;

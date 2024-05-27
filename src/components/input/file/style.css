@@ -35,6 +35,7 @@
 .file.is-uploaded {
   @apply pointer-events-none;
   @apply bg-gray-100;
+  @apply dark:bg-gray-700;
 }
 
 .file > .file-content {
@@ -47,7 +48,7 @@
 
 .file > .file-content > .icon {
   @apply text-gray-500;
-  @apply dark:text-gray-400;
+  @apply dark:text-white/60;
   @apply opacity-70;
   @apply mb-2;
 }
@@ -57,20 +58,16 @@
   @apply mb-2;
   @apply font-semibold;
   @apply text-gray-500;
-  @apply dark:text-gray-400;
+  @apply dark:text-white/60;
 }
 
 .file.is-uploaded > .file-content > .button.delete-button {
-  @apply inline-flex;
-  @apply items-center;
-  @apply justify-center;
   @apply text-gray-600;
   @apply bg-neutral-100;
-  @apply py-1;
-  @apply px-2.5;
+  @apply py-0.5;
+  @apply pr-2.5;
   @apply text-xs;
   @apply pointer-events-auto;
-  @apply z-20;
 }
 
 .file.is-uploaded > .file-content > .button.delete-button:not(:disabled):hover {

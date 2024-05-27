@@ -8,6 +8,44 @@ type StringInstance = {
   comment: string | null;
 };
 
+async function computeCompletedProgress(
+  projectId: string,
+  isCompleted: boolean
+): Promise<string> {
+  try {
+    const result = await StringModel.aggregate([
+      {
+        $facet: {
+          totalCount: [
+            { $match: { projectId: projectId } },
+            { $count: "totalCount" },
+          ],
+          completedCount: [
+            { $match: { projectId: projectId, completedAt: { $ne: null } } },
+            { $count: "completedCount" },
+          ],
+        },
+      },
+      {
+        $project: {
+          totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
+          completedCount: {
+            $arrayElemAt: ["$completedCount.completedCount", 0],
+          },
+        },
+      },
+    ]).exec();
+    let { completedCount = 0, totalCount } = result[0];
+    // 완료된 String 이 아니라면 => 신규, process 계산 기존 완료된 건수 + 1
+    if (!isCompleted) {
+      completedCount += 1;
+    }
+    return ((completedCount / totalCount) * 100).toFixed(1);
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
+
 export async function createString(newStringData: IString) {
   await new StringModel({
     ...newStringData,
@@ -42,41 +80,17 @@ export async function updateString(
   // 프로젝트 업데이트 데이터
   let projectUpdateData = {};
 
-  // 완료 여부 확인
-  if (updateData["isCompleted"]) {
-    // 완료된 string 이라면 project 의 process 값, 마지막 수정 string 번호 갱신
-    try {
-      const result = await StringModel.aggregate([
-        {
-          $facet: {
-            totalCount: [
-              { $match: { projectId: projectId } },
-              { $count: "totalCount" },
-            ],
-            completedCount: [
-              { $match: { projectId: projectId, completedAt: { $ne: null } } },
-              { $count: "completedCount" },
-            ],
-          },
+  // 임시 저장 여부 확인
+  if (!updateData["isSaveDraft"]) {
+    // 이미 완료된 경우엔 계산할 필요 없음
+    if (!updateData["isCompleted"]) {
+      // 완료된 string 이라면 project 의 process 갱신
+      projectUpdateData = {
+        ...projectUpdateData,
+        ...{
+          process: await computeCompletedProgress(projectId, false),
         },
-        {
-          $project: {
-            totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
-            completedCount: {
-              $arrayElemAt: ["$completedCount.completedCount", 0],
-            },
-          },
-        },
-      ]).exec();
-      const { completedCount = 0, totalCount } = result[0];
-      // process 계산 기존 완료된 건수 + 1
-      const process: string = (
-        ((completedCount + 1) / totalCount) *
-        100
-      ).toFixed(1);
-      projectUpdateData = { ...projectUpdateData, ...{ process: process } };
-    } catch (error: any) {
-      throw new Error(error.message);
+      };
     }
     // completedAt 갱신
     updateData = { ...updateData, ...{ completedAt: new Date() } };
@@ -182,4 +196,29 @@ export async function updateProjectStrings(
       stringNumber: wtsString.stringNumber,
     });
   }
+}
+
+export async function overwriteWtsStrings(
+  projectId: string,
+  wtsStringList: any[]
+) {
+  // translated text 갱신
+  for (let wtsString of wtsStringList) {
+    await StringModel.findOneAndUpdate(
+      { projectId: projectId, stringNumber: wtsString.stringNumber },
+      {
+        $set: {
+          translatedText: wtsString.content,
+          comment: wtsString.comment,
+          updatedAt: new Date(),
+          completedAt: new Date(),
+        },
+      }
+    );
+  }
+
+  // 진행룰 갱신
+  await updateProject(projectId, {
+    process: await computeCompletedProgress(projectId, true),
+  });
 }

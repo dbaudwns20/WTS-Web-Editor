@@ -33,6 +33,7 @@ import {
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
 import UpdateProjectModal from "./_update-project-modal/update.project.modal";
+import UploadWtsModal from "./_upload-wts-modal/upload.wts.modal";
 import Dropdown from "@/components/common/dropdown/dropdown";
 import {
   BgImage,
@@ -59,7 +60,8 @@ export default function ProjectDetail() {
   // values
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEdited, setIsEdited] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isUploadWtsModalOpen, setIsUploadWtsModalOpen] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
@@ -89,9 +91,6 @@ export default function ProjectDetail() {
     }
     setProject(bindProject(response.data));
   };
-
-  // 프로젝트 업데이트
-  const updateProject = () => setIsModalOpen(true);
 
   // 프로젝트 삭제 핸들링
   const handleDeleteProject = () => {
@@ -262,10 +261,10 @@ export default function ProjectDetail() {
                     </span>
                   </a>
                   <ul className="w-[180px] py-1.5 px-2">
-                    <li className="hover:bg-gray-100 duration-200">
+                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
                         className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={updateProject}
+                        onClick={() => setIsUpdateModalOpen(true)}
                       >
                         <span className="icon mr-1.5">
                           <i className="material-icons md-18">edit</i>
@@ -273,7 +272,7 @@ export default function ProjectDetail() {
                         <span>Update</span>
                       </a>
                     </li>
-                    <li className="hover:bg-gray-100 duration-200">
+                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
                         className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
                         onClick={handleDeleteProject}
@@ -284,15 +283,15 @@ export default function ProjectDetail() {
                         <span>Delete</span>
                       </a>
                     </li>
-                    <li className="hover:bg-gray-100 duration-200">
+                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
                         className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={handleDeleteProject}
+                        onClick={() => setIsUploadWtsModalOpen(true)}
                       >
                         <span className="icon mr-1.5">
                           <i className="material-icons md-18">file_upload</i>
                         </span>
-                        <span>Overwrite WTS</span>
+                        <span>Upload WTS</span>
                       </a>
                     </li>
                   </ul>
@@ -326,12 +325,21 @@ export default function ProjectDetail() {
               completeFunction={completeFunction}
             />
           </section>
-          {isModalOpen ? (
+          {isUpdateModalOpen ? (
             <UpdateProjectModal
               project={project!}
               setStringListKey={setStringListKey}
               completeFunction={completeFunction}
-              closeModal={setIsModalOpen}
+              closeModal={setIsUpdateModalOpen}
+            />
+          ) : (
+            <></>
+          )}
+          {isUploadWtsModalOpen ? (
+            <UploadWtsModal
+              setStringListKey={setStringListKey}
+              completeFunction={completeFunction}
+              closeModal={setIsUploadWtsModalOpen}
             />
           ) : (
             <></>

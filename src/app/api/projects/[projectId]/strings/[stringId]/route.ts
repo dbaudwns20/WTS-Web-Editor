@@ -29,7 +29,7 @@ export async function PUT(
     const body = await request.json();
 
     checkRequestParams(["projectId", "stringId"], params);
-    checkRequestBody(["translatedText"], body);
+    checkRequestBody(["translatedText", "isSaveDraft", "isCompleted"], body);
 
     await dbConnect();
 

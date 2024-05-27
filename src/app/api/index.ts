@@ -22,24 +22,24 @@ function setOrder(req: NextRequest) {
 export function checkRequestParams(keys: string[], params: any) {
   const arr: string[] = [];
   for (const key of keys) {
-    if (!params[key]) {
+    if (!(key in params)) {
       arr.push(key);
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Missing parameters - [ ${arr.join(",")} ]`);
+    throw new Error(`Required parameters are missing - [ ${arr.join(",")} ]`);
   }
 }
 
 export function checkRequestBody(keys: string[], body: any) {
   const arr: string[] = [];
   for (const key of keys) {
-    if (!body[key]) {
+    if (!(key in body)) {
       arr.push(key);
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Missing parameters - [ ${arr.join(", ")} ]`);
+    throw new Error(`Required payloads are missing  - [ ${arr.join(", ")} ]`);
   }
 }
 

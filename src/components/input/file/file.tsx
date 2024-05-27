@@ -216,7 +216,7 @@ const File = forwardRef((props: FileProps, ref) => {
                     highlight_off
                   </i>
                 </span>
-                <span className="ml-1 font-semibold text-gray-500">DELETE</span>
+                <span className="font-semibold text-gray-500">DELETE</span>
               </button>
             </div>
           </label>
