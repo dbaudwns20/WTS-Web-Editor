@@ -220,7 +220,6 @@ body {
   @apply text-sm;
   @apply flex;
   @apply items-center;
-  @apply shadow-md;
   @apply dark:bg-transparent;
   @apply dark:border-2;
   @apply dark:border-slate-100;

@@ -150,16 +150,36 @@
   > .project-info-wrapper
   > .project-info
   > .info-wrapper
-  > .resource-link {
+  > .button-group {
   @apply flex;
-  @apply w-fit;
-  @apply outline-none;
+  @apply gap-2;
 }
 
 .project-info-section
   > .project-info-wrapper
   > .project-info
   > .info-wrapper
+  > .button-group
+  > .resource-link {
+  @apply rounded-lg;
+  @apply outline-cyan-200;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
+  .download-button {
+  @apply rounded-lg;
+  @apply outline-emerald-300;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
   > .resource-link
   > .tag.resource {
   @apply bg-cyan-500;
@@ -172,6 +192,28 @@
   @apply dark:border-cyan-500;
   @apply dark:text-cyan-500;
   @apply dark:hover:bg-transparent/30;
+  @apply shadow-md;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
+  > .download-button
+  > .tag.download {
+  @apply cursor-pointer;
+  @apply bg-emerald-500;
+  @apply text-white;
+  @apply pl-1;
+  @apply hover:bg-emerald-600;
+  @apply duration-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-emerald-500;
+  @apply dark:text-emerald-500;
+  @apply dark:hover:bg-transparent/30;
+  @apply shadow-md;
 }
 
 .string-content-section {

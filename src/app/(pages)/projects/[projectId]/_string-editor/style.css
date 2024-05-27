@@ -114,7 +114,6 @@
   @apply border;
   @apply border-gray-300;
   @apply rounded-md;
-  @apply duration-300;
   @apply dark:bg-transparent;
   @apply dark:border-gray-400;
 }

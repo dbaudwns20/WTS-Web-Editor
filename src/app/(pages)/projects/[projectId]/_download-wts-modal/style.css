@@ -1,0 +1,62 @@
+.download-wrapper {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-4;
+}
+
+.download-wrapper > .download {
+  @apply block;
+}
+
+.download-wrapper > .download > input {
+  @apply hidden;
+}
+
+.download-wrapper > .download > label {
+  @apply gap-4;
+  @apply inline-flex;
+  @apply items-center;
+  @apply w-full;
+  @apply py-3;
+  @apply px-4;
+  @apply text-gray-400;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+  @apply cursor-pointer;
+  @apply dark:text-white/60;
+  @apply dark:border-gray-400;
+  @apply dark:bg-slate-700;
+}
+
+.download-wrapper > .download > label > .check-icon {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply rounded-full;
+  @apply border;
+  @apply border-gray-400;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.download-wrapper > .download > input:not(:checked) + label:hover {
+  @apply bg-gray-100;
+  @apply dark:bg-transparent/20;
+}
+
+.download-wrapper > .download > input:checked + label {
+  @apply border-sky-400;
+  @apply text-sky-400;
+  @apply dark:text-sky-500;
+  @apply dark:border-sky-500;
+}
+
+.download-wrapper > .download > input:checked + label > .check-icon {
+  @apply bg-sky-400;
+  @apply border-white/60;
+  @apply text-white;
+  @apply dark:bg-sky-700;
+}

@@ -34,6 +34,7 @@ import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
 import UpdateProjectModal from "./_update-project-modal/update.project.modal";
 import UploadWtsModal from "./_upload-wts-modal/upload.wts.modal";
+import DownloadWtsModal from "./_download-wts-modal/download.wts.modal";
 import Dropdown from "@/components/common/dropdown/dropdown";
 import {
   BgImage,
@@ -62,6 +63,7 @@ export default function ProjectDetail() {
   const [isEdited, setIsEdited] = useState<boolean>(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isUploadWtsModalOpen, setIsUploadWtsModalOpen] = useState(false);
+  const [isDownloadWtsModalOpen, setIsDownloadWtsModalOpen] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
@@ -215,24 +217,38 @@ export default function ProjectDetail() {
                       <span className="tag progress">{`${project?.process}% Translated`}</span>
                     )}
                   </div>
-                  {project?.source ? (
-                    <a
-                      className="resource-link"
-                      href={project!.source!}
-                      target="_blank"
+                  <div className="button-group">
+                    <button
+                      type="button"
+                      className="download-button"
+                      onClick={() => setIsDownloadWtsModalOpen(true)}
                     >
-                      <span className="tag resource">
+                      <span className="tag download">
                         <span className="icon mr-0.5">
-                          <i className="material-icons md-18">launch</i>
+                          <i className="material-icons md-18">download</i>
                         </span>
-                        <span className="text-sm font-semibold">
-                          Resource Link
-                        </span>
+                        <span className="text-sm font-semibold">Download</span>
                       </span>
-                    </a>
-                  ) : (
-                    <></>
-                  )}
+                    </button>
+                    {project?.source ? (
+                      <a
+                        className="resource-link"
+                        href={project!.source!}
+                        target="_blank"
+                      >
+                        <span className="tag resource">
+                          <span className="icon mr-0.5">
+                            <i className="material-icons md-18">launch</i>
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Resource Link
+                          </span>
+                        </span>
+                      </a>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </div>
                 <div className="last-edited-wrapper">
                   <div className="last-edited">
@@ -340,6 +356,14 @@ export default function ProjectDetail() {
               setStringListKey={setStringListKey}
               completeFunction={completeFunction}
               closeModal={setIsUploadWtsModalOpen}
+            />
+          ) : (
+            <></>
+          )}
+          {isDownloadWtsModalOpen ? (
+            <DownloadWtsModal
+              completeFunction={completeFunction}
+              closeModal={setIsDownloadWtsModalOpen}
             />
           ) : (
             <></>

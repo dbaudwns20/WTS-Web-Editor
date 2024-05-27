@@ -8,7 +8,7 @@ type StringInstance = {
   comment: string | null;
 };
 
-async function computeCompletedProgress(
+async function computeCompletedProcess(
   projectId: string,
   isCompleted: boolean
 ): Promise<string> {
@@ -79,6 +79,7 @@ export async function updateString(
 ) {
   // 프로젝트 업데이트 데이터
   let projectUpdateData = {};
+  let isCompleted: boolean = false;
 
   // 임시 저장 여부 확인
   if (!updateData["isSaveDraft"]) {
@@ -88,12 +89,12 @@ export async function updateString(
       projectUpdateData = {
         ...projectUpdateData,
         ...{
-          process: await computeCompletedProgress(projectId, false),
+          process: await computeCompletedProcess(projectId, false),
         },
       };
     }
     // completedAt 갱신
-    updateData = { ...updateData, ...{ completedAt: new Date() } };
+    isCompleted = true;
   }
 
   // update string
@@ -102,8 +103,13 @@ export async function updateString(
     {
       ...updateData,
       ...{ updatedAt: new Date() },
+      ...(isCompleted && {
+        completedAt: new Date(),
+      }),
     },
-    { new: true }
+    {
+      new: true,
+    }
   );
 
   // 마지막 수정 String number 갱신
@@ -219,6 +225,6 @@ export async function overwriteWtsStrings(
 
   // 진행룰 갱신
   await updateProject(projectId, {
-    process: await computeCompletedProgress(projectId, true),
+    process: await computeCompletedProcess(projectId, true),
   });
 }
