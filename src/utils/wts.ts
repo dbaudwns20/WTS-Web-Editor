@@ -51,8 +51,10 @@ export function readWtsFile(wtsFile: File): WtsString[] {
 
 export function parseToHtml(wtsString: string): string {
   let result: string = "";
-  // \r 제거, \n => <br /> 변환, |n => <br /> 변환
+
+  // <[^>]+> 부분을 0으로 치환, \r 제거, \n => <br /> 변환, |n => <br /> 변환
   wtsString = wtsString
+    .replace(/<[^>]+>/g, "0")
     .replace(/[\r]/g, "")
     .replace(/[\n]/g, "<br />")
     .replace(/\|n/g, "<br />");
