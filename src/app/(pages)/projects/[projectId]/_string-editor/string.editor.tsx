@@ -110,7 +110,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
         },
         body: JSON.stringify({
           translatedText: translatedText,
-          isCompleted: isSaveDraft ? false : true,
+          isSaveDraft: isSaveDraft,
+          isCompleted: currentString?.completedAt !== null,
         }),
       }
     );

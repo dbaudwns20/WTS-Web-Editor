@@ -1,13 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { type PageInfo } from "@/types/pagination";
-
-type ApiResponse = {
-  success: boolean;
-  message?: string;
-  data?: any;
-  pageInfo?: PageInfo;
-};
+import { type PageInfo, type ApiResponse } from "@/types/api.response";
 
 function setOrder(req: NextRequest) {
   const sort = req.nextUrl.searchParams.get("sort") || null;
@@ -22,24 +15,24 @@ function setOrder(req: NextRequest) {
 export function checkRequestParams(keys: string[], params: any) {
   const arr: string[] = [];
   for (const key of keys) {
-    if (!params[key]) {
+    if (!(key in params)) {
       arr.push(key);
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Missing parameters - [ ${arr.join(",")} ]`);
+    throw new Error(`Required parameters are missing - [ ${arr.join(",")} ]`);
   }
 }
 
 export function checkRequestBody(keys: string[], body: any) {
   const arr: string[] = [];
   for (const key of keys) {
-    if (!body[key]) {
+    if (!(key in body)) {
       arr.push(key);
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Missing parameters - [ ${arr.join(", ")} ]`);
+    throw new Error(`Required payloads are missing  - [ ${arr.join(", ")} ]`);
   }
 }
 

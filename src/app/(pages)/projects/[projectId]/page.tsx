@@ -33,6 +33,8 @@ import {
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
 import UpdateProjectModal from "./_update-project-modal/update.project.modal";
+import UploadWtsModal from "./_upload-wts-modal/upload.wts.modal";
+import DownloadWtsModal from "./_download-wts-modal/download.wts.modal";
 import Dropdown from "@/components/common/dropdown/dropdown";
 import {
   BgImage,
@@ -59,7 +61,9 @@ export default function ProjectDetail() {
   // values
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isEdited, setIsEdited] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isUploadWtsModalOpen, setIsUploadWtsModalOpen] = useState(false);
+  const [isDownloadWtsModalOpen, setIsDownloadWtsModalOpen] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
   const image: BgImage = getBgImageById(1);
@@ -89,9 +93,6 @@ export default function ProjectDetail() {
     }
     setProject(bindProject(response.data));
   };
-
-  // 프로젝트 업데이트
-  const updateProject = () => setIsModalOpen(true);
 
   // 프로젝트 삭제 핸들링
   const handleDeleteProject = () => {
@@ -151,8 +152,6 @@ export default function ProjectDetail() {
     callbacks();
     // 프로젝트 재조회
     getProject();
-    // string content 높이 재조정
-    setStringContentSectionHeight();
   };
 
   // string content 높이 재조정
@@ -210,30 +209,40 @@ export default function ProjectDetail() {
                     ) : (
                       <></>
                     )}
-                    {project?.process === "100.0" ? (
-                      <span className="tag complete">Complete</span>
+                    <span className="tag progress">{`${project?.process}% Translated`}</span>
+                  </div>
+                  <div className="button-group">
+                    <button
+                      type="button"
+                      className="download-button"
+                      onClick={() => setIsDownloadWtsModalOpen(true)}
+                    >
+                      <span className="tag download">
+                        <span className="icon mr-0.5">
+                          <i className="material-icons md-18">download</i>
+                        </span>
+                        <span className="text-sm font-semibold">Download</span>
+                      </span>
+                    </button>
+                    {project?.source ? (
+                      <a
+                        className="resource-link"
+                        href={project!.source!}
+                        target="_blank"
+                      >
+                        <span className="tag resource">
+                          <span className="icon mr-0.5">
+                            <i className="material-icons md-18">launch</i>
+                          </span>
+                          <span className="text-sm font-semibold">
+                            Resource Link
+                          </span>
+                        </span>
+                      </a>
                     ) : (
-                      <span className="tag progress">{`${project?.process}% Translated`}</span>
+                      <></>
                     )}
                   </div>
-                  {project?.source ? (
-                    <a
-                      className="resource-link"
-                      href={project!.source!}
-                      target="_blank"
-                    >
-                      <span className="tag resource">
-                        <span className="icon mr-0.5">
-                          <i className="material-icons md-18">launch</i>
-                        </span>
-                        <span className="text-sm font-semibold">
-                          Resource Link
-                        </span>
-                      </span>
-                    </a>
-                  ) : (
-                    <></>
-                  )}
                 </div>
                 <div className="last-edited-wrapper">
                   <div className="last-edited">
@@ -262,10 +271,10 @@ export default function ProjectDetail() {
                     </span>
                   </a>
                   <ul className="w-[180px] py-1.5 px-2">
-                    <li className="hover:bg-gray-100 duration-200">
+                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
                         className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={updateProject}
+                        onClick={() => setIsUpdateModalOpen(true)}
                       >
                         <span className="icon mr-1.5">
                           <i className="material-icons md-18">edit</i>
@@ -273,7 +282,7 @@ export default function ProjectDetail() {
                         <span>Update</span>
                       </a>
                     </li>
-                    <li className="hover:bg-gray-100 duration-200">
+                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
                         className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
                         onClick={handleDeleteProject}
@@ -284,15 +293,15 @@ export default function ProjectDetail() {
                         <span>Delete</span>
                       </a>
                     </li>
-                    <li className="hover:bg-gray-100 duration-200">
+                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
                         className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={handleDeleteProject}
+                        onClick={() => setIsUploadWtsModalOpen(true)}
                       >
                         <span className="icon mr-1.5">
                           <i className="material-icons md-18">file_upload</i>
                         </span>
-                        <span>Overwrite WTS</span>
+                        <span>Upload WTS</span>
                       </a>
                     </li>
                   </ul>
@@ -326,12 +335,29 @@ export default function ProjectDetail() {
               completeFunction={completeFunction}
             />
           </section>
-          {isModalOpen ? (
+          {isUpdateModalOpen ? (
             <UpdateProjectModal
               project={project!}
               setStringListKey={setStringListKey}
               completeFunction={completeFunction}
-              closeModal={setIsModalOpen}
+              closeModal={setIsUpdateModalOpen}
+            />
+          ) : (
+            <></>
+          )}
+          {isUploadWtsModalOpen ? (
+            <UploadWtsModal
+              setStringListKey={setStringListKey}
+              completeFunction={completeFunction}
+              closeModal={setIsUploadWtsModalOpen}
+            />
+          ) : (
+            <></>
+          )}
+          {isDownloadWtsModalOpen ? (
+            <DownloadWtsModal
+              completeFunction={completeFunction}
+              closeModal={setIsDownloadWtsModalOpen}
             />
           ) : (
             <></>

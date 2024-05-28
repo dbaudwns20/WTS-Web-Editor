@@ -26,8 +26,11 @@ export async function GET(
 ) {
   try {
     checkRequestParams(["projectId"], params);
+
     await dbConnect();
+
     const project = await getProject(params.projectId);
+
     return resolveSuccess(project);
   } catch (error: any) {
     return resolveErrors(error);
@@ -40,13 +43,18 @@ export async function PUT(
 ) {
   let session;
   try {
+    session = await startSession();
+    session.startTransaction();
+
     const body = await request.json();
     checkRequestParams(["projectId"], params);
     checkRequestBody(["title", "language"], body);
-    session = await startSession();
-    session.startTransaction();
+
     await dbConnect();
+
+    // 프로젝트 업데이트
     const instance = await updateProject(params.projectId, body);
+
     await session.commitTransaction();
     return resolveSuccess(instance);
   } catch (error: any) {
@@ -65,14 +73,18 @@ export async function DELETE(
 ) {
   let session;
   try {
-    checkRequestParams(["projectId"], params);
     session = await startSession();
     session.startTransaction();
+
+    checkRequestParams(["projectId"], params);
+
     await dbConnect();
+
     // 프로젝트와 하위 string 제거
     await deleteProject(params.projectId);
+
     await session.commitTransaction();
-    return resolveSuccess("the project is deleted");
+    return resolveSuccess({});
   } catch (error) {
     if (session && session.inTransaction()) {
       session.abortTransaction();

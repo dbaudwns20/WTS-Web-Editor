@@ -108,6 +108,9 @@ body {
   @apply dark:text-white/60;
   @apply dark:focus:ring-gray-500;
   @apply shadow-md;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
 }
 
 .button:not(:disabled) {
@@ -217,7 +220,6 @@ body {
   @apply text-sm;
   @apply flex;
   @apply items-center;
-  @apply shadow-md;
   @apply dark:bg-transparent;
   @apply dark:border-2;
   @apply dark:border-slate-100;

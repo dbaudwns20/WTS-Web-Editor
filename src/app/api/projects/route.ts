@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
     session.startTransaction();
 
     const body = await request.json();
+
     checkRequestBody(["title", "language", "wtsStringList"], body);
 
     await dbConnect();
@@ -40,10 +41,11 @@ export async function POST(request: NextRequest) {
     await session.commitTransaction();
     return resolveSuccess(newProject);
   } catch (error: any) {
-    if (session) {
+    if (session && session.inTransaction()) {
       session.abortTransaction();
-      session.endSession();
     }
     return resolveErrors(error);
+  } finally {
+    session?.endSession();
   }
 }
