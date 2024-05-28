@@ -55,6 +55,7 @@
 
 .file > .file-content > .text {
   @apply text-sm;
+  @apply text-center;
   @apply mb-2;
   @apply font-semibold;
   @apply text-gray-500;

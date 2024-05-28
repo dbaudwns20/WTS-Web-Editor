@@ -15,7 +15,7 @@ import Submit, { type SubmitType } from "@/components/button/submit";
 
 import { validateForm } from "@/utils/validator";
 import { showNotificationMessage } from "@/utils/message";
-import { callApi } from "@/utils/common";
+import { callApi, downloadFile } from "@/utils/common";
 
 type DownloadWtsModalProps = {
   closeModal: Dispatch<SetStateAction<boolean>>;
@@ -45,9 +45,9 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
 
     setIsFetching(true);
 
-    const response = await callApi(`/api/projects/${projectId}/download`, {
-      method: "GET",
-    });
+    const response = await callApi(
+      `/api/projects/${projectId}/download?purpose=${downloadPurpose}`
+    );
 
     setIsFetching(false);
 
@@ -59,16 +59,10 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
       return;
     }
 
-    // 성공 처리
-    completeFunction(() => {
-      // 메시지 출력
-      showNotificationMessage({
-        message: "Updated.",
-        messageType: "success",
-      });
-      // 모달 닫기
-      closeModal(false);
-    });
+    downloadFile(response.data);
+
+    // 모달 닫기
+    closeModal(false);
   };
 
   useEffect(() => {
@@ -80,6 +74,7 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
       title="Download WTS"
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
+      widthClass="lg:!w-[480px]"
     >
       <form className="grid gap-6 p-6" onSubmit={downloadWts} noValidate>
         <div className="block">

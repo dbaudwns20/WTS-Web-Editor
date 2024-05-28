@@ -1,3 +1,5 @@
+import { type FileResponse } from "@/types/api.response";
+
 /**
  * 난수 문자열 생성
  * @returns
@@ -85,6 +87,35 @@ export function convertDateToString(
 export async function callApi(url: string, opt?: any): Promise<any> {
   const response = await fetch(url, opt);
   return await response.json();
+}
+
+export function downloadFile(fileResponse: FileResponse) {
+  const { fileName, fileContent } = fileResponse;
+
+  // Base64 인코딩된 내용을 UTF-8로 디코딩
+  const binaryString = atob(fileContent);
+  const len = binaryString.length;
+
+  // 디코딩 된 내용을 Uint8Array 으로 변환
+  const uint8Array = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    uint8Array[i] = binaryString.charCodeAt(i);
+  }
+
+  // Uint8Array를 Blob으로 변환
+  const blob = new Blob([uint8Array], { type: "application/octet-stream" });
+  const urlCreator = window.URL || window.webkitURL;
+  const url = urlCreator.createObjectURL(blob);
+  const a: any = document.createElement("a");
+  a.href = url;
+  a.download = fileName + ".wts";
+  a.style = "display: none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () {
+    return window.URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 export function emptyToNull(value: string | object | any[]): any {

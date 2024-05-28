@@ -1,13 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { type PageInfo } from "@/types/pagination";
-
-type ApiResponse = {
-  success: boolean;
-  message?: string;
-  data?: any;
-  pageInfo?: PageInfo;
-};
+import { type PageInfo, type ApiResponse } from "@/types/api.response";
 
 function setOrder(req: NextRequest) {
   const sort = req.nextUrl.searchParams.get("sort") || null;

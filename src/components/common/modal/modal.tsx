@@ -17,6 +17,7 @@ type ModalProps = {
   title?: string;
   isCloseOnOverlay?: boolean;
   setIsModalOpen?: Dispatch<SetStateAction<boolean>>;
+  widthClass?: string;
 };
 
 export default function Modal(props: ModalProps) {
@@ -28,6 +29,7 @@ export default function Modal(props: ModalProps) {
     title = "Modal",
     isCloseOnOverlay = false,
     setIsModalOpen,
+    widthClass = "",
   }: ModalProps = props;
 
   // 모달 닫기
@@ -65,6 +67,12 @@ export default function Modal(props: ModalProps) {
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown); // 실행 후 이벤트 제거
   }, [onKeyDown]);
+
+  useEffect(() => {
+    if (widthClass) {
+      wrapper.current?.classList.add(widthClass);
+    }
+  }, [widthClass]);
 
   return (
     <div ref={overlay} className="modal-background" onClick={onClick}>

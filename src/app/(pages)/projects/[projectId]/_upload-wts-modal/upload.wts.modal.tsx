@@ -94,6 +94,7 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
       title="Upload WTS"
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
+      widthClass="lg:!w-[480px]"
     >
       <form
         className="grid gap-6 md:grid-cols-1 p-6"

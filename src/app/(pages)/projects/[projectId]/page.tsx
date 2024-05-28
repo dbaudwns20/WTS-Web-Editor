@@ -152,8 +152,6 @@ export default function ProjectDetail() {
     callbacks();
     // 프로젝트 재조회
     getProject();
-    // string content 높이 재조정
-    setStringContentSectionHeight();
   };
 
   // string content 높이 재조정
@@ -211,11 +209,7 @@ export default function ProjectDetail() {
                     ) : (
                       <></>
                     )}
-                    {project?.process === "100.0" ? (
-                      <span className="tag complete">Complete</span>
-                    ) : (
-                      <span className="tag progress">{`${project?.process}% Translated`}</span>
-                    )}
+                    <span className="tag progress">{`${project?.process}% Translated`}</span>
                   </div>
                   <div className="button-group">
                     <button

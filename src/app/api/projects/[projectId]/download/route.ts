@@ -2,12 +2,11 @@ import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
 
-import {
-  checkRequestParams,
-  checkRequestBody,
-  resolveSuccess,
-  resolveErrors,
-} from "@/app/api";
+import { type FileResponse } from "@/types/api.response";
+
+import { downloadWts, getFileName } from "@/app/api/_services/download.service";
+
+import { checkRequestParams, resolveSuccess, resolveErrors } from "@/app/api";
 
 type Params = {
   projectId: string;
@@ -18,11 +17,20 @@ export async function GET(
   { params }: { params: Params }
 ) {
   try {
+    checkRequestParams(["projectId"], params);
     await dbConnect();
 
-    console.log(222);
+    const fileContent: string = await downloadWts(
+      params["projectId"],
+      request.nextUrl.searchParams.get("purpose")!
+    );
 
-    return resolveSuccess({});
+    const fileName: string = await getFileName(params["projectId"]);
+
+    return resolveSuccess({
+      fileName,
+      fileContent,
+    } as FileResponse);
   } catch (error) {
     return resolveErrors(error);
   }
