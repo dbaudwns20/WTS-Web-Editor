@@ -11,7 +11,7 @@ import ProjectCardSkeleton from "@/app/(pages)/_project-card/skeleton/project.ca
 import CreateProjectModal from "@/app/(pages)/_create-project-modal/create.project.modal";
 
 import Project, { bindProjectList } from "@/types/project";
-import { type OrderInfo, type PageInfo } from "@/types/pagination";
+import { type OrderInfo, type PageInfo } from "@/types/api.response";
 
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
@@ -76,6 +76,9 @@ export default function RootPage() {
         message: response.message,
         messageType: "danger",
       });
+
+      setIsLoading(false);
+
       return;
     }
 
