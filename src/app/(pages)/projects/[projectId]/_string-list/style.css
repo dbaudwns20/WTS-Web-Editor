@@ -1,4 +1,6 @@
 .string-list-wrapper {
+  --var-string-list-header-hight: 37px;
+  @apply relative;
   @apply h-full;
   @apply flex;
   @apply flex-col;
@@ -33,11 +35,28 @@
   @apply items-center;
   @apply border-b;
   @apply border-gray-300;
-  @apply py-2;
+  @apply py-1.5;
   @apply px-2.5;
+  @apply h-[--var-string-list-header-hight];
   @apply text-gray-400;
   @apply tracking-wide;
   @apply [&>span]:text-xs;
+}
+
+.string-list-wrapper > .string-list-header > .button-group {
+  @apply flex;
+  @apply gap-1;
+}
+
+.string-list-wrapper
+  > .string-list-header
+  > .button-group
+  > .string-search-button {
+  @apply flex;
+  @apply items-center;
+  @apply cursor-pointer;
+  @apply rounded-lg;
+  @apply hover:bg-gray-100;
 }
 
 .string-list-wrapper > .string-list {

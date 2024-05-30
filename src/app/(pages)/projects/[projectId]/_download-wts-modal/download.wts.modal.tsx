@@ -5,6 +5,7 @@ import {
   useEffect,
   Dispatch,
   SetStateAction,
+  FormEvent,
 } from "react";
 import { useParams } from "next/navigation";
 
@@ -37,11 +38,11 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
     useState<DownloadPurpose>("RELEASE");
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const downloadWts = async (e: any) => {
+  const downloadWts = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // check required values
-    if (!validateForm(e.target)) return;
+    if (!validateForm(e.target as HTMLFormElement)) return;
 
     setIsFetching(true);
 

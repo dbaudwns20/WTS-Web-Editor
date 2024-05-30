@@ -12,8 +12,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import "./style.css";
 
+import StringSearch from "./_string-search/string.search";
+
 import String, { bindStringList } from "@/types/string";
-import { type PageInfo } from "@/types/pagination";
+import { type PageInfo } from "@/types/api.response";
 
 import { callApi } from "@/utils/common";
 import {
@@ -35,10 +37,12 @@ type StringListProps = {
   isEdited: boolean;
   showStringList: boolean;
   skipCompleted: boolean;
+  setStringListKey: Dispatch<SetStateAction<number>>;
   handleUpdateString: (isDraft: boolean) => Promise<void>;
 };
 
 type _String = String & { index: number; isActive: boolean };
+type Status = "none" | "complete" | "inProgress" | "update" | "";
 
 export type StringListType = {
   setStringListScrollPosition: () => void;
@@ -52,6 +56,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     isEdited,
     showStringList,
     skipCompleted,
+    setStringListKey,
     handleUpdateString,
   } = props;
 
@@ -81,6 +86,17 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   // 페이징 정보
   const [pageInfo, setPageInfo] = useState<PageInfo>(defaultPageInfo);
 
+  // 검색조건 창 활성화 여부
+  const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
+  // 키워드
+  const [keyword, setKeyword] = useState<string>("");
+  // 상태
+  const [status, setStatus] = useState<Status>("");
+  // 검색 쿼리
+  const [query, setQuery] = useState<string>("");
+  // 검색조건 적용중 여부
+  const [isApplySearch, setIsApplySearch] = useState<boolean>(false);
+
   // project 의 string list 조회
   const getStringList = async () => {
     setIsLoading(true);
@@ -93,6 +109,10 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     // 자동이동 설정 옵션이 켜져있는 경우
     if (skipCompleted) {
       url += "&skipCompleted=true";
+    }
+    if (query) {
+      url += "&" + query;
+      pageInfo.currentPage = 1;
     }
 
     const response = await callApi(url);
@@ -127,11 +147,20 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   const getMoreStringList = async () => {
     setIsMoreLoading(true);
 
-    const response = await callApi(
-      `/api/projects/${projectId}/strings?offset=${
-        pageInfo.offset
-      }&currentPage=${pageInfo.currentPage + 1}&sort=stringNumber&order=ASC`
-    );
+    let url: string = `/api/projects/${projectId}/strings?offset=${
+      pageInfo.offset
+    }&currentPage=${pageInfo.currentPage + 1}&sort=stringNumber&order=ASC`;
+
+    // 자동이동 설정 옵션이 켜져있는 경우
+    if (skipCompleted) {
+      url += "&skipCompleted=true";
+    }
+    if (query) {
+      url += "&" + query;
+      pageInfo.currentPage = 0;
+    }
+
+    const response = await callApi(url);
 
     if (!response.success) {
       showNotificationMessage({
@@ -361,82 +390,121 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 
   return (
     <div className="string-list-wrapper" ref={stringWrapperRef}>
-      {isLoading ? (
-        <div className="is-loading">
-          <svg viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
-        </div>
-      ) : (
-        <>
-          <header className="string-list-header">
-            <span>{currentIndex + " / " + pageInfo.totalCount}</span>
-          </header>
-          <div className="string-list" ref={stringListRef}>
-            {stringList.map((string: _String) => {
-              const isActive: boolean =
-                string.stringNumber === currentStringNumber;
-              return (
-                <a
-                  onClick={() => handleMove(string)}
-                  key={string.index}
-                  className={isActive ? "string is-active" : "string"}
-                >
-                  <p className="number">
-                    <span>STRING {string.stringNumber}</span>
-                    {(() => {
-                      if (!string.completedAt && !string.updatedAt) {
-                        return <></>;
-                      } else if (string.completedAt) {
-                        if (string.completedAt >= string.updatedAt!) {
-                          return <span className="complete">COMPLETE</span>;
-                        } else {
-                          return <span className="update">UPDATE</span>;
-                        }
-                      } else if (string.updatedAt) {
-                        if (string.updatedAt > string.createdAt) {
-                          return (
-                            <span className="in-progress">IN PROGRESS</span>
-                          );
-                        }
-                      }
-                    })()}
-                  </p>
-                  <p className="content">
-                    {string.completedAt
-                      ? string.translatedText
-                      : string.originalText}
-                  </p>
-                  {string.comment ? (
-                    <span className="icon">
-                      <i className="material-icons-outlined md-18">
-                        sticky_note_2
-                      </i>
-                    </span>
-                  ) : (
-                    <></>
-                  )}
-                </a>
-              );
-            })}
-            {isMoreLoading ? (
-              <div className="is-more-loading">
-                <svg viewBox="0 0 24 24">
-                  <path
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-              </div>
+      <>
+        <header className="string-list-header">
+          <span>{currentIndex + " / " + pageInfo.totalCount}</span>
+          <div className="button-group">
+            {isApplySearch ? (
+              <button
+                type="button"
+                className="string-search-button"
+                onClick={() => setStringListKey((prev) => prev + 1)}
+              >
+                <span className="icon">
+                  <i className="material-icons-outlined md-18">refresh</i>
+                </span>
+              </button>
             ) : (
               <></>
             )}
+            <button
+              type="button"
+              className="string-search-button"
+              onClick={() => setIsShowSearch(!isShowSearch)}
+            >
+              <span className="icon">
+                <i className="material-icons-outlined md-18">
+                  {isShowSearch ? "close" : "search"}
+                </i>
+              </span>
+            </button>
           </div>
-        </>
-      )}
+        </header>
+        {isLoading ? (
+          <div className="is-loading">
+            <svg viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+          </div>
+        ) : (
+          <>
+            <StringSearch
+              keyword={keyword}
+              setKeyword={setKeyword}
+              status={status}
+              setStatus={setStatus}
+              isShowSearch={isShowSearch}
+              setIsShowSearch={setIsShowSearch}
+              setQuery={setQuery}
+              setIsApplySearch={setIsApplySearch}
+              getStringList={getStringList}
+            />
+            <div className="string-list" ref={stringListRef}>
+              {stringList.map((string: _String) => {
+                const isActive: boolean =
+                  string.stringNumber === currentStringNumber;
+                return (
+                  <article
+                    onClick={() => handleMove(string)}
+                    key={string.index}
+                    className={isActive ? "string is-active" : "string"}
+                  >
+                    <p className="number">
+                      <span>STRING {string.stringNumber}</span>
+                      {(() => {
+                        if (!string.completedAt && !string.updatedAt) {
+                          return <></>;
+                        } else if (string.completedAt) {
+                          if (string.completedAt >= string.updatedAt!) {
+                            return <span className="complete">COMPLETE</span>;
+                          } else {
+                            return <span className="update">UPDATE</span>;
+                          }
+                        } else if (string.updatedAt) {
+                          if (string.updatedAt > string.createdAt) {
+                            return (
+                              <span className="in-progress">IN PROGRESS</span>
+                            );
+                          }
+                        }
+                      })()}
+                    </p>
+                    <p className="content">
+                      {string.completedAt
+                        ? string.translatedText
+                        : string.originalText}
+                    </p>
+                    {string.comment ? (
+                      <span className="icon">
+                        <i className="material-icons-outlined md-18">
+                          sticky_note_2
+                        </i>
+                      </span>
+                    ) : (
+                      <></>
+                    )}
+                  </article>
+                );
+              })}
+              {isMoreLoading ? (
+                <div className="is-more-loading">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          </>
+        )}
+      </>
     </div>
   );
 });

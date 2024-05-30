@@ -318,6 +318,7 @@ export default function ProjectDetail() {
               isEdited={isEdited}
               showStringList={layoutState.showStringList}
               skipCompleted={preferenceState.skipCompleted}
+              setStringListKey={setStringListKey}
               handleUpdateString={handleUpdateString}
             />
             <StringEditor

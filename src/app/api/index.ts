@@ -41,8 +41,6 @@ export async function resolveStringModelPagination(
   model: any,
   query: any = {}
 ) {
-  // 총 개수
-  const totalCount: number = await model.countDocuments(query);
   // 현재 페이지
   let currentPage = Number(req.nextUrl.searchParams.get("currentPage"));
   // 제한
@@ -55,9 +53,31 @@ export async function resolveStringModelPagination(
   const skipCompleted: boolean =
     req.nextUrl.searchParams.get("skipCompleted") === "true";
 
+  const keyword: string | null = req.nextUrl.searchParams.get("keyword");
+  const status: string | null = req.nextUrl.searchParams.get("status");
+
   if (lastModifiedStringNumber) {
     let target: number = Number(lastModifiedStringNumber);
     offset = target + (10 - (target % 10));
+  }
+
+  if (keyword) {
+    // $regex를 사용하여 대소문자 구분 없이 검색
+    const keywordRegex = { $regex: keyword, $options: "i" };
+    let keywordFilter: any = {
+      $or: [{ originalText: keywordRegex }, { translatedText: keywordRegex }],
+    };
+
+    // 숫자로만 구성된 keyword인 경우 stringNumber 필드 검색 조건 추가
+    const keywordNumber = Number(keyword);
+    if (!isNaN(keywordNumber) && keyword.trim() !== "") {
+      keywordFilter["$or"].push({ stringNumber: keywordNumber });
+    }
+
+    query = { ...query, ...keywordFilter };
+  }
+
+  if (status) {
   }
 
   // 정렬
@@ -68,6 +88,9 @@ export async function resolveStringModelPagination(
     .sort(order) // 정렬
     .skip((currentPage - 1) * offset)
     .limit(offset);
+
+  // 총 개수
+  const totalCount: number = await model.countDocuments(query);
 
   // skipCompleted 가 true 일 경우
   if (skipCompleted) {

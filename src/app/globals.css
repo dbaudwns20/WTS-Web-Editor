@@ -64,7 +64,7 @@ body {
 
 .label {
   @apply block;
-  @apply text-sm;
+  @apply text-xs;
   @apply mb-2;
   @apply font-medium;
   @apply text-slate-400;

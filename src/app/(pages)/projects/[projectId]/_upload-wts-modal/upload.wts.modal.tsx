@@ -5,6 +5,7 @@ import {
   useEffect,
   Dispatch,
   SetStateAction,
+  FormEvent,
 } from "react";
 import { useParams } from "next/navigation";
 
@@ -38,11 +39,11 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const overwriteWts = async (e: any) => {
+  const overwriteWts = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // check required values
-    if (!validateForm(e.target)) return;
+    if (!validateForm(e.target as HTMLFormElement)) return;
 
     setIsFetching(true);
 
