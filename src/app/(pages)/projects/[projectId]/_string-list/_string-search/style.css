@@ -34,7 +34,7 @@
   @apply justify-center;
   @apply w-auto;
   @apply rounded-full;
-  @apply outline-slate-300;
+  @apply outline-slate-400;
 }
 
 .string-status-group > .string-status > input {
@@ -62,7 +62,6 @@
   @apply border-gray-300;
   @apply text-gray-400;
   @apply rounded-full;
-  @apply text-xs;
   @apply w-full;
   @apply text-center;
   @apply cursor-pointer;
@@ -70,6 +69,8 @@
   @apply px-2.5;
   @apply font-semibold;
   @apply duration-100;
+  @apply leading-4;
+  font-size: 0.65rem;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -78,15 +79,15 @@
 
 .string-status-group > .string-status > input + label:hover {
   @apply opacity-80;
-  @apply border-slate-400;
-  @apply text-slate-400;
+  @apply border-slate-500;
+  @apply text-slate-500;
   @apply ring-1;
-  @apply ring-slate-200;
+  @apply ring-slate-300;
 }
 
 .string-status-group > .string-status > input:checked + label {
-  @apply border-slate-500;
-  @apply text-slate-500;
+  @apply border-slate-600;
+  @apply text-slate-600;
 }
 
 .string-status-group > .string-status.is-completed > input + label:hover {

@@ -18,7 +18,7 @@ import { type PageInfo } from "@/types/api.response";
 
 import { showNotificationMessage } from "@/utils/message";
 
-type Status = "none" | "complete" | "inProgress" | "update" | "";
+type Status = "unedited" | "complete" | "inProgress" | "update" | "";
 
 type StringSearchProps = {
   keyword: string;
@@ -141,8 +141,7 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
             ref={searchRef}
             value={keyword}
             labelText="KEYWORD"
-            placeholder="keyword"
-            invalidMsg="Please enter your keyword."
+            placeholder="type string number or keyword."
             onChange={setKeyword}
           />
         </div>
@@ -156,12 +155,12 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
             >
               <input
                 type="checkbox"
-                id="none"
-                value="none"
-                checked={status === "none"}
+                id="unedited"
+                value="unedited"
+                checked={status === "unedited"}
                 onChange={handleChange}
               />
-              <label htmlFor="none">NONE</label>
+              <label htmlFor="unedited">UNEDITED</label>
             </div>
             <div
               className="string-status is-completed"

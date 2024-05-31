@@ -53,82 +53,9 @@ export async function resolveStringModelPagination(
   const skipCompleted: boolean =
     req.nextUrl.searchParams.get("skipCompleted") === "true";
 
-  const keyword: string | null = req.nextUrl.searchParams.get("keyword");
-  const status: string | null = req.nextUrl.searchParams.get("status");
-
   if (lastModifiedStringNumber) {
     let target: number = Number(lastModifiedStringNumber);
     offset = target + (10 - (target % 10));
-  }
-
-  // 키워드 검색조건
-  if (keyword) {
-    // $regex를 사용하여 대소문자 구분 없이 검색
-    const keywordRegex = new RegExp(keyword, "i");
-    let keywordFilter: any = {
-      $or: [
-        { originalText: { $regex: keywordRegex } },
-        { translatedText: { $regex: keywordRegex } },
-      ],
-    };
-
-    // 숫자로만 구성된 keyword인 경우 stringNumber 필드 검색 조건 추가
-    const keywordNumber = Number(keyword);
-    if (!isNaN(keywordNumber) && keyword.trim() !== "") {
-      keywordFilter["$or"].push({ stringNumber: keywordNumber });
-    }
-
-    query = { ...query, ...keywordFilter };
-  }
-
-  // 상태 검색조건
-  if (status) {
-    switch (status) {
-      case "none":
-        query = {
-          ...query,
-          ...{
-            $and: [{ completedAt: null }, { updatedAt: null }],
-          },
-        };
-        break;
-      case "complete":
-        query = {
-          ...query,
-          ...{
-            $and: [
-              { completedAt: { $ne: null } },
-              { updatedAt: { $ne: null } },
-              { $expr: { $gte: ["$completedAt", "$updatedAt"] } },
-            ],
-          },
-        };
-        break;
-      case "inProgress":
-        query = {
-          ...query,
-          ...{
-            $and: [
-              { completedAt: null },
-              { updatedAt: { $ne: null } },
-              { $expr: { $gte: ["$updatedAt", "$createdAt"] } },
-            ],
-          },
-        };
-        break;
-      case "update":
-        query = {
-          ...query,
-          ...{
-            $and: [
-              { completedAt: { $ne: null } },
-              { updatedAt: { $ne: null } },
-              { $expr: { $gt: ["$updatedAt", "$completedAt"] } },
-            ],
-          },
-        };
-        break;
-    }
   }
 
   // 정렬

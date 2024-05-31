@@ -100,6 +100,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     }
 
     setIsFetching(true);
+    // 이동 버튼 비활성화
+    setMoveButtonState([true, true]);
 
     const response = await callApi(
       `/api/projects/${projectId}/strings/${currentString?.id}`,
@@ -117,6 +119,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     );
 
     setIsFetching(false);
+    // 이동 버튼 활성화
+    setMoveButtonState([false, false]);
 
     // onError
     if (!response.success) {
@@ -260,8 +264,6 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   }, [layoutState.stringEditorMode]);
 
   useEffect(() => {
-    // 이동 버튼 비활성화
-    setMoveButtonState([isFetching, isFetching]);
     // submit 버튼 fetching
     submitRef.current!.setFetchState(isFetching);
     // translator 비활성화

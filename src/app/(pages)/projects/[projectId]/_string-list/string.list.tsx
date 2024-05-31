@@ -42,7 +42,7 @@ type StringListProps = {
 };
 
 type _String = String & { index: number; isActive: boolean };
-type Status = "none" | "complete" | "inProgress" | "update" | "";
+type Status = "unedited" | "complete" | "inProgress" | "update" | "";
 
 export type StringListType = {
   setStringListScrollPosition: () => void;
