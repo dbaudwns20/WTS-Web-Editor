@@ -179,7 +179,7 @@ export async function updateProjectStrings(
   // upsert
   for (const wtsString of upsertList) {
     await StringModel.findOneAndUpdate(
-      { stringNumber: wtsString.stringNumber },
+      { projectId: projectId, stringNumber: wtsString.stringNumber },
       {
         $setOnInsert: {
           createdAt: new Date(),
@@ -199,6 +199,7 @@ export async function updateProjectStrings(
   // delete
   for (const wtsString of deleteList) {
     await StringModel.findOneAndDelete({
+      projectId: projectId,
       stringNumber: wtsString.stringNumber,
     });
   }

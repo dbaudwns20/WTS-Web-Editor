@@ -112,7 +112,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     }
     if (query) {
       url += "&" + query;
-      pageInfo.currentPage = 1;
     }
 
     const response = await callApi(url);
@@ -381,18 +380,22 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     }
   }, [showStringList, setStringListScrollPosition]);
 
-  // mount 시 스트링 리스트 조회
+  // query 변경 시 스트링 리스트 조회
   useEffect(() => {
     getStringList();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [query]);
 
   return (
     <div className="string-list-wrapper" ref={stringWrapperRef}>
       <>
         <header className="string-list-header">
-          <span>{currentIndex + " / " + pageInfo.totalCount}</span>
+          {pageInfo.totalCount === 0 ? (
+            <>{isLoading ? <span>Loading...</span> : <span>No Result</span>}</>
+          ) : (
+            <span>{currentIndex + " / " + pageInfo.totalCount}</span>
+          )}
           <div className="button-group">
             {isApplySearch ? (
               <button
@@ -438,9 +441,10 @@ const StringList = forwardRef((props: StringListProps, ref) => {
               setStatus={setStatus}
               isShowSearch={isShowSearch}
               setIsShowSearch={setIsShowSearch}
+              query={query}
               setQuery={setQuery}
               setIsApplySearch={setIsApplySearch}
-              getStringList={getStringList}
+              setPageInfo={setPageInfo}
             />
             <div className="string-list" ref={stringListRef}>
               {stringList.map((string: _String) => {
@@ -457,19 +461,22 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                       {(() => {
                         if (!string.completedAt && !string.updatedAt) {
                           return <></>;
-                        } else if (string.completedAt) {
+                        }
+                        if (string.completedAt) {
                           if (string.completedAt >= string.updatedAt!) {
                             return <span className="complete">COMPLETE</span>;
-                          } else {
-                            return <span className="update">UPDATE</span>;
                           }
-                        } else if (string.updatedAt) {
-                          if (string.updatedAt > string.createdAt) {
-                            return (
-                              <span className="in-progress">IN PROGRESS</span>
-                            );
-                          }
+                          return <span className="update">UPDATE</span>;
                         }
+                        if (
+                          string.updatedAt &&
+                          string.updatedAt > string.createdAt
+                        ) {
+                          return (
+                            <span className="in-progress">IN PROGRESS</span>
+                          );
+                        }
+                        return <></>;
                       })()}
                     </p>
                     <p className="content">

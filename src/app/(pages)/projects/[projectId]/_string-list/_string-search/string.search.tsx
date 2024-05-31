@@ -13,6 +13,8 @@ import "./style.css";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 
+import { type PageInfo } from "@/types/api.response";
+
 import { showNotificationMessage } from "@/utils/message";
 
 type Status = "none" | "complete" | "inProgress" | "update" | "";
@@ -23,10 +25,11 @@ type StringSearchProps = {
   status: Status;
   setStatus: Dispatch<SetStateAction<Status>>;
   isShowSearch: boolean;
+  query: string;
   setQuery: Dispatch<SetStateAction<string>>;
   setIsShowSearch: Dispatch<SetStateAction<boolean>>;
   setIsApplySearch: Dispatch<SetStateAction<boolean>>;
-  getStringList: () => Promise<void>;
+  setPageInfo: Dispatch<SetStateAction<PageInfo>>;
 };
 
 const StringSearch = forwardRef((props: StringSearchProps, ref) => {
@@ -35,11 +38,12 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
     setKeyword,
     status,
     setStatus,
+    query,
     setQuery,
     isShowSearch,
     setIsShowSearch,
     setIsApplySearch,
-    getStringList,
+    setPageInfo,
   } = props;
 
   // refs
@@ -55,6 +59,7 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 키워드와 상태 둘 다 없는 경우 경고 메시지 표시
     if (!status && !keyword) {
       showNotificationMessage({
         message: "Please enter your keyword or status.",
@@ -63,15 +68,23 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
       focusKeyword();
       return;
     }
+
+    // 검색창 숨기기 및 검색 적용 상태 설정
     setIsShowSearch(false);
     setIsApplySearch(true);
 
-    let query: string[] = [];
-    if (keyword) query.push(`keyword=${keyword}`);
-    if (status) query.push(`status=${status}`);
-    if (query.length > 0) setQuery(query.join("&"));
+    // 쿼리 문자열 구성
+    const newQuery = [];
+    if (keyword) newQuery.push(`keyword=${keyword}`);
+    if (status) newQuery.push(`status=${status}`);
 
-    await getStringList();
+    const strQuery: string = newQuery.join("&");
+
+    // 쿼리 문자열이 있을 경우 페이지 정보 초기화 및 쿼리 설정
+    if (strQuery.length > 0 && strQuery !== query) {
+      setPageInfo({ currentPage: 1, offset: 10, totalCount: 0, totalPage: 1 });
+      setQuery(strQuery);
+    }
   };
 
   const focusKeyword = () => {
