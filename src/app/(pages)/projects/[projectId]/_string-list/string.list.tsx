@@ -156,7 +156,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     }
     if (query) {
       url += "&" + query;
-      pageInfo.currentPage = 0;
     }
 
     const response = await callApi(url);
@@ -294,9 +293,12 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   });
 
   const setGroupAndGetCurrent = useCallback((): _String => {
-    let stringGroup: (_String | null)[] = [null, stringList[0], null];
+    let stringGroup: (_String | null)[] = [null, stringList[0] ?? null, null];
 
-    if (stringList.length <= 1) return stringList[0];
+    if (stringList.length <= 1) {
+      setStringGroup(stringGroup);
+      return stringList[0];
+    }
 
     const findNextIncomplete = (
       startIndex: number,
