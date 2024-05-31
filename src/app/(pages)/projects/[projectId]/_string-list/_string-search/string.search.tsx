@@ -2,6 +2,7 @@ import {
   forwardRef,
   useRef,
   useEffect,
+  KeyboardEvent,
   ChangeEvent,
   FormEvent,
   Dispatch,
@@ -91,6 +92,25 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
     searchRef?.current?.setFocus();
   };
 
+  const handleKeydown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.code === "Enter") {
+      // Enter 키 입력 시 Submit
+      e.preventDefault();
+      e.stopPropagation();
+      const form: HTMLFormElement = document.querySelector(".string-search")!;
+      form.dispatchEvent(
+        new Event("submit", { cancelable: true, bubbles: true })
+      );
+    } else if (e.code === "Space") {
+      // Space 키 입력 시 checked
+      e.preventDefault();
+      e.stopPropagation();
+      const input: HTMLInputElement = (e.target as HTMLDivElement)
+        .children[0] as HTMLInputElement;
+      input.click();
+    }
+  };
+
   useEffect(() => {
     if (isShowSearch) {
       stringSearchWrapperRef?.current?.classList.add("is-active");
@@ -99,6 +119,19 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
       stringSearchWrapperRef?.current?.classList.remove("is-active");
     }
   }, [isShowSearch]);
+
+  useEffect(() => {
+    // esc key 입력시 창 닫기
+    const ref = stringSearchWrapperRef.current;
+    ref?.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setIsShowSearch(false);
+    });
+    return () => {
+      ref?.removeEventListener("keydown", (e) => {
+        if (e.key === "Escape") setIsShowSearch(false);
+      });
+    };
+  });
 
   return (
     <div className="string-search-wrapper" ref={stringSearchWrapperRef}>
@@ -116,7 +149,11 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
         <div className="block">
           <label className="label">STATUS</label>
           <div className="string-status-group">
-            <div className="string-status">
+            <div
+              className="string-status"
+              tabIndex={0}
+              onKeyDown={handleKeydown}
+            >
               <input
                 type="checkbox"
                 id="none"
@@ -126,7 +163,11 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
               />
               <label htmlFor="none">NONE</label>
             </div>
-            <div className="string-status is-completed">
+            <div
+              className="string-status is-completed"
+              tabIndex={0}
+              onKeyDown={handleKeydown}
+            >
               <input
                 type="checkbox"
                 id="complete"
@@ -136,7 +177,11 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
               />
               <label htmlFor="complete">COMPLETE</label>
             </div>
-            <div className="string-status is-progress">
+            <div
+              className="string-status is-progress"
+              tabIndex={0}
+              onKeyDown={handleKeydown}
+            >
               <input
                 type="checkbox"
                 id="inProgress"
@@ -146,7 +191,11 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
               />
               <label htmlFor="inProgress">IN PROGRESS</label>
             </div>
-            <div className="string-status is-updated">
+            <div
+              className="string-status is-updated"
+              tabIndex={0}
+              onKeyDown={handleKeydown}
+            >
               <input
                 type="checkbox"
                 id="update"

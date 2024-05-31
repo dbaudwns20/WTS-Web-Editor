@@ -33,10 +33,28 @@
   @apply items-center;
   @apply justify-center;
   @apply w-auto;
+  @apply rounded-full;
+  @apply outline-slate-300;
 }
 
 .string-status-group > .string-status > input {
   @apply hidden;
+}
+
+.string-status-group > .string-status.is-completed {
+  @apply outline-teal-300;
+}
+
+.string-status-group > .string-status.is-progress {
+  @apply outline-yellow-300;
+}
+
+.string-status-group > .string-status.is-updated {
+  @apply outline-red-300;
+}
+
+.string-status-group > .string-status.is-completed {
+  @apply outline-teal-300;
 }
 
 .string-status-group > .string-status > label {
