@@ -5,6 +5,7 @@ import {
   useEffect,
   Dispatch,
   SetStateAction,
+  FormEvent,
 } from "react";
 
 import { getLangOptions } from "@/types/language";
@@ -70,11 +71,11 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
     }
   };
 
-  const updateProject = async (e: any) => {
+  const updateProject = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // check required values
-    if (!validateForm(e.target)) return;
+    if (!validateForm(e.target as HTMLFormElement)) return;
     // check data is changed
     if (
       !checkDataEdited(
@@ -112,9 +113,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         language,
         version,
         source,
-        ...(wtsStringList.length > 0 && {
-          wtsStringList,
-        }),
+        ...(wtsStringList.length > 0 && { wtsStringList }),
       }),
     });
 
@@ -163,7 +162,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
       setIsModalOpen={closeModal}
     >
       <form
-        className="grid gap-6 md:grid-cols-1 p-6"
+        className="grid gap-6 p-6"
         onSubmit={handleUpdateProject}
         noValidate
       >

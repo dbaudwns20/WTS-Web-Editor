@@ -6,44 +6,41 @@ type StringInstance = {
   stringNumber: number;
   content: string;
   comment: string | null;
+  isCompleted?: boolean;
 };
 
 async function computeCompletedProcess(
   projectId: string,
   isCompleted: boolean
 ): Promise<string> {
-  try {
-    const result = await StringModel.aggregate([
-      {
-        $facet: {
-          totalCount: [
-            { $match: { projectId: projectId } },
-            { $count: "totalCount" },
-          ],
-          completedCount: [
-            { $match: { projectId: projectId, completedAt: { $ne: null } } },
-            { $count: "completedCount" },
-          ],
+  const result = await StringModel.aggregate([
+    {
+      $facet: {
+        totalCount: [
+          { $match: { projectId: projectId } },
+          { $count: "totalCount" },
+        ],
+        completedCount: [
+          { $match: { projectId: projectId, completedAt: { $ne: null } } },
+          { $count: "completedCount" },
+        ],
+      },
+    },
+    {
+      $project: {
+        totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
+        completedCount: {
+          $arrayElemAt: ["$completedCount.completedCount", 0],
         },
       },
-      {
-        $project: {
-          totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
-          completedCount: {
-            $arrayElemAt: ["$completedCount.completedCount", 0],
-          },
-        },
-      },
-    ]).exec();
-    let { completedCount = 0, totalCount } = result[0];
-    // 완료된 String 이 아니라면 => 신규, process 계산 기존 완료된 건수 + 1
-    if (!isCompleted) {
-      completedCount += 1;
-    }
-    return ((completedCount / totalCount) * 100).toFixed(1);
-  } catch (error: any) {
-    throw new Error(error.message);
+    },
+  ]).exec();
+  let { completedCount = 0, totalCount } = result[0];
+  // 완료된 String 이 아니라면 => 신규, process 계산 기존 완료된 건수 + 1
+  if (!isCompleted) {
+    completedCount += 1;
   }
+  return ((completedCount / totalCount) * 100).toFixed(1);
 }
 
 export async function createString(newStringData: IString) {
@@ -137,7 +134,7 @@ export async function updateProjectStrings(
     projectId: projectId,
   });
 
-  // 업데이트 할 string hash map
+  // 업데이트할 string hash map 생성
   const updateStringMap: Map<number, StringInstance> = new Map<
     number,
     StringInstance
@@ -166,7 +163,12 @@ export async function updateProjectStrings(
       string.originalText !== instance.content ||
       string.comment !== instance.comment
     )
-      upsertList.push(instance);
+      upsertList.push({
+        stringNumber: instance.stringNumber,
+        content: instance.content,
+        comment: instance.comment,
+        isCompleted: string.completedAt !== null, // 대상 String 의 완료여부
+      });
   }
 
   // 추가 되어야 할 string map 이 존재한다면 upsert 배열에 추가
@@ -179,7 +181,7 @@ export async function updateProjectStrings(
   // upsert
   for (const wtsString of upsertList) {
     await StringModel.findOneAndUpdate(
-      { stringNumber: wtsString.stringNumber },
+      { projectId: projectId, stringNumber: wtsString.stringNumber },
       {
         $setOnInsert: {
           createdAt: new Date(),
@@ -189,7 +191,7 @@ export async function updateProjectStrings(
         $set: {
           originalText: wtsString.content,
           comment: wtsString.comment,
-          updatedAt: new Date(),
+          ...(wtsString.isCompleted && { updatedAt: new Date() }), // 완료된 경우에만 수정일자 갱신
         },
       },
       { upsert: true, setDefaultsOnInsert: true }
@@ -199,7 +201,15 @@ export async function updateProjectStrings(
   // delete
   for (const wtsString of deleteList) {
     await StringModel.findOneAndDelete({
+      projectId: projectId,
       stringNumber: wtsString.stringNumber,
+    });
+  }
+
+  if (upsertList.length > 0 || deleteList.length > 0) {
+    // 진행률 갱신
+    await updateProject(projectId, {
+      process: await computeCompletedProcess(projectId, true),
     });
   }
 }
@@ -223,7 +233,7 @@ export async function overwriteWtsStrings(
     );
   }
 
-  // 진행룰 갱신
+  // 진행률 갱신
   await updateProject(projectId, {
     process: await computeCompletedProcess(projectId, true),
   });

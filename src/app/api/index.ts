@@ -41,8 +41,6 @@ export async function resolveStringModelPagination(
   model: any,
   query: any = {}
 ) {
-  // 총 개수
-  const totalCount: number = await model.countDocuments(query);
   // 현재 페이지
   let currentPage = Number(req.nextUrl.searchParams.get("currentPage"));
   // 제한
@@ -68,6 +66,9 @@ export async function resolveStringModelPagination(
     .sort(order) // 정렬
     .skip((currentPage - 1) * offset)
     .limit(offset);
+
+  // 총 개수
+  const totalCount: number = await model.countDocuments(query);
 
   // skipCompleted 가 true 일 경우
   if (skipCompleted) {
