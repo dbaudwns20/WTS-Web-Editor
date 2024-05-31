@@ -291,3 +291,28 @@ body {
   @apply dark:bg-sky-400;
   @apply dark:border-sky-400;
 }
+
+.has-tooltip {
+  @apply relative;
+}
+
+.has-tooltip::before {
+  @apply opacity-0;
+  @apply hover:opacity-100;
+  @apply absolute;
+  @apply top-0;
+  @apply left-[50%];
+  @apply -translate-x-[50%];
+  @apply -translate-y-full;
+  @apply text-xs;
+  @apply rounded-[0.25rem];
+  @apply text-white;
+  @apply bg-slate-800/70;
+  @apply break-keep;
+  @apply whitespace-pre-wrap;
+  @apply py-1;
+  @apply px-2;
+  @apply min-w-[45px];
+  @apply duration-100;
+  content: attr(data-tooltip);
+}

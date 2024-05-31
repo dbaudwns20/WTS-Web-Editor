@@ -414,7 +414,8 @@ const StringList = forwardRef((props: StringListProps, ref) => {
             )}
             <button
               type="button"
-              className="string-search-button"
+              className="string-search-button has-tooltip"
+              data-tooltip="검색"
               onClick={() => setIsShowSearch(!isShowSearch)}
             >
               <span className="icon">
