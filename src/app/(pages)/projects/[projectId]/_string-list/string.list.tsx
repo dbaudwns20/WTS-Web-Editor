@@ -402,7 +402,8 @@ const StringList = forwardRef((props: StringListProps, ref) => {
             {isApplySearch ? (
               <button
                 type="button"
-                className="string-search-button"
+                className="string-search-button has-tooltip has-arrow"
+                data-tooltip="검색조건 초기화"
                 onClick={() => setStringListKey((prev) => prev + 1)}
               >
                 <span className="icon">
@@ -414,7 +415,8 @@ const StringList = forwardRef((props: StringListProps, ref) => {
             )}
             <button
               type="button"
-              className="string-search-button"
+              className="string-search-button has-tooltip has-arrow"
+              data-tooltip={isShowSearch ? "검색 닫기" : "검색 열기"}
               onClick={() => setIsShowSearch(!isShowSearch)}
             >
               <span className="icon">

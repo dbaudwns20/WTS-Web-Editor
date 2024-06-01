@@ -265,11 +265,11 @@ export default function ProjectDetail() {
               </div>
               <div className="functions">
                 <Dropdown position="right">
-                  <a className="more-button">
+                  <button type="button" className="more-button">
                     <span className="icon">
                       <i className="material-icons !text-3xl">more_vert</i>
                     </span>
-                  </a>
+                  </button>
                   <ul className="w-[180px] py-1.5 px-2">
                     <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
                       <a
