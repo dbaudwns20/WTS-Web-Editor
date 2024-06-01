@@ -14,6 +14,7 @@ import "./style.css";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import Dropdown from "@/components/common/dropdown/dropdown";
 import Translator, { type TranslatorType } from "./_translator/translator";
+import Shortcut from "./_shortcut/shortcut";
 
 import String, { bindString } from "@/types/string";
 
@@ -431,6 +432,15 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                   </label>
                 </li>
               </ul>
+            </Dropdown>
+            <Dropdown position="right">
+              <a className="anchor-has-icon undraggable">
+                <span className="icon">
+                  <i className="material-icons md-18">keyboard_alt</i>
+                </span>
+                <span>Shortcuts</span>
+              </a>
+              <Shortcut />
             </Dropdown>
           </div>
         </header>
