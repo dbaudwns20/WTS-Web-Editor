@@ -308,11 +308,13 @@ body {
   @apply rounded-[0.25rem];
   @apply text-white;
   @apply bg-slate-800/70;
-  @apply break-keep;
   @apply whitespace-pre-wrap;
   @apply py-1;
   @apply px-2;
+  @apply -mt-[5px];
   @apply min-w-[45px];
+  @apply max-w-[100px];
   @apply duration-100;
   content: attr(data-tooltip);
+  width: max-content;
 }
