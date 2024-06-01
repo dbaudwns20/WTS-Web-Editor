@@ -311,10 +311,30 @@ body {
   @apply whitespace-pre-wrap;
   @apply py-1;
   @apply px-2;
-  @apply -mt-[5px];
+  @apply -mt-[4px];
   @apply min-w-[45px];
   @apply max-w-[100px];
   @apply duration-100;
   content: attr(data-tooltip);
   width: max-content;
+}
+
+.has-tooltip.has-arrow::after {
+  @apply duration-100;
+  @apply opacity-0;
+  @apply hover:opacity-100;
+  @apply absolute;
+  @apply top-0;
+  @apply left-[50%];
+  @apply -translate-x-[50%];
+  @apply -translate-y-full;
+  @apply w-0;
+  @apply h-0;
+  @apply border-t-[4.5px];
+  @apply border-l-[4.5px];
+  @apply border-r-[4.5px];
+  @apply border-t-slate-800/70;
+  @apply border-l-transparent;
+  @apply border-r-transparent;
+  content: "";
 }
