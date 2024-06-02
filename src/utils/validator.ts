@@ -54,3 +54,11 @@ export function checkFileType(file: File, accepts: string[]) {
   if (extension && accepts.includes(extension)) return true;
   return false;
 }
+
+/**
+ * Mac OS 인지 확인
+ * @returns
+ */
+export function isMacintosh(): boolean {
+  return navigator.userAgent.indexOf("Mac") > -1;
+}
