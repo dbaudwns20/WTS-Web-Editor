@@ -6,7 +6,7 @@
 .shortcut-wrapper > .shortcut-group {
   @apply grid;
   @apply grid-cols-2;
-  @apply gap-2;
+  @apply gap-0;
 }
 
 .shortcut-wrapper > .shortcut-group > .shortcut-list {
@@ -38,7 +38,7 @@
   @apply border;
   @apply border-gray-400;
   @apply dark:border-gray-300;
-  @apply rounded-md;
+  @apply rounded-[0.25rem];
   @apply w-5;
   @apply h-5;
 }

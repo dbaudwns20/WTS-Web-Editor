@@ -46,9 +46,9 @@ const Shortcut = forwardRef((props: any, ref) => {
                 className={isMacintosh() ? `keyboard option` : `keyboard alt`}
               />
               <p className="plus" />
-              <span className="keyboard">Y</span>
+              <span className="keyboard">E</span>
             </div>
-            <span className="description">동기화</span>
+            <span className="description">검색 조건 초기화</span>
           </div>
         </div>
         <div className="shortcut-list">
@@ -88,9 +88,9 @@ const Shortcut = forwardRef((props: any, ref) => {
                 className={isMacintosh() ? `keyboard option` : `keyboard alt`}
               />
               <p className="plus" />
-              <span className="keyboard">E</span>
+              <span className="keyboard">C</span>
             </div>
-            <span className="description">미리보기</span>
+            <span className="description">동기화</span>
           </div>
         </div>
       </div>

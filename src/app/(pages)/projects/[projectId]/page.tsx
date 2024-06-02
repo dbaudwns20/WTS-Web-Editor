@@ -29,6 +29,12 @@ import {
   preferenceInitState,
   preferenceReducer,
 } from "@/reducers/preference.reducer";
+import {
+  type PreviewAction,
+  type PreviewState,
+  previewInitState,
+  previewReducer,
+} from "@/reducers/preview.reducer";
 
 import StringList, { StringListType } from "./_string-list/string.list";
 import StringEditor, { StringEditorType } from "./_string-editor/string.editor";
@@ -43,6 +49,8 @@ import {
 
 import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
+
+import Hotkeys from "react-hot-keys";
 
 export default function ProjectDetail() {
   // params
@@ -76,6 +84,10 @@ export default function ProjectDetail() {
   const [preferenceState, preferenceDispatch] = useReducer<
     Reducer<PreferenceState, PreferenceAction>
   >(preferenceReducer, preferenceInitState);
+  // 미리보기 reducer
+  const [previewState, previewDispatch] = useReducer<
+    Reducer<PreviewState, PreviewAction>
+  >(previewReducer, previewInitState);
 
   // 프로젝트 가져오기
   const getProject = async () => {
@@ -186,183 +198,252 @@ export default function ProjectDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //
+  const executeShortcutCommand = (
+    keyName: string,
+    e: KeyboardEvent,
+    handle: any
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    switch (keyName) {
+      case "alt+right":
+        stringEditorRef.current?.handleMove(false);
+        break;
+      case "alt+left":
+        stringEditorRef.current?.handleMove(true);
+        break;
+      case "alt+s":
+        stringEditorRef.current?.updateString(false);
+        break;
+      case "alt+d":
+        // 미완료 상태인 경우만 저장
+        if (!stringGroup[1]?.completedAt)
+          stringEditorRef.current?.updateString(true);
+        break;
+      case "alt+f":
+        // 목록 창이 닫혀있다면 열기
+        if (!layoutState.showStringList) {
+          layoutDispatch({
+            type: "showStringList",
+            payload: true,
+          });
+        }
+        // focus
+        setTimeout(() => stringListRef.current?.setIsShowSearch((pre) => !pre));
+        break;
+      case "alt+c":
+        stringEditorRef.current?.sync();
+        break;
+      case "alt+r":
+        stringEditorRef.current?.reset();
+        break;
+      case "alt+e":
+        if (stringListRef.current?.query) {
+          setStringListKey((prev) => prev + 1);
+        }
+        break;
+    }
+  };
+
   return (
     <>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <section ref={projectInfoSectionRef} className="project-info-section">
-            <div className="project-info-wrapper">
-              <div className="project-info">
-                <figure className="image-wrapper">
-                  <Image className="image" src={image.path} alt={image.name} />
-                </figure>
-                <div className="info-wrapper">
-                  <p className="title">{project?.title}</p>
-                  <div className="tag-group">
-                    <span className="tag language">
-                      {getLangTextByValue(project!.language)}
-                    </span>
-                    {project!.version ? (
-                      <span className="tag version">v{project!.version}</span>
-                    ) : (
-                      <></>
-                    )}
-                    <span className="tag progress">{`${project?.process}% Translated`}</span>
-                  </div>
-                  <div className="button-group">
-                    <button
-                      type="button"
-                      className="download-button"
-                      onClick={() => setIsDownloadWtsModalOpen(true)}
-                    >
-                      <span className="tag download">
-                        <span className="icon mr-0.5">
-                          <i className="material-icons md-18">download</i>
-                        </span>
-                        <span className="text-sm font-semibold">Download</span>
+          <Hotkeys
+            keyName="alt+s,alt+d,alt+f,alt+c,alt+r,alt+right,alt+left,alt+q"
+            onKeyDown={executeShortcutCommand}
+            allowRepeat={false}
+            filter={() => true}
+          >
+            <section
+              ref={projectInfoSectionRef}
+              className="project-info-section"
+            >
+              <div className="project-info-wrapper">
+                <div className="project-info">
+                  <figure className="image-wrapper">
+                    <Image
+                      className="image"
+                      src={image.path}
+                      alt={image.name}
+                    />
+                  </figure>
+                  <div className="info-wrapper">
+                    <p className="title">{project?.title}</p>
+                    <div className="tag-group">
+                      <span className="tag language">
+                        {getLangTextByValue(project!.language)}
                       </span>
-                    </button>
-                    {project?.source ? (
-                      <a
-                        className="resource-link"
-                        href={project!.source!}
-                        target="_blank"
+                      {project!.version ? (
+                        <span className="tag version">v{project!.version}</span>
+                      ) : (
+                        <></>
+                      )}
+                      <span className="tag progress">{`${project?.process}% Translated`}</span>
+                    </div>
+                    <div className="button-group">
+                      <button
+                        type="button"
+                        className="download-button"
+                        onClick={() => setIsDownloadWtsModalOpen(true)}
                       >
-                        <span className="tag resource">
+                        <span className="tag download">
                           <span className="icon mr-0.5">
-                            <i className="material-icons md-18">launch</i>
+                            <i className="material-icons md-18">download</i>
                           </span>
                           <span className="text-sm font-semibold">
-                            Resource Link
+                            Download
                           </span>
                         </span>
-                      </a>
-                    ) : (
-                      <></>
-                    )}
+                      </button>
+                      {project?.source ? (
+                        <a
+                          className="resource-link"
+                          href={project!.source!}
+                          target="_blank"
+                        >
+                          <span className="tag resource">
+                            <span className="icon mr-0.5">
+                              <i className="material-icons md-18">launch</i>
+                            </span>
+                            <span className="text-sm font-semibold">
+                              Resource Link
+                            </span>
+                          </span>
+                        </a>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="last-edited-wrapper">
-                  <div className="last-edited">
-                    <span className="flex items-center">
-                      <span className="icon mr-0.5">
-                        <i className="material-icons md-18 text-gray-400">
-                          update
-                        </i>
+                  <div className="last-edited-wrapper">
+                    <div className="last-edited">
+                      <span className="flex items-center">
+                        <span className="icon mr-0.5">
+                          <i className="material-icons md-18 text-gray-400">
+                            update
+                          </i>
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          Last Edited
+                        </span>
                       </span>
-                      <span className="text-xs text-gray-400">Last Edited</span>
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {`${convertDateToString(
-                        project!.updatedAt,
-                        DATE_FORMAT.DATE_TIME
-                      )}`}
-                    </span>
+                      <span className="text-xs text-gray-400">
+                        {`${convertDateToString(
+                          project!.updatedAt,
+                          DATE_FORMAT.DATE_TIME
+                        )}`}
+                      </span>
+                    </div>
                   </div>
                 </div>
+                <div className="functions">
+                  <Dropdown position="right">
+                    <button type="button" className="more-button">
+                      <span className="icon">
+                        <i className="material-icons !text-3xl">more_vert</i>
+                      </span>
+                    </button>
+                    <ul className="w-[180px] py-1.5 px-2">
+                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
+                        <a
+                          className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
+                          onClick={() => setIsUpdateModalOpen(true)}
+                        >
+                          <span className="icon mr-1.5">
+                            <i className="material-icons md-18">edit</i>
+                          </span>
+                          <span>Update</span>
+                        </a>
+                      </li>
+                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
+                        <a
+                          className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
+                          onClick={handleDeleteProject}
+                        >
+                          <span className="icon mr-1.5">
+                            <i className="material-icons md-18">delete</i>
+                          </span>
+                          <span>Delete</span>
+                        </a>
+                      </li>
+                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
+                        <a
+                          className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
+                          onClick={() => setIsUploadWtsModalOpen(true)}
+                        >
+                          <span className="icon mr-1.5">
+                            <i className="material-icons md-18">file_upload</i>
+                          </span>
+                          <span>Upload WTS</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </Dropdown>
+                </div>
               </div>
-              <div className="functions">
-                <Dropdown position="right">
-                  <button type="button" className="more-button">
-                    <span className="icon">
-                      <i className="material-icons !text-3xl">more_vert</i>
-                    </span>
-                  </button>
-                  <ul className="w-[180px] py-1.5 px-2">
-                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
-                      <a
-                        className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={() => setIsUpdateModalOpen(true)}
-                      >
-                        <span className="icon mr-1.5">
-                          <i className="material-icons md-18">edit</i>
-                        </span>
-                        <span>Update</span>
-                      </a>
-                    </li>
-                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
-                      <a
-                        className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={handleDeleteProject}
-                      >
-                        <span className="icon mr-1.5">
-                          <i className="material-icons md-18">delete</i>
-                        </span>
-                        <span>Delete</span>
-                      </a>
-                    </li>
-                    <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
-                      <a
-                        className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
-                        onClick={() => setIsUploadWtsModalOpen(true)}
-                      >
-                        <span className="icon mr-1.5">
-                          <i className="material-icons md-18">file_upload</i>
-                        </span>
-                        <span>Upload WTS</span>
-                      </a>
-                    </li>
-                  </ul>
-                </Dropdown>
-              </div>
-            </div>
-          </section>
-          <section className="string-content-section">
-            <StringList
-              key={stringListKey}
-              ref={stringListRef}
-              projectId={projectId as string}
-              setStringGroup={setStringGroup}
-              isEdited={isEdited}
-              showStringList={layoutState.showStringList}
-              skipCompleted={preferenceState.skipCompleted}
-              setStringListKey={setStringListKey}
-              handleUpdateString={handleUpdateString}
-            />
-            <StringEditor
-              ref={stringEditorRef}
-              projectId={projectId as string}
-              stringGroup={stringGroup}
-              setStringGroup={setStringGroup}
-              isEdited={isEdited}
-              setIsEdited={setIsEdited}
-              layoutState={layoutState}
-              layoutDispatch={layoutDispatch}
-              preferenceState={preferenceState}
-              preferenceDispatch={preferenceDispatch}
-              handleResetScroll={handleResetScroll}
-              completeFunction={completeFunction}
-            />
-          </section>
-          {isUpdateModalOpen ? (
-            <UpdateProjectModal
-              project={project!}
-              setStringListKey={setStringListKey}
-              completeFunction={completeFunction}
-              closeModal={setIsUpdateModalOpen}
-            />
-          ) : (
-            <></>
-          )}
-          {isUploadWtsModalOpen ? (
-            <UploadWtsModal
-              setStringListKey={setStringListKey}
-              completeFunction={completeFunction}
-              closeModal={setIsUploadWtsModalOpen}
-            />
-          ) : (
-            <></>
-          )}
-          {isDownloadWtsModalOpen ? (
-            <DownloadWtsModal
-              completeFunction={completeFunction}
-              closeModal={setIsDownloadWtsModalOpen}
-            />
-          ) : (
-            <></>
-          )}
+            </section>
+            <section className="string-content-section">
+              <StringList
+                key={stringListKey}
+                ref={stringListRef}
+                projectId={projectId as string}
+                setStringGroup={setStringGroup}
+                isEdited={isEdited}
+                showStringList={layoutState.showStringList}
+                skipCompleted={preferenceState.skipCompleted}
+                setStringListKey={setStringListKey}
+                handleUpdateString={handleUpdateString}
+              />
+              <StringEditor
+                ref={stringEditorRef}
+                projectId={projectId as string}
+                stringGroup={stringGroup}
+                setStringGroup={setStringGroup}
+                isEdited={isEdited}
+                setIsEdited={setIsEdited}
+                layoutState={layoutState}
+                layoutDispatch={layoutDispatch}
+                preferenceState={preferenceState}
+                preferenceDispatch={preferenceDispatch}
+                previewState={previewState}
+                previewDispatch={previewDispatch}
+                handleResetScroll={handleResetScroll}
+                completeFunction={completeFunction}
+              />
+            </section>
+            {isUpdateModalOpen ? (
+              <UpdateProjectModal
+                project={project!}
+                setStringListKey={setStringListKey}
+                completeFunction={completeFunction}
+                closeModal={setIsUpdateModalOpen}
+              />
+            ) : (
+              <></>
+            )}
+            {isUploadWtsModalOpen ? (
+              <UploadWtsModal
+                setStringListKey={setStringListKey}
+                completeFunction={completeFunction}
+                closeModal={setIsUploadWtsModalOpen}
+              />
+            ) : (
+              <></>
+            )}
+            {isDownloadWtsModalOpen ? (
+              <DownloadWtsModal
+                completeFunction={completeFunction}
+                closeModal={setIsDownloadWtsModalOpen}
+              />
+            ) : (
+              <></>
+            )}
+          </Hotkeys>
         </>
       )}
     </>

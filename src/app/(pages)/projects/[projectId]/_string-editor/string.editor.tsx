@@ -29,9 +29,16 @@ import {
   type PreferenceState,
   type PreferenceAction,
 } from "@/reducers/preference.reducer";
+import {
+  type PreviewState,
+  type PreviewAction,
+} from "@/reducers/preview.reducer";
 
 export type StringEditorType = {
   updateString: (isDraft: boolean) => Promise<void>;
+  handleMove: (isForward: boolean) => void;
+  sync: () => void;
+  reset: () => void;
   componentElement: HTMLElement;
 };
 
@@ -45,6 +52,8 @@ type StringEditorProps = {
   layoutDispatch: Dispatch<LayoutAction>;
   preferenceState: PreferenceState;
   preferenceDispatch: Dispatch<PreferenceAction>;
+  previewState: PreviewState;
+  previewDispatch: Dispatch<PreviewAction>;
   handleResetScroll: () => void;
   completeFunction: (...arg: any) => void;
 };
@@ -60,6 +69,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     layoutDispatch,
     preferenceState,
     preferenceDispatch,
+    previewState,
+    previewDispatch,
     handleResetScroll,
     completeFunction,
   } = props;
@@ -69,6 +80,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
     updateString,
+    handleMove,
+    sync: translatorRef.current?.sync,
+    reset: resetTranslateText,
     componentElement: stringEditorWrapperRef.current!,
   }));
 
@@ -151,7 +165,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       // 편집 상태 해제
       setIsEdited(false);
       // 자동이동 옵션이 켜져있다면
-      if (preferenceState.autoMove) {
+      if (preferenceState.autoMove && !isSaveDraft) {
         moveString(false);
       }
       // 편집기 focus
@@ -215,6 +229,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
 
   // 초기화
   const resetTranslateText = () => {
+    // 미리보기 상태라면 불가
+    if (previewState.translate) return;
+
     setTranslatedText(
       currentString?.translatedText ? currentString.translatedText : ""
     );
@@ -452,6 +469,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             translatedText={translatedText}
             setTranslatedText={setTranslatedText}
             resetTranslateText={resetTranslateText}
+            previewState={previewState}
+            previewDispatch={previewDispatch}
             updateString={updateString}
           />
         </div>

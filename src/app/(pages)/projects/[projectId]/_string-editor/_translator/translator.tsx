@@ -7,22 +7,18 @@ import {
   useEffect,
   useCallback,
   useState,
-  useReducer,
-  Reducer,
 } from "react";
 
 import "./style.css";
 
-import {
-  type PreviewAction,
-  type PreviewState,
-  previewInitState,
-  previewReducer,
-} from "@/reducers/preview.reducer";
-
 import Preview from "./preview/preview";
 
 import String from "@/types/string";
+
+import {
+  type PreviewState,
+  type PreviewAction,
+} from "@/reducers/preview.reducer";
 
 import { showNotificationMessage } from "@/utils/message";
 
@@ -30,6 +26,7 @@ export type TranslatorType = {
   setFocus: () => void;
   setDisabled: (val: boolean) => void;
   setHeight: () => void;
+  sync: () => void;
 };
 
 type TranslatorProps = {
@@ -38,6 +35,8 @@ type TranslatorProps = {
   translatedText: string;
   setTranslatedText: Dispatch<SetStateAction<string>>;
   resetTranslateText: () => void;
+  previewState: PreviewState;
+  previewDispatch: Dispatch<PreviewAction>;
   updateString: (isDraft: boolean) => Promise<void>;
 };
 
@@ -48,6 +47,8 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     translatedText = "",
     setTranslatedText,
     resetTranslateText,
+    previewState,
+    previewDispatch,
     updateString,
   } = props;
 
@@ -60,15 +61,13 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   // values
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [showComment, setShowComment] = useState<boolean>(false);
-  const [previewState, previewDispatch] = useReducer<
-    Reducer<PreviewState, PreviewAction>
-  >(previewReducer, previewInitState);
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
     setFocus,
     setDisabled,
     setHeight,
+    sync,
   }));
 
   const setDisabled = (val: boolean) => {
@@ -102,7 +101,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
 
   // 동기화
   const sync = () => {
-    if (isDisabled) return;
+    if (isDisabled || previewState.original) return;
     setTranslatedText(originalText);
     setFocus();
   };
