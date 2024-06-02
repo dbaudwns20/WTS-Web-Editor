@@ -1,39 +1,60 @@
 import mongoose, { models, Schema } from "mongoose";
 
+import { emptyToNull } from "@/utils/common";
+
 export interface IProject {
   _id: string;
   title: string;
   language: number;
-  process: number;
-  version: string;
-  dateCreated: Date;
-  lastUpdated: Date;
+  process: string;
+  version: string | null;
+  lastModifiedStringNumber: number;
+  source: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ProjectSchema: Schema<IProject> = new Schema({
   title: {
     type: String,
     required: true,
+    minlength: 2,
+    maxlength: 200,
+    trim: true,
   },
   language: {
     type: Number,
     required: true,
   },
   process: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "0",
   },
   version: {
     type: String,
     default: null,
+    set: emptyToNull,
+    maxlength: 10,
+    trim: true,
   },
-  dateCreated: {
-    type: Date,
-    default: new Date(),
+  lastModifiedStringNumber: {
+    type: Number,
+    default: -1,
   },
-  lastUpdated: {
+  source: {
+    type: String,
+    default: null,
+    set: emptyToNull,
+    maxlength: 100,
+    trim: true,
+  },
+  createdAt: {
     type: Date,
-    default: new Date(),
+    required: true,
+  },
+  updatedAt: {
+    type: Date,
+    required: true,
   },
 });
 

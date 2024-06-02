@@ -1,3 +1,5 @@
+import { type FileResponse } from "@/types/api.response";
+
 /**
  * 난수 문자열 생성
  * @returns
@@ -28,12 +30,100 @@ export function convertFileSizeToString(size: number): string {
   }
 }
 
-export function convertDateToString(date: Date): string {
-  return (
-    date.getFullYear() +
-    "-" +
-    String(date.getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(date.getDate()).padStart(2, "0")
-  );
+export enum DATE_FORMAT {
+  DATE,
+  TIME,
+  DATE_TIME,
+}
+
+export function convertDateToString(
+  date: Date | string | null,
+  format: DATE_FORMAT = DATE_FORMAT.DATE
+): string {
+  if (typeof date === "string") {
+    date = new Date(date);
+  }
+  if (date === null) {
+    return "";
+  }
+
+  let result: string = "";
+  switch (format) {
+    case DATE_FORMAT.DATE:
+      result =
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(date.getDate()).padStart(2, "0");
+      break;
+    case DATE_FORMAT.TIME:
+      const times: string[] = date.toTimeString().split(" ")[0].split(":");
+      // AM/PM 처리
+      let meridiem: string = "AM";
+      if (Number(times[0]) >= 12) {
+        times[0] = String(Number(times[0]) - 12).padStart(2, "0");
+        meridiem = "PM";
+      }
+      result = times[0] + ":" + times[1] + ":" + times[2] + " " + meridiem;
+      break;
+    case DATE_FORMAT.DATE_TIME:
+      result =
+        convertDateToString(date) +
+        " " +
+        convertDateToString(date, DATE_FORMAT.TIME);
+      break;
+  }
+
+  return result;
+}
+
+/**
+ * Api 호출
+ * @param url
+ * @param opt
+ * @returns
+ */
+export async function callApi(url: string, opt?: any): Promise<any> {
+  const response = await fetch(url, opt);
+  return await response.json();
+}
+
+export function downloadFile(fileResponse: FileResponse) {
+  const { fileName, fileContent } = fileResponse;
+
+  // Base64 인코딩된 내용을 UTF-8로 디코딩
+  const binaryString = atob(fileContent);
+  const len = binaryString.length;
+
+  // 디코딩 된 내용을 Uint8Array 으로 변환
+  const uint8Array = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    uint8Array[i] = binaryString.charCodeAt(i);
+  }
+
+  // Uint8Array를 Blob으로 변환
+  const blob = new Blob([uint8Array], { type: "application/octet-stream" });
+  const urlCreator = window.URL || window.webkitURL;
+  const url = urlCreator.createObjectURL(blob);
+  const a: any = document.createElement("a");
+  a.href = url;
+  a.download = fileName + ".wts";
+  a.style = "display: none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () {
+    return window.URL.revokeObjectURL(url);
+  }, 1000);
+}
+
+export function emptyToNull(value: string | object | any[]): any {
+  switch (typeof value) {
+    case "string":
+      return value === "" ? null : value;
+    case "object":
+      if (Array.isArray(value)) return value.length === 0 ? null : value;
+      else return Object.keys(value).length === 0 ? null : value;
+  }
 }

@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useCallback, useState } from "react";
 
-import { closeNotification } from "@/utils/message";
+import { clearMessageBox } from "@/utils/message";
 
 import "./style.css";
 
@@ -34,7 +34,7 @@ export default function Notification(props: NotificationProps) {
   const close = () => {
     setIsCode(true);
     setTimeout(() => {
-      closeNotification();
+      clearMessageBox();
     }, 400);
   };
 
@@ -100,7 +100,7 @@ export default function Notification(props: NotificationProps) {
   }, [setPosition, setMessageType, setAutoCloseTimeout]);
 
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none">
+    <div className="notification-background">
       <div className="notification-wrapper" ref={wrapper}>
         <div
           className="notification"

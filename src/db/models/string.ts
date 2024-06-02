@@ -32,14 +32,19 @@ export interface IString {
   comment: string | null;
 
   /**
-   * 완료여부
+   * 생성일
    */
-  isCompleted: boolean;
+  createdAt: Date;
 
   /**
-   * 최종수정일자
+   * 수정일
    */
-  lastUpdated: Date;
+  updatedAt: Date | null;
+
+  /**
+   * 완료일
+   */
+  completedAt: Date | null;
 }
 
 const StringSchema: Schema<IString> = new Schema({
@@ -63,14 +68,20 @@ const StringSchema: Schema<IString> = new Schema({
   comment: {
     type: String,
     default: null,
+    maxlength: 100,
+    trim: true,
   },
-  isCompleted: {
-    type: Boolean,
-    default: false,
-  },
-  lastUpdated: {
+  createdAt: {
     type: Date,
-    default: new Date(),
+    required: true,
+  },
+  updatedAt: {
+    type: Date,
+    default: null,
+  },
+  completedAt: {
+    type: Date,
+    default: null,
   },
 });
 

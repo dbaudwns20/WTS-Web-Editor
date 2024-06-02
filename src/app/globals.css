@@ -13,6 +13,22 @@ body {
   --var-footer-height: 60px;
 }
 
+.main {
+  @apply container;
+  @apply mx-auto;
+  @apply h-full;
+  @apply flex;
+  @apply flex-col;
+  @apply bg-white;
+  @apply dark:bg-gray-800;
+  @apply py-4;
+  @apply px-32;
+  height: auto;
+  min-height: calc(
+    100% - calc(var(--var-footer-height) + var(--var-header-height))
+  );
+}
+
 .icon {
   align-items: center;
   display: inline-flex;
@@ -39,9 +55,16 @@ body {
   font-size: 48px;
 }
 
+.undraggable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .label {
   @apply block;
-  @apply text-sm;
+  @apply text-xs;
   @apply mb-2;
   @apply font-medium;
   @apply text-slate-400;
@@ -65,4 +88,253 @@ body {
   @apply w-full;
   @apply gap-4;
   @apply [&>.block]:w-full;
+}
+
+.button {
+  @apply bg-gray-300;
+  @apply p-2;
+  @apply rounded-lg;
+  @apply text-black/65;
+  @apply font-semibold;
+  @apply text-sm;
+  @apply transition;
+  @apply duration-300;
+  @apply focus:outline-none;
+  @apply focus:ring;
+  @apply focus:ring-gray-200;
+  @apply dark:border-2;
+  @apply dark:bg-transparent;
+  @apply dark:border-white/60;
+  @apply dark:text-white/60;
+  @apply dark:focus:ring-gray-500;
+  @apply shadow-md;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
+}
+
+.button:not(:disabled) {
+  @apply hover:bg-gray-400/70;
+  @apply active:bg-gray-200;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button:disabled {
+  @apply opacity-50;
+  @apply cursor-not-allowed;
+}
+
+.button.is-info {
+  @apply bg-sky-500;
+  @apply text-white;
+  @apply focus:ring-sky-300/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-sky-600;
+  @apply dark:text-sky-600;
+  @apply dark:focus:ring-sky-500/50;
+}
+
+.button.is-info:not(:disabled) {
+  @apply hover:bg-sky-600;
+  @apply active:bg-sky-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-danger {
+  @apply bg-red-500;
+  @apply text-white;
+  @apply focus:ring-red-300/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-red-500;
+  @apply dark:text-red-500;
+  @apply dark:focus:ring-red-500/50;
+}
+
+.button.is-danger:not(:disabled) {
+  @apply hover:bg-red-600;
+  @apply active:bg-red-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-warning {
+  @apply bg-yellow-500;
+  @apply text-white;
+  @apply focus:ring-yellow-400/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-yellow-600;
+  @apply dark:text-yellow-600;
+  @apply dark:focus:ring-yellow-500/50;
+}
+
+.button.is-warning:not(:disabled) {
+  @apply hover:bg-yellow-600;
+  @apply active:bg-yellow-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-success {
+  @apply bg-green-500;
+  @apply text-white;
+  @apply focus:ring-green-400/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-green-600;
+  @apply dark:text-green-600;
+  @apply dark:focus:ring-green-500/50;
+}
+
+.button.is-success:not(:disabled) {
+  @apply hover:bg-green-600;
+  @apply active:bg-green-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.button.is-primary {
+  @apply bg-blue-500;
+  @apply text-white;
+  @apply focus:ring-blue-300/50;
+  @apply dark:bg-transparent;
+  @apply dark:border-blue-600;
+  @apply dark:text-blue-600;
+  @apply dark:focus:ring-blue-500/50;
+}
+
+.button.is-primary:not(:disabled) {
+  @apply hover:bg-blue-600;
+  @apply active:bg-blue-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.tag {
+  @apply bg-slate-100;
+  @apply text-gray-600;
+  @apply rounded-lg;
+  @apply px-2.5;
+  @apply py-0.5;
+  @apply font-semibold;
+  @apply text-sm;
+  @apply flex;
+  @apply items-center;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-slate-100;
+  @apply dark:text-slate-100;
+}
+
+.anchor-has-icon {
+  @apply text-xs;
+  @apply text-gray-500;
+  @apply flex;
+  @apply items-center;
+  @apply px-1;
+  @apply dark:text-gray-300;
+  @apply hover:text-sky-500;
+  @apply hover:cursor-pointer;
+  @apply duration-300;
+}
+
+.toggle {
+  @apply relative;
+  @apply inline-flex;
+  @apply cursor-pointer;
+  @apply items-center;
+  @apply w-fit;
+}
+
+.toggle > .toggle-input {
+  @apply sr-only;
+}
+
+.toggle > .trigger {
+  @apply flex;
+  @apply shrink-0;
+  @apply items-center;
+  @apply h-5;
+  @apply w-9;
+  @apply rounded-full;
+  @apply border;
+  @apply dark:border-slate-300;
+  @apply bg-slate-200;
+  @apply dark:bg-transparent;
+  @apply after:absolute;
+  @apply after:left-[2px];
+  @apply after:h-4;
+  @apply after:w-4;
+  @apply after:rounded-full;
+  @apply after:border;
+  @apply after:border-gray-300;
+  @apply after:bg-white;
+  @apply dark:after:bg-slate-300;
+  @apply dark:after:border-slate-700;
+  @apply after:transition-all;
+  @apply after:content-[''];
+  @apply mr-3;
+}
+
+/* 체크된 상태 스타일링 */
+.toggle > .toggle-input:checked + .trigger {
+  @apply border-2;
+  @apply bg-sky-400;
+  @apply border-sky-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-sky-500;
+}
+
+.toggle > .toggle-input:checked + .trigger::after {
+  @apply translate-x-full;
+  @apply border-white;
+  @apply dark:bg-sky-400;
+  @apply dark:border-sky-400;
+}
+
+.has-tooltip {
+  @apply relative;
+}
+
+.has-tooltip::before {
+  @apply opacity-0;
+  @apply hover:opacity-100;
+  @apply absolute;
+  @apply top-0;
+  @apply left-[50%];
+  @apply -translate-x-[50%];
+  @apply -translate-y-full;
+  @apply text-xs;
+  @apply rounded-[0.25rem];
+  @apply text-white;
+  @apply bg-slate-800/70;
+  @apply whitespace-pre-wrap;
+  @apply py-1;
+  @apply px-2;
+  @apply -mt-[4px];
+  @apply min-w-[45px];
+  @apply max-w-[100px];
+  @apply duration-100;
+  content: attr(data-tooltip);
+  width: max-content;
+}
+
+.has-tooltip.has-arrow::after {
+  @apply duration-100;
+  @apply opacity-0;
+  @apply hover:opacity-100;
+  @apply absolute;
+  @apply top-0;
+  @apply left-[50%];
+  @apply -translate-x-[50%];
+  @apply -translate-y-full;
+  @apply w-0;
+  @apply h-0;
+  @apply border-t-[4.5px];
+  @apply border-l-[4.5px];
+  @apply border-r-[4.5px];
+  @apply border-t-slate-800/70;
+  @apply border-l-transparent;
+  @apply border-r-transparent;
+  content: "";
 }

@@ -1,31 +1,46 @@
 import { startSession } from "mongoose";
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
-import ProjectModel from "@/db/models/project";
 
-import Project from "@/types/project";
+import {
+  deleteProject,
+  getProject,
+  updateProject,
+} from "@/app/api/_services/project.service";
 
-import { deleteProject } from "@/services/project.service";
-
-import { checkRequestBody, checkRequestParams } from "@/utils/api";
+import {
+  checkRequestParams,
+  checkRequestBody,
+  resolveSuccess,
+  resolveErrors,
+} from "@/app/api";
 
 type Params = {
   projectId: string;
 };
 
-export async function GET(request: NextRequest, params: Params) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Params }
+) {
   try {
     checkRequestParams(["projectId"], params);
 
     await dbConnect();
-    return NextResponse.json(await ProjectModel.findById(params.projectId));
-  } catch (error) {
-    return NextResponse.json({ message: "Internal server error" });
+
+    const project = await getProject(params.projectId);
+
+    return resolveSuccess(project);
+  } catch (error: any) {
+    return resolveErrors(error);
   }
 }
 
-export async function PUT(request: NextRequest, params: Params) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Params }
+) {
   let session;
   try {
     session = await startSession();
@@ -33,16 +48,22 @@ export async function PUT(request: NextRequest, params: Params) {
 
     const body = await request.json();
     checkRequestParams(["projectId"], params);
+    checkRequestBody(["title", "language"], body);
 
     await dbConnect();
 
-    return Response.json("the project is updated");
+    // 프로젝트 업데이트
+    const instance = await updateProject(params.projectId, body);
+
+    await session.commitTransaction();
+    return resolveSuccess(instance);
   } catch (error: any) {
-    if (session) {
+    if (session && session.inTransaction()) {
       session.abortTransaction();
-      session.endSession();
     }
-    return NextResponse.json(error);
+    return resolveErrors(error);
+  } finally {
+    session?.endSession();
   }
 }
 
@@ -63,12 +84,13 @@ export async function DELETE(
     await deleteProject(params.projectId);
 
     await session.commitTransaction();
-    return Response.json("the project is deleted");
-  } catch (error: any) {
-    if (session) {
+    return resolveSuccess({});
+  } catch (error) {
+    if (session && session.inTransaction()) {
       session.abortTransaction();
-      session.endSession();
     }
-    return NextResponse.json(error);
+    return resolveErrors(error);
+  } finally {
+    session?.endSession();
   }
 }

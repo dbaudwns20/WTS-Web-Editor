@@ -4,10 +4,12 @@ export default class Project {
   id: string;
   title: string;
   language: number;
-  process: number;
+  process: string;
   version: string | null;
-  dateCreated: Date;
-  lastUpdated: Date;
+  source: string | null;
+  lastModifiedStringNumber: number;
+  createdAt: Date;
+  updatedAt: Date;
 
   constructor(project: IProject) {
     this.id = project._id;
@@ -15,8 +17,10 @@ export default class Project {
     this.language = project.language;
     this.process = project.process;
     this.version = project.version;
-    this.dateCreated = new Date(project.dateCreated);
-    this.lastUpdated = new Date(project.dateCreated);
+    this.source = project.source;
+    this.lastModifiedStringNumber = project.lastModifiedStringNumber;
+    this.createdAt = new Date(project.createdAt);
+    this.updatedAt = new Date(project.updatedAt);
   }
 }
 
@@ -25,5 +29,5 @@ export function bindProject(project: IProject): Project {
 }
 
 export function bindProjectList(projects: IProject[]): Project[] {
-  return projects.map((project) => bindProject(project));
+  return projects.map((instance) => bindProject(instance));
 }

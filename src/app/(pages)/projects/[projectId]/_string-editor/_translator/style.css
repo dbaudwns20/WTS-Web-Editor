@@ -1,0 +1,146 @@
+.translator {
+  @apply h-full;
+  @apply w-full;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+  @apply px-4;
+  @apply relative;
+  @apply duration-200;
+}
+
+.translator.is-original-text {
+  @apply bg-gray-100;
+  @apply dark:bg-gray-700;
+}
+
+.translator.is-preview {
+  @apply bg-slate-700;
+  @apply dark:bg-slate-900;
+}
+
+.translator.is-disabled {
+  @apply pointer-events-none;
+  @apply opacity-60;
+}
+
+.translator.is-focused {
+  @apply border-sky-300;
+  @apply ring-2;
+  @apply ring-sky-100;
+  @apply [&>.translator-header]:text-sky-400;
+  @apply dark:border-sky-500;
+  @apply dark:ring-sky-800/50;
+  @apply dark:[&>.translator-header]:text-sky-500;
+}
+
+.translator > .translator-header {
+  @apply pt-3;
+  @apply mb-2.5;
+  @apply text-xs;
+  @apply text-gray-400;
+}
+
+.translator > .translator-footer {
+  @apply w-full;
+  @apply absolute;
+  @apply bottom-2;
+  @apply right-0;
+  @apply px-4;
+}
+
+.translator > .translator-footer > .translator-footer-functions {
+  @apply flex;
+  @apply items-center;
+  @apply justify-end;
+}
+
+.translator > .original-text {
+  @apply w-full;
+  @apply text-slate-500;
+  @apply bg-transparent;
+  @apply break-all;
+  @apply resize-none;
+  @apply outline-none;
+  @apply mb-6;
+  @apply dark:text-slate-300;
+}
+
+.translator > .translate-text {
+  @apply w-full;
+  @apply text-slate-500;
+  @apply resize-none;
+  @apply break-all;
+  @apply outline-none;
+  @apply mb-6;
+  @apply bg-transparent;
+  @apply dark:text-slate-200;
+}
+
+.translator > .translate-text:disabled {
+  @apply cursor-not-allowed;
+}
+
+.comment {
+  @apply absolute;
+  @apply top-1/2;
+  @apply left-1/2;
+  @apply -translate-y-1/2;
+  @apply -translate-x-1/2;
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply shadow-xl;
+  @apply ring-1;
+  @apply ring-black/5;
+  @apply dark:ring-white/20;
+  @apply z-10;
+  @apply px-3;
+  @apply pb-2;
+  @apply max-w-[80%];
+  @apply h-fit;
+  @apply max-h-[80%];
+  @apply overflow-auto;
+  @apply dark:bg-gray-600;
+  width: max-content;
+}
+
+.comment > .header {
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply pt-2;
+  @apply mb-2;
+}
+
+.comment > .header > .label {
+  @apply text-gray-400;
+  @apply text-xs;
+  @apply mb-0;
+  @apply dark:text-gray-200;
+}
+
+.comment > .header > .close {
+  @apply rounded-full;
+  @apply text-gray-400;
+  @apply opacity-75;
+  @apply hover:opacity-100;
+  @apply outline-none;
+  @apply focus:opacity-100;
+  @apply h-4;
+  @apply w-4;
+  @apply dark:text-gray-200;
+}
+
+.comment > .content {
+  @apply border;
+  @apply border-gray-300;
+  @apply bg-slate-100;
+  @apply px-3;
+  @apply py-2;
+  @apply rounded-lg;
+  @apply text-sm;
+  @apply text-left;
+  @apply text-slate-500;
+  @apply font-semibold;
+  @apply dark:text-slate-300;
+}

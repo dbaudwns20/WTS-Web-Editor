@@ -1,0 +1,71 @@
+.project-loading {
+  @apply relative;
+  @apply w-full;
+  @apply h-[432px];
+  @apply bg-white;
+  @apply rounded-lg;
+  @apply shadow-xl;
+  @apply dark:bg-gray-800;
+  @apply dark:border-gray-700;
+  @apply transition;
+  @apply duration-300;
+  @apply animate-pulse;
+}
+
+.project-loading > .image {
+  @apply rounded-t-lg;
+  @apply bg-slate-200;
+  @apply h-[276px];
+  @apply w-full;
+}
+
+.project-loading > .content {
+  @apply py-5;
+  @apply px-4;
+}
+
+.project-loading > .content > .title-group {
+  @apply h-[48px];
+  @apply mb-3.5;
+}
+
+.project-loading > .content > .title-group > .title {
+  @apply h-3.5;
+  @apply rounded-lg;
+  @apply bg-slate-200;
+}
+
+.project-loading > .content > .detail-info {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply mb-4;
+}
+
+.project-loading > .content > .detail-info > .tag-group {
+  @apply flex;
+  @apply gap-2;
+  @apply h-full;
+  @apply w-1/2;
+}
+
+.project-loading > .content > .detail-info > .tag-group > .tag {
+  @apply h-5;
+  @apply bg-slate-200;
+  @apply rounded-lg;
+  @apply w-1/2;
+}
+
+.project-loading > .content > .detail-info > .date {
+  @apply h-2.5;
+  @apply bg-slate-200;
+  @apply rounded-lg;
+  @apply w-[40%];
+}
+
+.project-loading > .content > .progress-bar {
+  @apply h-5;
+  @apply rounded-lg;
+  @apply bg-slate-200;
+  @apply mb-4;
+}

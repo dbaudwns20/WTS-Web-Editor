@@ -1,0 +1,131 @@
+.string-editor-wrapper {
+  @apply flex;
+  @apply flex-col;
+  @apply w-[70%];
+}
+
+.string-editor-wrapper.is-expand {
+  @apply w-full;
+}
+
+.string-editor-wrapper > .string-editor-form {
+  @apply flex;
+  @apply flex-col;
+  @apply h-full;
+}
+
+.string-editor-wrapper > .string-editor-form > .string-editor-header {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply mb-2;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-header
+  > .string-number {
+  @apply text-xl;
+  @apply font-semibold;
+  @apply text-sky-500;
+  @apply hover:text-sky-600;
+  @apply hover:cursor-pointer;
+  @apply duration-300;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-header
+  > .string-editor-functions {
+  @apply flex;
+  @apply pr-2;
+}
+
+.string-editor-wrapper > .string-editor-form > .string-editor-main {
+  @apply h-full;
+  @apply flex;
+  @apply gap-4;
+  @apply mb-4;
+  @apply flex-col;
+}
+
+.string-editor-wrapper > .string-editor-form > .string-editor-main.is-vertical {
+  @apply flex-row;
+}
+
+.string-editor-wrapper > .string-editor-form > .string-editor-footer {
+  @apply flex;
+  @apply gap-4;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-footer
+  > .button.move-button {
+  @apply bg-gray-500;
+  @apply text-white;
+  @apply w-full;
+  @apply focus:ring-gray-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-2 border-gray-400;
+  @apply dark:text-gray-400;
+  @apply dark:focus:ring-gray-400/50;
+}
+
+.string-editor-wrapper
+  > .string-editor-form
+  > .string-editor-footer
+  > .button.move-button:not(:disabled):hover {
+  @apply bg-gray-600;
+  @apply active:bg-gray-600;
+  @apply dark:hover:bg-transparent/30;
+  @apply dark:active:bg-transparent/30;
+}
+
+.translate-textarea {
+  @apply w-full;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+  @apply p-4;
+  @apply h-full;
+  @apply text-lg;
+}
+
+.view-mode {
+  @apply w-full;
+  @apply h-12;
+}
+
+.view-mode > input {
+  @apply hidden;
+}
+
+.view-mode > label {
+  @apply cursor-pointer;
+  @apply inline-flex;
+  @apply flex-col;
+  @apply items-center;
+  @apply justify-center;
+  @apply w-full;
+  @apply h-full;
+  @apply text-gray-400;
+  @apply bg-white;
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-md;
+  @apply dark:bg-transparent;
+  @apply dark:border-gray-400;
+}
+
+.view-mode > input:not(:checked) + label:hover {
+  @apply bg-gray-100;
+  @apply dark:bg-transparent/20;
+}
+
+.view-mode > input:checked + label {
+  @apply border-sky-400;
+  @apply text-sky-400;
+  @apply font-semibold;
+  @apply shadow-md;
+}

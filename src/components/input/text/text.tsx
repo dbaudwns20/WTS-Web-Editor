@@ -26,7 +26,7 @@ type TextProps = {
 };
 
 export type TextType = {
-  focus: () => void;
+  setFocus: () => void;
 };
 
 const Text = forwardRef((props: TextProps, ref) => {
@@ -43,7 +43,7 @@ const Text = forwardRef((props: TextProps, ref) => {
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
-    focus,
+    setFocus,
   }));
 
   // ref
@@ -60,12 +60,10 @@ const Text = forwardRef((props: TextProps, ref) => {
     textRef.current!.setAttribute("id", elId);
   }, [elId]);
 
-  const focus = () => {
-    setTimeout(() => {
-      textRef.current!.focus();
-      textRef.current!.select();
-      textRef.current!.setSelectionRange(0, 999); // For mobile devices.
-    });
+  const setFocus = () => {
+    textRef.current!.focus();
+    textRef.current!.select();
+    textRef.current!.setSelectionRange(0, 999); // For mobile devices.
   };
 
   // change 이벤트 헨들링
@@ -87,7 +85,7 @@ const Text = forwardRef((props: TextProps, ref) => {
 
     value ? setInvalidMsg(null) : setInvalidMsg(invalidMsg);
 
-    focus();
+    setFocus();
   };
 
   return (
@@ -119,6 +117,5 @@ const Text = forwardRef((props: TextProps, ref) => {
   );
 });
 
-// 컴포넌트 이름 설정
 Text.displayName = "Text";
 export default Text;

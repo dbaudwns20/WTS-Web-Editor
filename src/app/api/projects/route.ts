@@ -1,21 +1,25 @@
 import { startSession } from "mongoose";
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
-import { createProject, createStrings } from "@/services/project.service";
+import { createProject } from "@/app/api/_services/project.service";
+import { createStrings } from "@/app/api/_services/string.service";
 
-import { checkRequestBody, handleSuccess, handleErrors } from "@/utils/api";
+import {
+  checkRequestBody,
+  resolveSuccess,
+  resolveErrors,
+  resolvePagination,
+} from "@/app/api";
 
 export async function GET(request: NextRequest) {
   try {
-    dbConnect();
-    return NextResponse.json(
-      await ProjectModel.find({}, null, { sort: { dateCreated: -1 } })
-    );
+    await dbConnect();
+    return await resolvePagination(request, ProjectModel);
   } catch (error) {
-    return NextResponse.json({ message: "Internal server error" });
+    return resolveErrors(error);
   }
 }
 
@@ -26,6 +30,7 @@ export async function POST(request: NextRequest) {
     session.startTransaction();
 
     const body = await request.json();
+
     checkRequestBody(["title", "language", "wtsStringList"], body);
 
     await dbConnect();
@@ -34,12 +39,13 @@ export async function POST(request: NextRequest) {
     await createStrings(newProject._id, body["wtsStringList"]);
 
     await session.commitTransaction();
-    return handleSuccess(newProject);
+    return resolveSuccess(newProject);
   } catch (error: any) {
-    if (session) {
+    if (session && session.inTransaction()) {
       session.abortTransaction();
-      session.endSession();
     }
-    return handleErrors(error);
+    return resolveErrors(error);
+  } finally {
+    session?.endSession();
   }
 }

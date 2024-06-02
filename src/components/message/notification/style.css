@@ -64,6 +64,16 @@
   }
 }
 
+.notification-background {
+  @apply fixed;
+  @apply top-0;
+  @apply left-0;
+  @apply right-0;
+  @apply bottom-0;
+  @apply pointer-events-none;
+  @apply z-40;
+}
+
 .notification-wrapper {
   @apply flex;
   @apply w-full;
@@ -125,9 +135,9 @@
 }
 
 .notification.is-success {
-  @apply bg-green-600;
+  @apply bg-green-500;
   @apply text-white;
-  @apply dark:bg-green-800;
+  @apply dark:bg-green-700;
 }
 
 .notification.is-danger {
@@ -137,9 +147,9 @@
 }
 
 .notification.is-info {
-  @apply bg-blue-500;
+  @apply bg-sky-500;
   @apply text-white;
-  @apply dark:bg-blue-700;
+  @apply dark:bg-sky-700;
 }
 
 .notification.is-warning {

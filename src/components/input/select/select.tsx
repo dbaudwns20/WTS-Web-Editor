@@ -7,6 +7,8 @@ import {
   useImperativeHandle,
   ChangeEvent,
   InvalidEvent,
+  useMemo,
+  Dispatch,
 } from "react";
 
 import "./style.css";
@@ -19,7 +21,7 @@ type PropsType = {
   labelText: string;
   isRequired?: boolean;
   invalidMsg?: string;
-  onChange: React.Dispatch<SetStateAction<any>>;
+  onChange: Dispatch<SetStateAction<any>>;
 };
 
 const Select = forwardRef((props: PropsType, ref) => {
@@ -40,7 +42,7 @@ const Select = forwardRef((props: PropsType, ref) => {
   const selectRef = useRef<HTMLSelectElement>(null);
 
   // values
-  const elId: string = `select_${generateRandomText()}`;
+  const elId = useMemo(() => `select_${generateRandomText()}`, []);
   const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
 
   // change 이벤트 헨들링
