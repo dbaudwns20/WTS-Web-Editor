@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "mongoose": "^8.2.3",
     "next": "14.1.4",
+    "perfect-scrollbar": "^1.5.5",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-keys": "^2.7.3",
