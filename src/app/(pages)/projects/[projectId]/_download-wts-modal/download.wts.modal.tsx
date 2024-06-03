@@ -16,7 +16,8 @@ import Submit, { type SubmitType } from "@/components/button/submit";
 
 import { validateForm } from "@/utils/validator";
 import { showNotificationMessage } from "@/utils/message";
-import { callApi, downloadFile } from "@/utils/common";
+import { callApi } from "@/utils/common";
+import { downloadFile } from "@/utils/wts";
 
 type DownloadWtsModalProps = {
   closeModal: Dispatch<SetStateAction<boolean>>;
