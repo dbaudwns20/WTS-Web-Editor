@@ -148,8 +148,8 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         <div className="block">
           <Text
             value={source}
-            labelText="SOURCE"
-            placeholder="Project Source"
+            labelText="SOURCE URL"
+            placeholder="type source URL"
             onChange={setSource}
           />
         </div>

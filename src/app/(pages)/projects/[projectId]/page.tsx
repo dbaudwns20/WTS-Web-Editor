@@ -302,16 +302,16 @@ export default function ProjectDetail() {
                       </button>
                       {project?.source ? (
                         <a
-                          className="resource-link"
+                          className="source-link"
                           href={project!.source!}
                           target="_blank"
                         >
-                          <span className="tag resource">
+                          <span className="tag source">
                             <span className="icon mr-0.5">
                               <i className="material-icons md-18">launch</i>
                             </span>
                             <span className="text-sm font-semibold">
-                              Resource Link
+                              Source Link
                             </span>
                           </span>
                         </a>

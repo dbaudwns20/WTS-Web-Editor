@@ -160,7 +160,7 @@
   > .project-info
   > .info-wrapper
   > .button-group
-  > .resource-link {
+  > .source-link {
   @apply rounded-lg;
   @apply outline-cyan-200;
 }
@@ -180,8 +180,8 @@
   > .project-info
   > .info-wrapper
   > .button-group
-  > .resource-link
-  > .tag.resource {
+  > .source-link
+  > .tag.source {
   @apply bg-cyan-500;
   @apply text-white;
   @apply pl-1;

@@ -202,7 +202,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
           <Text
             value={source}
             labelText="SOURCE"
-            placeholder="Project Source"
+            placeholder="type source URL"
             onChange={setSource}
           />
         </div>
