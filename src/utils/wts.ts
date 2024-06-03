@@ -1,3 +1,4 @@
+import { type FileResponse } from "@/types/api.response";
 import WtsString from "@/types/wts.string";
 
 export function readWtsFile(wtsFile: File): WtsString[] {
@@ -90,4 +91,47 @@ export function parseToHtml(wtsString: string): string {
   result += wtsString.substring(lastIndex);
 
   return result;
+}
+
+export function downloadFile(fileResponse: FileResponse) {
+  const { fileName, fileContent } = fileResponse;
+
+  // Base64 인코딩된 내용을 디코딩하여 Uint8Array로 변환
+  const binaryString: string = atob(fileContent);
+  const len: number = binaryString.length;
+  const bytes: Uint8Array = new Uint8Array(len);
+
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+
+  // Uint8Array를 UTF-8 문자열로 디코딩
+  const decodedString: string = new TextDecoder("utf-8").decode(bytes);
+
+  // Windows 스타일 줄바꿈(CR LF)으로 변환
+  const windowsString: string = decodedString.replace(/\n/g, "\r\n");
+
+  // UTF-8 BOM 추가
+  const utf8Bom: string = "\uFEFF";
+  const finalString: string = utf8Bom + windowsString;
+
+  // 최종 데이터를 Uint8Array로 변환
+  const finalUint8Array: Uint8Array = new TextEncoder().encode(finalString);
+
+  // Uint8Array를 Blob으로 변환
+  const blob = new Blob([finalUint8Array], {
+    type: "application/octet-stream",
+  });
+  const urlCreator = window.URL || window.webkitURL;
+  const url = urlCreator.createObjectURL(blob);
+  const a: any = document.createElement("a");
+  a.href = url;
+  a.download = fileName + ".wts";
+  a.style = "display: none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function () {
+    return window.URL.revokeObjectURL(url);
+  }, 1000);
 }
