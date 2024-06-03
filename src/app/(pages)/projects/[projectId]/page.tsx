@@ -239,7 +239,7 @@ export default function ProjectDetail() {
       case "alt+r":
         stringEditorRef.current?.reset();
         break;
-      case "alt+e":
+      case "alt+q":
         if (stringListRef.current?.query) {
           setStringListKey((prev) => prev + 1);
         }

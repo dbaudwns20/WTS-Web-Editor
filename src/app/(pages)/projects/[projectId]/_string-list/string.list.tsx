@@ -7,6 +7,7 @@ import {
   useCallback,
   Dispatch,
   SetStateAction,
+  useMemo,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -23,6 +24,7 @@ import {
   showConfirmMessage,
   FuncButton,
 } from "@/utils/message";
+import { PerfectScrollbar } from "@/types/perfect.scrollbar";
 
 const defaultPageInfo: PageInfo = {
   currentPage: 1,
@@ -100,6 +102,8 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   const [query, setQuery] = useState<string>("");
   // 검색조건 적용중 여부
   const [isApplySearch, setIsApplySearch] = useState<boolean>(false);
+
+  let scrollbar = useRef<PerfectScrollbar | null>(null);
 
   // project 의 string list 조회
   const getStringList = async () => {
@@ -217,8 +221,14 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     } else {
       isFirst.current = true;
     }
-    node.scrollTo(options);
-  }, [currentStringNumber]);
+
+    if (scrollbar.current?.perfectScrollbar) {
+      scrollbar.current.destroy();
+      scrollbar.current = null;
+    }
+    scrollbar.current = new PerfectScrollbar(node);
+    node.scrollTop = offsetTop;
+  }, [currentStringNumber, scrollbar]);
 
   const handleMove = (string: _String) => {
     // 편집된 상태인 경우
