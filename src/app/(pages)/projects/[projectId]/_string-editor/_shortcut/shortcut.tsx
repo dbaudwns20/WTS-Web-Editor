@@ -54,7 +54,9 @@ const Shortcut = forwardRef((props: any, ref) => {
         <div className="shortcut-list">
           <div className="shortcut">
             <div className="keyboards">
-              <span className="keyboard option"></span>
+              <span
+                className={isMacintosh() ? `keyboard option` : `keyboard alt`}
+              />
               <p className="plus" />
               <span className="keyboard">
                 <i className="material-icons md-18">arrow_right</i>
@@ -64,7 +66,9 @@ const Shortcut = forwardRef((props: any, ref) => {
           </div>
           <div className="shortcut">
             <div className="keyboards">
-              <span className="keyboard option"></span>
+              <span
+                className={isMacintosh() ? `keyboard option` : `keyboard alt`}
+              />
               <p className="plus" />
               <span className="keyboard">
                 <i className="material-icons md-18">arrow_left</i>

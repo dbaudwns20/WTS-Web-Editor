@@ -43,32 +43,45 @@ async function computeCompletedProcess(
   return ((completedCount / totalCount) * 100).toFixed(1);
 }
 
-export async function createString(newStringData: IString) {
-  await new StringModel({
-    ...newStringData,
-    ...{
-      createdAt: new Date(),
-    },
-  }).save();
-}
-
+/**
+ * 스트링 생성
+ * @param newProjectId
+ * @param wtsStringList
+ */
 export async function createStrings(newProjectId: any, wtsStringList: any[]) {
+  // 새로운 스트링 생성
+  let newStringData = [];
   for (let wtsString of wtsStringList) {
-    await createString({
+    newStringData.push({
       projectId: newProjectId,
       stringNumber: wtsString.stringNumber,
       originalText: wtsString.content,
       comment: wtsString.comment,
+      createdAt: new Date(),
     } as IString);
   }
+  // insertMany 로 실행시간 단축
+  await StringModel.insertMany(newStringData);
 }
 
+/**
+ * 스트링 삭제
+ * @param projectId
+ */
 export async function deleteProjectStrings(projectId: string) {
+  // 해당 projectId 로 스트링 모두 삭제
   await StringModel.deleteMany({
     projectId: projectId,
   });
 }
 
+/**
+ * 스트링 수정
+ * @param projectId
+ * @param stringId
+ * @param updateData
+ * @returns
+ */
 export async function updateString(
   projectId: string,
   stringId: string,
@@ -101,7 +114,7 @@ export async function updateString(
       ...updateData,
       ...{ updatedAt: new Date() },
       ...(isCompleted && {
-        completedAt: new Date(),
+        completedAt: new Date(), // 완료된 스트링인 경우에만 완료일자 갱신
       }),
     },
     {
@@ -147,6 +160,8 @@ export async function updateProjectStrings(
     const instance: StringInstance | undefined = updateStringMap.get(
       string.stringNumber
     );
+
+    // 사용중인 String 이 없을경우 삭제대상으로 취급
     if (!instance) {
       deleteList.push({
         stringNumber: string.stringNumber,
@@ -179,8 +194,8 @@ export async function updateProjectStrings(
   }
 
   // upsert
-  for (const wtsString of upsertList) {
-    await StringModel.findOneAndUpdate(
+  const updatePromises = upsertList.map((wtsString) =>
+    StringModel.findOneAndUpdate(
       { projectId: projectId, stringNumber: wtsString.stringNumber },
       {
         $setOnInsert: {
@@ -195,16 +210,20 @@ export async function updateProjectStrings(
         },
       },
       { upsert: true, setDefaultsOnInsert: true }
-    );
-  }
+    )
+  );
 
   // delete
-  for (const wtsString of deleteList) {
-    await StringModel.findOneAndDelete({
+  const deletePromise = deleteList.map((wtsString) => {
+    StringModel.findOneAndDelete({
       projectId: projectId,
       stringNumber: wtsString.stringNumber,
     });
-  }
+  });
+
+  // 병렬 실행
+  await Promise.all(updatePromises);
+  await Promise.all(deletePromise);
 
   if (upsertList.length > 0 || deleteList.length > 0) {
     // 진행률 갱신
@@ -219,8 +238,8 @@ export async function overwriteWtsStrings(
   wtsStringList: any[]
 ) {
   // translated text 갱신
-  for (let wtsString of wtsStringList) {
-    await StringModel.findOneAndUpdate(
+  const updatePromises = wtsStringList.map((wtsString) =>
+    StringModel.findOneAndUpdate(
       { projectId: projectId, stringNumber: wtsString.stringNumber },
       {
         $set: {
@@ -230,8 +249,11 @@ export async function overwriteWtsStrings(
           completedAt: new Date(),
         },
       }
-    );
-  }
+    )
+  );
+
+  // 병렬 실행
+  await Promise.all(updatePromises);
 
   // 진행률 갱신
   await updateProject(projectId, {

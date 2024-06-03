@@ -5,6 +5,11 @@ import {
   updateProjectStrings,
 } from "@/app/api/_services/string.service";
 
+/**
+ * 프로젝트 생성
+ * @param createData
+ * @returns
+ */
 export async function createProject(createData: any): Promise<any> {
   const newProject = new ProjectModel({
     ...createData,
@@ -13,6 +18,11 @@ export async function createProject(createData: any): Promise<any> {
   return await newProject.save();
 }
 
+/**
+ * 프로젝트 조회
+ * @param projectId
+ * @returns
+ */
 export async function getProject(projectId: string) {
   const instance = await ProjectModel.findById(projectId);
   if (!instance) throw new Error("Project is not found");
@@ -20,14 +30,21 @@ export async function getProject(projectId: string) {
 }
 
 /**
- * String 데이터를 삭제 후 프로젝트 삭제
+ * 프로젝트 삭제
  * @param projectId
  */
 export async function deleteProject(projectId: string) {
+  // String 데이터를 먼저 삭제
   await deleteProjectStrings(projectId);
   await ProjectModel.findByIdAndDelete(projectId);
 }
 
+/**
+ * 프로젝트 수정
+ * @param projectId
+ * @param updateData
+ * @returns
+ */
 export async function updateProject(projectId: string, updateData: any) {
   // wtsStringList 가 존재할 경우
   if (updateData["wtsStringList"]) {

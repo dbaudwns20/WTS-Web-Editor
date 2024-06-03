@@ -29,6 +29,10 @@ export async function downloadWts(
 
   const instance = await StringModel.find(filter).sort({ StringNumber: 1 });
 
+  if (instance.length === 0) {
+    throw new Error("번역된 데이터가 존재하지 않습니다.");
+  }
+
   const fileContent = instance
     .map((instance) => {
       const lines = [
