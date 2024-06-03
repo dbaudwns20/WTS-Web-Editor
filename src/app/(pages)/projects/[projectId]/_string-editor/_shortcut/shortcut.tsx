@@ -59,7 +59,9 @@ const Shortcut = forwardRef((props: any, ref) => {
               />
               <p className="plus" />
               <span className="keyboard">
-                <i className="material-icons md-18">arrow_right</i>
+                <i className="material-icons md-18">
+                  {isMacintosh() ? `arrow_right` : `arrow_right_alt`}
+                </i>
               </span>
             </div>
             <span className="description">다음 String 으로 이동</span>
@@ -71,7 +73,13 @@ const Shortcut = forwardRef((props: any, ref) => {
               />
               <p className="plus" />
               <span className="keyboard">
-                <i className="material-icons md-18">arrow_left</i>
+                <i
+                  className={`material-icons md-18${
+                    isMacintosh() ? "" : " rotate-180"
+                  }`}
+                >
+                  {isMacintosh() ? `arrow_left` : `arrow_right_alt`}
+                </i>
               </span>
             </div>
             <span className="description">이전 String 으로 이동</span>
