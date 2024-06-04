@@ -214,20 +214,20 @@ const StringList = forwardRef((props: StringListProps, ref) => {
         break;
       }
     }
-    const options = { top: offsetTop };
     // 최초엔 즉시 이동
     if (isFirst.current) {
-      Object.assign(options, { behavior: "smooth" });
+      // 부드러운 스크롤 함수 호출
+      scrollbar.current?.smoothScroll(node, offsetTop, 300);
     } else {
       isFirst.current = true;
+      node.scrollTop = offsetTop;
     }
-
+    // perfect 스크롤바 적용
     if (scrollbar.current?.perfectScrollbar) {
       scrollbar.current.destroy();
       scrollbar.current = null;
     }
     scrollbar.current = new PerfectScrollbar(node);
-    node.scrollTop = offsetTop;
   }, [currentStringNumber, scrollbar]);
 
   const handleMove = (string: _String) => {

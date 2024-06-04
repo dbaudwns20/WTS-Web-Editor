@@ -81,11 +81,12 @@
   @apply relative;
   @apply p-4;
   @apply block;
-  @apply border-b border-gray-200 last:border-b-0;
+  @apply border-b;
+  @apply border-gray-200;
+  @apply last:border-b-0;
   @apply hover:bg-slate-100;
   @apply dark:hover:bg-slate-700;
   @apply hover:cursor-pointer;
-  @apply transition;
   @apply duration-500;
 }
 
@@ -163,6 +164,7 @@
   > .content {
   @apply text-sm;
   @apply text-gray-500;
+  @apply dark:text-gray-400;
   @apply overflow-hidden;
   @apply max-w-[90%];
   text-overflow: ellipsis;
@@ -206,4 +208,5 @@
   > .string.is-active
   > .content {
   @apply font-semibold;
+  @apply dark:text-gray-200;
 }
