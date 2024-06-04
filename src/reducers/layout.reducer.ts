@@ -17,18 +17,21 @@ export const layoutInitState: LayoutState = {
 
 // 리듀서 함수 정의
 export function layoutReducer(state: LayoutState, action: LayoutAction) {
+  let newState: LayoutState = state;
   switch (action.type) {
     case "showStringList":
-      return {
+      newState = {
         ...state,
         showStringList: action.payload,
       };
+      break;
     case "stringEditorMode":
-      return {
+      newState = {
         ...state,
         stringEditorMode: action.payload,
       };
-    default:
-      return state;
+      break;
   }
+  localStorage.setItem("layout", JSON.stringify(newState));
+  return newState;
 }
