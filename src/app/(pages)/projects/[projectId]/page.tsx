@@ -166,6 +166,34 @@ export default function ProjectDetail() {
     getProject();
   };
 
+  // LocalStorage에 저장된 값 반영
+  const applyLocalStorageData = () => {
+    const storedLayout = localStorage.getItem("layout");
+    if (storedLayout) {
+      const parsedLayout = JSON.parse(storedLayout);
+      layoutDispatch({
+        type: "showStringList",
+        payload: parsedLayout.showStringList,
+      });
+      layoutDispatch({
+        type: "stringEditorMode",
+        payload: parsedLayout.stringEditorMode,
+      });
+    }
+    const storedPreference = localStorage.getItem("preference");
+    if (storedPreference) {
+      const parsedPreference = JSON.parse(storedPreference);
+      preferenceDispatch({
+        type: "skipCompleted",
+        payload: parsedPreference.skipCompleted,
+      });
+      preferenceDispatch({
+        type: "autoMove",
+        payload: parsedPreference.autoMove,
+      });
+    }
+  };
+
   // string content 높이 재조정
   const setStringContentSectionHeight = useCallback(() => {
     const projectInfoSectionHeight: number =
@@ -194,6 +222,7 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     getProject();
+    applyLocalStorageData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

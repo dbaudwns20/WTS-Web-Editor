@@ -41,7 +41,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           </div>
           <p className="date-created">
             <span className="material-icons-outlined">schedule</span>
-            {convertDateToString(project.updatedAt)}
+            {convertDateToString(project.createdAt)}
           </p>
         </div>
         <div

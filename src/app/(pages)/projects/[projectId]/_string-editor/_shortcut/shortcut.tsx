@@ -46,7 +46,7 @@ const Shortcut = forwardRef((props: any, ref) => {
                 className={isMacintosh() ? `keyboard option` : `keyboard alt`}
               />
               <p className="plus" />
-              <span className="keyboard">E</span>
+              <span className="keyboard">Q</span>
             </div>
             <span className="description">검색 조건 초기화</span>
           </div>

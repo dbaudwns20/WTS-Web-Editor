@@ -20,18 +20,21 @@ export function preferenceReducer(
   state: PreferenceState,
   action: PreferenceAction
 ) {
+  let newState: PreferenceState = state;
   switch (action.type) {
     case "autoMove":
-      return {
+      newState = {
         ...state,
         autoMove: action.payload,
       };
+      break;
     case "skipCompleted":
-      return {
+      newState = {
         ...state,
         skipCompleted: action.payload,
       };
-    default:
-      return state;
+      break;
   }
+  localStorage.setItem("preference", JSON.stringify(newState));
+  return newState;
 }
