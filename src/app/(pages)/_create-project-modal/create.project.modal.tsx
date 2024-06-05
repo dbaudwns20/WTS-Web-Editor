@@ -52,19 +52,17 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
     setIsFetching(true);
 
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("language", language.toString());
+    formData.append("version", version);
+    formData.append("source", source);
+    formData.append("imageFile", imageFile!);
+    formData.append("wtsStringList", JSON.stringify(wtsStringList));
+
     const response = await callApi("/api/projects", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        language,
-        version,
-        source,
-        imageFile: await fileToBase64(imageFile!),
-        wtsStringList,
-      }),
+      body: formData,
     });
 
     setIsFetching(false);

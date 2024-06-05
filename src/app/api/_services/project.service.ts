@@ -1,11 +1,14 @@
 import { ClientSession } from "mongoose";
 
+import Project from "@/types/project";
 import ProjectModel from "@/db/models/project";
 
 import {
   deleteProjectStrings,
   updateProjectStrings,
 } from "@/app/api/_services/string.service";
+import { deleteProjectImage } from "./project.image.service";
+import { formDataToObject } from "@/app/api";
 
 /**
  * 프로젝트 생성
@@ -13,11 +16,11 @@ import {
  * @returns
  */
 export async function createProject(
-  createData: any,
+  formData: FormData,
   session: ClientSession
 ): Promise<any> {
   const newProject = new ProjectModel({
-    ...createData,
+    ...formDataToObject(formData),
     ...{ createdAt: new Date(), updatedAt: new Date() },
   });
   return await newProject.save({ session });
@@ -39,7 +42,10 @@ export async function getProject(projectId: string) {
  * @param projectId
  */
 export async function deleteProject(projectId: string, session: ClientSession) {
-  // String 데이터를 먼저 삭제
+  const project: Project = await getProject(projectId);
+  // vercel/Blob에 업로드 된 이미지 삭제
+  await deleteProjectImage(project.imageUrl);
+  // String 데이터를 삭제
   await deleteProjectStrings(projectId, session);
   // 프로젝트 삭제
   await ProjectModel.findByIdAndDelete(projectId, { session });

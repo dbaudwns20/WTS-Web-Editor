@@ -5,7 +5,7 @@ import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
 import { createProject } from "@/app/api/_services/project.service";
-import { createProjectImage } from "@/app/api/_services/project.image.service";
+import { uploadProjectImage } from "@/app/api/_services/project.image.service";
 import { createStrings } from "@/app/api/_services/string.service";
 
 import {
@@ -30,18 +30,25 @@ export async function POST(request: NextRequest) {
     session = await startSession();
     session.startTransaction();
 
-    const body = await request.json();
+    const form = await request.formData();
 
-    checkRequestBody(["title", "language", "wtsStringList"], body);
+    checkRequestBody(["title", "language", "wtsStringList"], form);
 
     await dbConnect();
 
-    const imageUrl: string = await createProjectImage(
-      body["imageData"],
+    // vercel/Blob 에 파일 업로드 후 url 리턴
+    const imageUrl: string = await uploadProjectImage(
+      form.get("imageFile") as File
+    );
+    form.set("imageUrl", imageUrl);
+    // Project 생성
+    const newProject = await createProject(form, session);
+    // String 생성
+    await createStrings(
+      newProject._id,
+      JSON.parse(form.get("wtsStringList") as string),
       session
     );
-    const newProject = await createProject(body, session);
-    await createStrings(newProject._id, body["wtsStringList"], session);
 
     await session.commitTransaction();
     return resolveSuccess(newProject);

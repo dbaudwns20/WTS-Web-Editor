@@ -7,6 +7,7 @@ export default class Project {
   process: string;
   version: string | null;
   source: string | null;
+  imageUrl: string;
   lastModifiedStringNumber: number;
   createdAt: Date;
   updatedAt: Date;
@@ -18,6 +19,7 @@ export default class Project {
     this.process = project.process;
     this.version = project.version;
     this.source = project.source;
+    this.imageUrl = project.imageUrl;
     this.lastModifiedStringNumber = project.lastModifiedStringNumber;
     this.createdAt = new Date(project.createdAt);
     this.updatedAt = new Date(project.updatedAt);

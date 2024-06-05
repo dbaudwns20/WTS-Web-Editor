@@ -10,6 +10,7 @@ export interface IProject {
   version: string | null;
   lastModifiedStringNumber: number;
   source: string | null;
+  imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,6 +48,10 @@ const ProjectSchema: Schema<IProject> = new Schema({
     set: emptyToNull,
     maxlength: 100,
     trim: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,

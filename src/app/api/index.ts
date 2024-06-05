@@ -12,6 +12,24 @@ function setOrder(req: NextRequest) {
   };
 }
 
+export function formDataToObject(formData: FormData) {
+  const result: { [key: string]: any } = {};
+
+  formData.forEach((value, key) => {
+    if (result.hasOwnProperty(key)) {
+      if (Array.isArray(result[key])) {
+        result[key].push(value);
+      } else {
+        result[key] = [result[key], value];
+      }
+    } else {
+      result[key] = value;
+    }
+  });
+
+  return result;
+}
+
 export function checkRequestParams(keys: string[], params: any) {
   const arr: string[] = [];
   for (const key of keys) {
@@ -24,10 +42,10 @@ export function checkRequestParams(keys: string[], params: any) {
   }
 }
 
-export function checkRequestBody(keys: string[], body: any) {
+export function checkRequestBody(keys: string[], form: FormData) {
   const arr: string[] = [];
   for (const key of keys) {
-    if (!(key in body)) {
+    if (!form.has(key)) {
       arr.push(key);
     }
   }

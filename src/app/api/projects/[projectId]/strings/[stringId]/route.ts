@@ -36,7 +36,8 @@ export async function PUT(
     const newString = await updateString(
       params["projectId"],
       params["stringId"],
-      body
+      body,
+      session
     );
 
     await session.commitTransaction();

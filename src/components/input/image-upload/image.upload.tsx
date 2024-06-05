@@ -5,16 +5,14 @@ import {
   ChangeEvent,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 
 import "./style.css";
 
 import Image from "next/image";
 
-import {
-  BgImage,
-  getBgImageById,
-} from "@/app/(pages)/_project-card/background.image";
+import { type DefaultImage, getDefaultImageById } from "@/types/default.image";
 
 import { convertFileSizeToString } from "@/utils/common";
 import { checkFileType } from "@/utils/validator";
@@ -38,7 +36,14 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
   const [isShowCropperModal, setIsShowCropperModal] = useState<boolean>(false);
 
-  const image: BgImage = getBgImageById(1);
+  const [defaultImage, setDefaultImage] = useState<DefaultImage>(
+    getDefaultImageById(1)!
+  );
+
+  const changeDefaultImage = () => {
+    setDefaultImage(getDefaultImageById(defaultImage.id + 1)!);
+    setCroppedImageUrl("");
+  };
 
   // 업로드 핸들링
   const handChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +87,10 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
     inputRef.current!.value = "";
   };
 
+  useEffect(() => {
+    setImageFile(defaultImage.file);
+  }, [defaultImage, setImageFile]);
+
   return (
     <>
       <label className="label">IMAGE</label>
@@ -89,8 +98,8 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
         <div className="image-wrapper">
           <Image
             className="image"
-            src={croppedImageUrl ? croppedImageUrl : image.path}
-            alt={image.name}
+            src={croppedImageUrl ? croppedImageUrl : defaultImage.path}
+            alt="project image"
             width={135}
             height={135}
           />
@@ -98,26 +107,32 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
         <div className="upload-wrapper">
           <div className="upload-info">
             <p className="type">
-              {imageFile ? "Uploaded Image" : "Default Image"}
+              {croppedImageUrl
+                ? "Uploaded Image"
+                : `Default Image ${defaultImage.id}`}
             </p>
             <p className="file-info">
-              {imageFile
-                ? `${imageFile.name.split(".")[0]} (${convertFileSizeToString(
-                    imageFile.size
+              {croppedImageUrl
+                ? `${imageFile!.name} (${convertFileSizeToString(
+                    imageFile!.size
                   )})`
-                : "Orc Prologue Exodus of the Horde"}
+                : defaultImage.name}
             </p>
           </div>
           <div className="button-group">
-            <button className="button !text-xs w-full" type="button">
-              Switch Default Image
+            <button
+              className="button !text-xs w-full !shadow-none"
+              type="button"
+              onClick={() => changeDefaultImage()}
+            >
+              기본 이미지 변경
             </button>
             <button
-              className="button is-success !text-xs w-full"
+              className="button is-success !text-xs w-full !shadow-none"
               type="button"
               onClick={() => inputRef.current?.click()}
             >
-              Upload Image
+              이미지 업로드
             </button>
           </div>
         </div>

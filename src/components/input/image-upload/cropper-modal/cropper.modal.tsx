@@ -54,7 +54,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
       // 잘라진 이미지로 파일 다시 설정
       cropper.getCroppedCanvas(options).toBlob((blob) => {
         const file = new File([blob!], imageFile.name, {
-          type: "image/jpeg",
+          type: imageFile.type,
         });
         setImageFile(file);
       });
@@ -107,6 +107,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
       title="Upload Image"
       widthClass="lg:!w-[450px]"
       isCloseOnOverlay={false}
+      hideCloseButton={true}
       setIsModalOpen={closeModal}
     >
       <div className="cropper-wrapper">
@@ -115,7 +116,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
             <span className="icon">
               <i className="material-icons md-18">refresh</i>
             </span>
-            <span>Reset</span>
+            <span>초기화</span>
           </a>
           <a
             type="button"
@@ -125,7 +126,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
             <span className="icon">
               <i className="material-icons md-18">upload</i>
             </span>
-            <span>Upload</span>
+            <span>업로드</span>
           </a>
         </div>
         <Cropper
@@ -145,7 +146,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
           className="button is-info w-full"
           onClick={applyImage}
         >
-          APPLY
+          완료
         </button>
         <input
           type="file"

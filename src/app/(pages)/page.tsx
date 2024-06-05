@@ -155,7 +155,7 @@ export default function RootPage() {
     <>
       <section className="flex flex-col justify-center items-center pb-8">
         <div className="flex justify-center items-center gap-5">
-          <Image src={LogoMain} alt="logo_main" width={400} />
+          <Image src={LogoMain} alt="logo_main" width={400} priority={true} />
         </div>
         <div className="">
           <div className="w-full flex justify-center">
