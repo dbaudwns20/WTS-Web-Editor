@@ -5,6 +5,7 @@ import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
 import { createProject } from "@/app/api/_services/project.service";
+import { createProjectImage } from "@/app/api/_services/project.image.service";
 import { createStrings } from "@/app/api/_services/string.service";
 
 import {
@@ -35,14 +36,18 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    const newProject = await createProject(body);
-    await createStrings(newProject._id, body["wtsStringList"]);
+    const imageUrl: string = await createProjectImage(
+      body["imageData"],
+      session
+    );
+    const newProject = await createProject(body, session);
+    await createStrings(newProject._id, body["wtsStringList"], session);
 
     await session.commitTransaction();
     return resolveSuccess(newProject);
   } catch (error: any) {
     if (session && session.inTransaction()) {
-      session.abortTransaction();
+      await session.abortTransaction();
     }
     return resolveErrors(error);
   } finally {

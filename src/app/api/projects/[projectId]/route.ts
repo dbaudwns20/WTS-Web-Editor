@@ -53,7 +53,7 @@ export async function PUT(
     await dbConnect();
 
     // 프로젝트 업데이트
-    const instance = await updateProject(params.projectId, body);
+    const instance = await updateProject(params.projectId, body, session);
 
     await session.commitTransaction();
     return resolveSuccess(instance);
@@ -81,7 +81,7 @@ export async function DELETE(
     await dbConnect();
 
     // 프로젝트와 하위 string 제거
-    await deleteProject(params.projectId);
+    await deleteProject(params.projectId, session);
 
     await session.commitTransaction();
     return resolveSuccess({});

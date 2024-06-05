@@ -125,7 +125,11 @@ export async function PUT(
 
     await dbConnect();
 
-    await overwriteWtsStrings(params["projectId"], body["wtsStringList"]);
+    await overwriteWtsStrings(
+      params["projectId"],
+      body["wtsStringList"],
+      session
+    );
 
     await session.commitTransaction();
     return resolveSuccess({});

@@ -1,3 +1,5 @@
+import { ClientSession } from "mongoose";
+
 import ProjectModel from "@/db/models/project";
 
 import {
@@ -10,12 +12,15 @@ import {
  * @param createData
  * @returns
  */
-export async function createProject(createData: any): Promise<any> {
+export async function createProject(
+  createData: any,
+  session: ClientSession
+): Promise<any> {
   const newProject = new ProjectModel({
     ...createData,
     ...{ createdAt: new Date(), updatedAt: new Date() },
   });
-  return await newProject.save();
+  return await newProject.save({ session });
 }
 
 /**
@@ -33,10 +38,11 @@ export async function getProject(projectId: string) {
  * 프로젝트 삭제
  * @param projectId
  */
-export async function deleteProject(projectId: string) {
+export async function deleteProject(projectId: string, session: ClientSession) {
   // String 데이터를 먼저 삭제
-  await deleteProjectStrings(projectId);
-  await ProjectModel.findByIdAndDelete(projectId);
+  await deleteProjectStrings(projectId, session);
+  // 프로젝트 삭제
+  await ProjectModel.findByIdAndDelete(projectId, { session });
 }
 
 /**
@@ -45,10 +51,14 @@ export async function deleteProject(projectId: string) {
  * @param updateData
  * @returns
  */
-export async function updateProject(projectId: string, updateData: any) {
+export async function updateProject(
+  projectId: string,
+  updateData: any,
+  session: ClientSession
+) {
   // wtsStringList 가 존재할 경우
   if (updateData["wtsStringList"]) {
-    await updateProjectStrings(projectId, updateData["wtsStringList"]);
+    await updateProjectStrings(projectId, updateData["wtsStringList"], session);
   }
   const instance = await ProjectModel.findByIdAndUpdate(
     projectId,
@@ -56,7 +66,7 @@ export async function updateProject(projectId: string, updateData: any) {
       ...updateData,
       ...{ updatedAt: new Date() },
     },
-    { new: true }
+    { new: true, session }
   );
   return instance;
 }
