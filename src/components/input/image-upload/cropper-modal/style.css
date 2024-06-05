@@ -1,1 +1,14 @@
 @import "cropperjs/dist/cropper.css";
+
+.cropper-wrapper {
+  @apply px-6;
+  @apply pb-6;
+  @apply pt-1;
+}
+
+.cropper-wrapper > .cropper-functions {
+  @apply flex;
+  @apply items-center;
+  @apply justify-end;
+  @apply mb-1;
+}

@@ -2,13 +2,10 @@ import {
   useRef,
   createRef,
   forwardRef,
-  useState,
-  useEffect,
   Dispatch,
   SetStateAction,
   ChangeEvent,
 } from "react";
-import Image from "next/image";
 
 import "./style.css";
 
@@ -21,6 +18,7 @@ import Cropper, { ReactCropperElement } from "react-cropper";
 
 type CropperModalProps = {
   uploadedImageUrl: string;
+  imageFile: File | null;
   setImageFile: Dispatch<SetStateAction<File | null>>;
   setUploadedImageUrl: Dispatch<SetStateAction<string>>;
   setCroppedImageUrl: Dispatch<SetStateAction<string>>;
@@ -29,6 +27,7 @@ type CropperModalProps = {
 
 const CropperModal = forwardRef((props: CropperModalProps, ref) => {
   const {
+    imageFile,
     setImageFile,
     uploadedImageUrl,
     setUploadedImageUrl,
@@ -40,19 +39,26 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
   const cropperRef = createRef<ReactCropperElement>();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const updateImage = () => {
-    if (cropperRef.current) {
+  const applyImage = () => {
+    if (cropperRef.current && imageFile) {
       const cropper = cropperRef.current?.cropper;
-      setCroppedImageUrl(
-        cropper
-          .getCroppedCanvas({
-            width: 500,
-            height: 500,
-            fillColor: "#fff",
-            imageSmoothingQuality: "high",
-          })
-          .toDataURL()
-      );
+      const options: any = {
+        width: 500,
+        height: 500,
+        fillColor: "#fff",
+        imageSmoothingQuality: "high",
+      };
+      // 이미지 설정
+      setCroppedImageUrl(cropper.getCroppedCanvas(options).toDataURL());
+
+      // 잘라진 이미지로 파일 다시 설정
+      cropper.getCroppedCanvas(options).toBlob((blob) => {
+        const file = new File([blob!], imageFile.name, {
+          type: "image/jpeg",
+        });
+        setImageFile(file);
+      });
+
       closeModal(false);
     }
   };
@@ -65,6 +71,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
     }
   };
 
+  // 이미지 재업로드 핸들링
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -102,8 +109,8 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
     >
-      <div className="px-6 pb-6 pt-1">
-        <div className="flex items-center justify-end mb-1">
+      <div className="cropper-wrapper">
+        <div className="cropper-functions">
           <a type="button" className="anchor-has-icon" onClick={reset}>
             <span className="icon">
               <i className="material-icons md-18">refresh</i>
@@ -118,7 +125,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
             <span className="icon">
               <i className="material-icons md-18">upload</i>
             </span>
-            <span>Reupload</span>
+            <span>Upload</span>
           </a>
         </div>
         <Cropper
@@ -133,22 +140,20 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
           dragMode={"move"}
           src={uploadedImageUrl}
         />
-        <div className="inline-flex w-full gap-2">
-          <button
-            type="button"
-            className="button is-info w-full"
-            onClick={updateImage}
-          >
-            APPLY
-          </button>
-          <input
-            type="file"
-            className="hidden"
-            ref={inputRef}
-            onChange={handleUpload}
-            accept=".jpg,.png"
-          />
-        </div>
+        <button
+          type="button"
+          className="button is-info w-full"
+          onClick={applyImage}
+        >
+          APPLY
+        </button>
+        <input
+          type="file"
+          className="hidden"
+          ref={inputRef}
+          onChange={handleUpload}
+          accept=".jpg,.png"
+        />
       </div>
     </Modal>
   );

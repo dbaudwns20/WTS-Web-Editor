@@ -1,4 +1,13 @@
-import { forwardRef, useState, useRef, useEffect, ChangeEvent } from "react";
+import {
+  forwardRef,
+  useState,
+  useRef,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+} from "react";
+
+import "./style.css";
 
 import Image from "next/image";
 
@@ -13,12 +22,18 @@ import { showNotificationMessage } from "@/utils/message";
 
 import CropperModal from "./cropper-modal/cropper.modal";
 
-const ImageUpload = forwardRef((props: any, ref) => {
+type ImageUploadProps = {
+  imageFile: File | null;
+  setImageFile: Dispatch<SetStateAction<File | null>>;
+};
+
+const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
+  const { imageFile, setImageFile } = props;
+
   // refs
   const inputRef = useRef<HTMLInputElement>(null);
 
   // values
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [croppedImageUrl, setCroppedImageUrl] = useState<string>("");
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
   const [isShowCropperModal, setIsShowCropperModal] = useState<boolean>(false);
@@ -50,58 +65,50 @@ const ImageUpload = forwardRef((props: any, ref) => {
       return;
     }
 
+    // 이미지 파일 set
     setImageFile(file);
-  };
 
-  useEffect(() => {
-    if (!imageFile) return;
-
+    // 이미지 파일 읽기
     const reader = new FileReader();
     reader.onload = () => {
       setUploadedImageUrl(reader.result as string);
     };
-    reader.readAsDataURL(imageFile);
+    reader.readAsDataURL(file);
+
+    // cropper 모달 띄우기
     setIsShowCropperModal(true);
 
+    // value 초기화
     inputRef.current!.value = "";
-  }, [imageFile]);
-
-  useEffect(() => {
-    if (!isShowCropperModal) {
-      if (!croppedImageUrl) {
-        setImageFile(null);
-        setUploadedImageUrl("");
-      }
-    }
-  }, [isShowCropperModal, croppedImageUrl]);
+  };
 
   return (
     <>
       <label className="label">IMAGE</label>
-      <div className="flex items-center gap-4 h-fit">
-        <div className="rounded-lg overflow-hidden flex-shrink-0">
+      <div className="image-upload">
+        <div className="image-wrapper">
           <Image
-            className="object-cover aspect-square w-[135px] h-[135px]"
+            className="image"
             src={croppedImageUrl ? croppedImageUrl : image.path}
             alt={image.name}
             width={135}
             height={135}
           />
         </div>
-        <div className="flex flex-col w-full h-[135px] gap-2">
-          <div className="bg-gray-100 dark:bg-gray-700 h-full border border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2">
-            <p className="text-slate-500 font-semibold text-sm">
+        <div className="upload-wrapper">
+          <div className="upload-info">
+            <p className="type">
               {imageFile ? "Uploaded Image" : "Default Image"}
             </p>
-            <p className="text-slate-500 text-xs">
+            <p className="file-info">
               {imageFile
-                ? `${imageFile.name} (${convertFileSizeToString(
+                ? `${imageFile.name.split(".")[0]} (${convertFileSizeToString(
                     imageFile.size
                   )})`
                 : "Orc Prologue Exodus of the Horde"}
             </p>
           </div>
-          <div className="flex items-center justify-center gap-2">
+          <div className="button-group">
             <button className="button !text-xs w-full" type="button">
               Switch Default Image
             </button>
@@ -125,6 +132,7 @@ const ImageUpload = forwardRef((props: any, ref) => {
       {isShowCropperModal ? (
         <CropperModal
           closeModal={setIsShowCropperModal}
+          imageFile={imageFile}
           setImageFile={setImageFile}
           uploadedImageUrl={uploadedImageUrl}
           setUploadedImageUrl={setUploadedImageUrl}

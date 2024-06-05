@@ -20,7 +20,7 @@ import ImageUpload from "@/components/input/image-upload/image.upload";
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
-import { callApi } from "@/utils/common";
+import { callApi, fileToBase64 } from "@/utils/common";
 
 type CreateProjectModalProps = {
   closeModal: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +41,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   const [language, setLanguage] = useState<number>(0);
   const [version, setVersion] = useState<string>("");
   const [source, setSource] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
 
   // 프로젝트 생성
@@ -61,6 +62,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         language,
         version,
         source,
+        imageFile: await fileToBase64(imageFile!),
         wtsStringList,
       }),
     });
@@ -155,7 +157,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
           />
         </div>
         <div className="block">
-          <ImageUpload />
+          <ImageUpload imageFile={imageFile} setImageFile={setImageFile} />
         </div>
         <div className="block">
           <File
