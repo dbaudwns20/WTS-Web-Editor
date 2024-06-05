@@ -15,6 +15,7 @@ import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File, { type FileType } from "@/components/input/file/file";
+import ImageUpload from "@/components/input/image-upload/image.upload";
 
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
@@ -109,7 +110,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
       setIsModalOpen={closeModal}
     >
       <form
-        className="grid gap-6 md:grid-cols-1 p-6"
+        className="grid gap-4 px-6 pt-3 pb-6"
         onSubmit={createNewProject}
         noValidate
       >
@@ -152,6 +153,9 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             placeholder="type source URL"
             onChange={setSource}
           />
+        </div>
+        <div className="block">
+          <ImageUpload />
         </div>
         <div className="block">
           <File

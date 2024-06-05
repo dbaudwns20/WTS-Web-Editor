@@ -19,7 +19,7 @@ import { generateRandomText, convertFileSizeToString } from "@/utils/common";
 import { showNotificationMessage } from "@/utils/message";
 
 type FileProps = {
-  labelText: string;
+  labelText?: string;
   isRequired?: boolean;
   invalidMsg?: string;
   accept?: string;
@@ -32,7 +32,7 @@ export type FileType = {
 
 const File = forwardRef((props: FileProps, ref) => {
   const {
-    labelText,
+    labelText = "",
     isRequired = false,
     invalidMsg = "Please upload your file.",
     accept,
@@ -149,19 +149,23 @@ const File = forwardRef((props: FileProps, ref) => {
 
   // set element id
   useEffect(() => {
-    labelRef.current!.setAttribute("for", elId);
+    labelRef.current?.setAttribute("for", elId);
     fileRef.current?.setAttribute("id", elId);
     deleteButtonRef.current?.setAttribute("id", elId);
   }, [displayFile, elId]);
 
   return (
     <>
-      <label
-        ref={labelRef}
-        className={isRequired ? "label is-required" : "label"}
-      >
-        {labelText}
-      </label>
+      {labelText.length > 0 ? (
+        <label
+          ref={labelRef}
+          className={isRequired ? "label is-required" : "label"}
+        >
+          {labelText}
+        </label>
+      ) : (
+        <></>
+      )}
       <div className="file-wrapper">
         {displayFile === "" ? (
           <label

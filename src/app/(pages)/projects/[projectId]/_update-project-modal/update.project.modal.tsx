@@ -162,7 +162,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
       setIsModalOpen={closeModal}
     >
       <form
-        className="grid gap-6 p-6"
+        className="grid gap-4 px-6 pt-3 pb-6"
         onSubmit={handleUpdateProject}
         noValidate
       >
