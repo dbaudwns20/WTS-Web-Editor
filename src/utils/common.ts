@@ -97,11 +97,14 @@ export function emptyToNull(value: string | object | any[]): any {
   }
 }
 
-export async function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
+export async function urlToFile(
+  url: string,
+  fileName: string,
+  mimeType: string
+): Promise<File | null> {
+  const response = await fetch(url);
+  if (!response.ok) return null;
+  const blob = await response.blob();
+  const file = new File([blob], fileName, { type: mimeType });
+  return file;
 }

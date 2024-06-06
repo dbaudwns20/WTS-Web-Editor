@@ -2,37 +2,60 @@ import {
   forwardRef,
   useState,
   useRef,
+  useEffect,
+  useImperativeHandle,
   ChangeEvent,
   Dispatch,
   SetStateAction,
-  useEffect,
 } from "react";
 
 import "./style.css";
 
 import Image from "next/image";
 
+import ProjectImage from "@/types/project.image";
 import { type DefaultImage, getDefaultImageById } from "@/types/default.image";
 
-import { convertFileSizeToString } from "@/utils/common";
+import { convertFileSizeToString, urlToFile } from "@/utils/common";
 import { checkFileType } from "@/utils/validator";
 import { showNotificationMessage } from "@/utils/message";
 
 import CropperModal from "./cropper-modal/cropper.modal";
 
 type ImageUploadProps = {
+  labelText?: string;
+  isRequired?: boolean;
   imageFile: File | null;
   setImageFile: Dispatch<SetStateAction<File | null>>;
+  defaultProjectImage?: ProjectImage;
+};
+
+export type ImageUploadType = {
+  isEdited: boolean;
 };
 
 const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
-  const { imageFile, setImageFile } = props;
+  const {
+    labelText = "IMAGE",
+    isRequired = false,
+    imageFile,
+    setImageFile,
+    defaultProjectImage,
+  } = props;
+
+  // 부모 컴포넌트에서 사용할 수 있는 함수 선언
+  useImperativeHandle(ref, () => ({
+    isEdited,
+  }));
 
   // refs
   const inputRef = useRef<HTMLInputElement>(null);
 
   // values
-  const [croppedImageUrl, setCroppedImageUrl] = useState<string>("");
+  const [isEdited, setIsEdited] = useState<boolean>(false);
+  const [croppedImageUrl, setCroppedImageUrl] = useState<string>(
+    defaultProjectImage?.url ?? ""
+  );
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("");
   const [isShowCropperModal, setIsShowCropperModal] = useState<boolean>(false);
 
@@ -41,8 +64,18 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
   );
 
   const changeDefaultImage = () => {
-    setDefaultImage(getDefaultImageById(defaultImage.id + 1)!);
+    let id: number = defaultImage.id + 1;
+    if (id > 9) id = 1;
+
+    if (defaultProjectImage) setIsEdited(true);
+    setDefaultImage(getDefaultImageById(id)!);
     setCroppedImageUrl("");
+  };
+
+  const resetImage = () => {
+    setCroppedImageUrl(defaultProjectImage?.url ?? "");
+    setIsEdited(false);
+    setImageFile(null);
   };
 
   // 업로드 핸들링
@@ -72,6 +105,8 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
 
     // 이미지 파일 set
     setImageFile(file);
+    // 편집 여부 변경
+    if (defaultProjectImage) setIsEdited(true);
 
     // 이미지 파일 읽기
     const reader = new FileReader();
@@ -91,9 +126,21 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
     setImageFile(defaultImage.file);
   }, [defaultImage, setImageFile]);
 
+  useEffect(() => {
+    // 초기화 시 기존 이미지가 존재하면 설정
+    if (!imageFile && defaultProjectImage) {
+      const { url, pathname, contentType } = defaultProjectImage;
+      urlToFile(url, pathname, contentType).then((file) => {
+        setImageFile(file);
+      });
+    }
+  }, [imageFile, setImageFile, defaultProjectImage]);
+
   return (
     <>
-      <label className="label">IMAGE</label>
+      <label className={`label${isRequired ? " is-required" : ""}`}>
+        {labelText}
+      </label>
       <div className="image-upload">
         <div className="image-wrapper">
           <Image
@@ -105,14 +152,28 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
           />
         </div>
         <div className="upload-wrapper">
+          {isEdited ? (
+            <button
+              type="button"
+              className="reset has-tooltip"
+              data-tooltip="초기화"
+              onClick={() => resetImage()}
+            >
+              <span className="icon">
+                <i className="material-icons md-18">refresh</i>
+              </span>
+            </button>
+          ) : (
+            <></>
+          )}
           <div className="upload-info">
             <p className="type">
               {croppedImageUrl
-                ? "Uploaded Image"
-                : `Default Image ${defaultImage.id}`}
+                ? "사용자 이미지"
+                : `기본 이미지 ${defaultImage.id}`}
             </p>
             <p className="file-info">
-              {croppedImageUrl
+              {croppedImageUrl && imageFile
                 ? `${imageFile!.name} (${convertFileSizeToString(
                     imageFile!.size
                   )})`
@@ -125,7 +186,7 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
               type="button"
               onClick={() => changeDefaultImage()}
             >
-              기본 이미지 변경
+              {croppedImageUrl ? "기본 이미지 사용" : "기본 이미지 변경"}
             </button>
             <button
               className="button is-success !text-xs w-full !shadow-none"

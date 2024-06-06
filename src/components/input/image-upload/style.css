@@ -21,14 +21,34 @@
   @apply w-full;
   @apply h-[135px];
   @apply gap-2;
+  @apply relative;
+}
+
+.image-upload > .upload-wrapper > .reset {
+  @apply absolute;
+  @apply top-2;
+  @apply right-3;
+  @apply rounded-full;
+  @apply text-gray-400;
+  @apply opacity-75;
+  @apply hover:opacity-100;
+  @apply outline-none;
+  @apply focus:opacity-100;
+  @apply h-5;
+  @apply w-5;
+  @apply dark:text-gray-200;
+  @apply flex;
+  @apply items-end;
+  @apply justify-center;
 }
 
 .image-upload > .upload-wrapper > .upload-info {
   @apply bg-gray-100;
-  @apply dark:bg-gray-700;
   @apply h-full;
   @apply border;
   @apply border-gray-300;
+  @apply dark:bg-gray-700;
+  @apply dark:border-gray-600;
   @apply rounded-lg;
   @apply flex flex-col;
   @apply items-center;
