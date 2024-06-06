@@ -98,7 +98,7 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
         <div className="image-wrapper">
           <Image
             className="image"
-            src={croppedImageUrl ? croppedImageUrl : defaultImage.path}
+            src={croppedImageUrl ? croppedImageUrl : defaultImage.url}
             alt="project image"
             width={135}
             height={135}

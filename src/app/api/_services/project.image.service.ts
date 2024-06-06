@@ -1,5 +1,7 @@
 import { put, del, list, type PutBlobResult } from "@vercel/blob";
 
+import { checkDefaultImage } from "@/types/default.image";
+
 /**
  * 같은 이미지 파일 업로드 방지 (임시)
  * @param imageFile
@@ -40,8 +42,9 @@ export async function uploadProjectImage(imageFile: File): Promise<string> {
  * @param imageUrl
  */
 export async function deleteProjectImage(imageUrl: string) {
-  if (imageUrl) {
-    // 기본이미지 체크
-    // await del(imageUrl);
+  // 기본이미지 체크
+  if (!checkDefaultImage(imageUrl)) {
+    // 기본이미지가 아니라면 삭제
+    await del(imageUrl);
   }
 }

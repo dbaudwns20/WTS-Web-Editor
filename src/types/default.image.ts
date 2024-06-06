@@ -1,18 +1,6 @@
-import { StaticImageData } from "next/image";
-
-import OrcEp from "@/assets/campaign_backgrounds/orc_ep.jpeg";
-import Human from "@/assets/campaign_backgrounds/human.jpeg";
-import Undead from "@/assets/campaign_backgrounds/undead.jpeg";
-import Orc from "@/assets/campaign_backgrounds/orc.jpeg";
-import NightElf from "@/assets/campaign_backgrounds/night_elf.jpeg";
-import NightElfEx from "@/assets/campaign_backgrounds/night_elf_ex.jpeg";
-import HumanEx from "@/assets/campaign_backgrounds/human_ex.jpeg";
-import UndeadEx from "@/assets/campaign_backgrounds/undead_ex.jpeg";
-import OrcEx from "@/assets/campaign_backgrounds/orc_ex.jpeg";
-
 export type DefaultImage = {
   id: number;
-  path: StaticImageData;
+  url: string;
   name: string;
   file: File;
 };
@@ -20,55 +8,55 @@ export type DefaultImage = {
 const DEFAULT_IMAGES: DefaultImage[] = [
   {
     id: 1,
-    path: OrcEp,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/orc_ep-VrRIQtYx7CBQsb7jNMEpQwz3jU7OLq.jpeg",
     name: "Prologue Campaign - Exodus of the Horde",
     file: new File([], "orc_ep.jpeg"),
   },
   {
     id: 2,
-    path: Human,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/human-FbnvSXpvSssnzj20vL11qHEHodqJYN.jpeg",
     name: "Human Campaign - The Scourge of Lordaeron",
     file: new File([], "human.jpeg"),
   },
   {
     id: 3,
-    path: Undead,
-    name: "Undead Campaign - Path of the Damned",
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/undead-ydB8yEl1ReeG473umd00x8iLDaipLK.jpeg",
+    name: "Undead Campaign - url of the Damned",
     file: new File([], "undead.jpeg"),
   },
   {
     id: 4,
-    path: Orc,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/orc-qUb18F7HhXOIQfnCE7iAqoZ9Ip6tLb.jpeg",
     name: "Orc Campaign - The Invasion of Kalimdor",
     file: new File([], "orc.jpeg"),
   },
   {
     id: 5,
-    path: NightElf,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/night_elf-guMItLuCuXgCLjUGoTmJXqy6zykIed.jpeg",
     name: "Night Elf Campaign - Eternity's End",
     file: new File([], "night_elf.jpeg"),
   },
   {
     id: 6,
-    path: NightElfEx,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/night_elf_ex-E31MKPwUivdU0WreQtG0ZdLpSIFEip.jpeg",
     name: "Sentinel Campaign - Terror of the Tides",
     file: new File([], "night_elf_ex.jpeg"),
   },
   {
     id: 7,
-    path: HumanEx,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/human_ex-aBDRDAOy5364Rzw7FS9s3To06g41dZ.jpeg",
     name: "Alliance Campaign - Curse of the Blood Elves",
     file: new File([], "human_ex.jpeg"),
   },
   {
     id: 8,
-    path: UndeadEx,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/undead_ex-OgoMG7c10Tw83N2K9DF30lCJxhOor1.jpeg",
     name: "Scourge Campaign - Legacy of the Damned",
     file: new File([], "undead_ex.jpeg"),
   },
   {
     id: 9,
-    path: OrcEx,
+    url: "https://c35dbgh5rquhetbl.public.blob.vercel-storage.com/orc_ex-VgYOVXLBOnEByk8mCb0dxPPDp4zCwo.jpeg",
     name: "Bonus Campaign - The Founding of Durotar",
     file: new File([], "orc_ex.jpeg"),
   },
@@ -77,4 +65,8 @@ const DEFAULT_IMAGES: DefaultImage[] = [
 export function getDefaultImageById(id: number): DefaultImage | undefined {
   if (id > 9) id = 1;
   return DEFAULT_IMAGES.find((it) => it.id === id);
+}
+
+export function checkDefaultImage(imageUrl: string): boolean {
+  return DEFAULT_IMAGES.some((it) => it.url === imageUrl);
 }
