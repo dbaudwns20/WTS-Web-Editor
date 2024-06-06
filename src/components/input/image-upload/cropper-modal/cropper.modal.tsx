@@ -71,6 +71,23 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
     }
   };
 
+  // crop box 최대화 및 정 중앙 위치
+  const setCropBoxFull = () => {
+    if (cropperRef.current) {
+      const cropper = cropperRef.current?.cropper;
+      const { width, height } = cropper.getImageData();
+
+      let val: number = Math.min(width, height);
+
+      cropper.setCropBoxData({
+        left: (width - val) / 2,
+        top: (height - val) / 2,
+        width: val,
+        height: val,
+      });
+    }
+  };
+
   // 이미지 재업로드 핸들링
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -111,28 +128,42 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
       setIsModalOpen={closeModal}
     >
       <div className="cropper-wrapper">
-        <div className="cropper-functions">
-          <a type="button" className="anchor-has-icon" onClick={reset}>
-            <span className="icon">
-              <i className="material-icons md-18">refresh</i>
-            </span>
-            <span>초기화</span>
-          </a>
-          <a
-            type="button"
-            className="anchor-has-icon"
-            onClick={() => inputRef.current?.click()}
-          >
-            <span className="icon">
-              <i className="material-icons md-18">upload</i>
-            </span>
-            <span>업로드</span>
-          </a>
-        </div>
+        <header className="cropper-header">
+          <div className="cropper-functions">
+            <a
+              type="button"
+              className="anchor-has-icon !px-0"
+              onClick={() => inputRef.current?.click()}
+            >
+              <span className="icon">
+                <i className="material-icons md-18">upload</i>
+              </span>
+              <span>다시업로드</span>
+            </a>
+          </div>
+          <div className="cropper-functions">
+            <a
+              type="button"
+              className="anchor-has-icon"
+              onClick={() => setCropBoxFull()}
+            >
+              <span className="icon">
+                <i className="material-icons md-18">fullscreen</i>
+              </span>
+              <span>최대화</span>
+            </a>
+            <a type="button" className="anchor-has-icon" onClick={reset}>
+              <span className="icon">
+                <i className="material-icons md-18">refresh</i>
+              </span>
+              <span>초기화</span>
+            </a>
+          </div>
+        </header>
         <Cropper
           ref={cropperRef}
           aspectRatio={1}
-          viewMode={0}
+          viewMode={1}
           background={true}
           guides={true}
           cropBoxMovable={true}

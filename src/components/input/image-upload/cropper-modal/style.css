@@ -6,9 +6,15 @@
   @apply pt-1;
 }
 
-.cropper-wrapper > .cropper-functions {
+.cropper-wrapper > .cropper-header {
   @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply mb-1;
+}
+
+.cropper-wrapper > .cropper-header > .cropper-functions {
+  @apply inline-flex;
   @apply items-center;
   @apply justify-end;
-  @apply mb-1;
 }
