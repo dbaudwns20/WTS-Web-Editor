@@ -1,6 +1,7 @@
 import mongoose, { models, Schema } from "mongoose";
 
 import { emptyToNull } from "@/utils/common";
+import { IProjectImage } from "./project.image";
 
 export interface IProject {
   _id: string;
@@ -10,9 +11,9 @@ export interface IProject {
   version: string | null;
   lastModifiedStringNumber: number;
   source: string | null;
-  imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
+  projectImage: IProjectImage;
 }
 
 const ProjectSchema: Schema<IProject> = new Schema({
@@ -49,16 +50,17 @@ const ProjectSchema: Schema<IProject> = new Schema({
     maxlength: 100,
     trim: true,
   },
-  imageUrl: {
-    type: String,
-    required: true,
-  },
   createdAt: {
     type: Date,
     required: true,
   },
   updatedAt: {
     type: Date,
+    required: true,
+  },
+  projectImage: {
+    type: Schema.Types.ObjectId,
+    ref: "ProjectImage",
     required: true,
   },
 });
