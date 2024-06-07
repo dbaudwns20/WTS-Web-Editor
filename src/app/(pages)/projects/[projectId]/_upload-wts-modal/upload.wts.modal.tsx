@@ -47,14 +47,12 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
 
     setIsFetching(true);
 
+    const formData: FormData = new FormData();
+    formData.append("wtsStringList", JSON.stringify(wtsStringList));
+
     const response = await callApi(`/api/projects/${projectId}/strings`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        wtsStringList,
-      }),
+      body: formData,
     });
 
     setIsFetching(false);

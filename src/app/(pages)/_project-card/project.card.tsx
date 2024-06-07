@@ -25,8 +25,8 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
       {isCompleted ? <span className="complete">COMPLETE</span> : <></>}
       <Image
         className="image"
-        src={project.imageUrl}
-        alt={project.title}
+        src={project.projectImage.url}
+        alt={project.projectImage.pathname}
         priority={true}
         width={500}
         height={500}

@@ -12,24 +12,6 @@ function setOrder(req: NextRequest) {
   };
 }
 
-export function formDataToObject(formData: FormData) {
-  const result: { [key: string]: any } = {};
-
-  formData.forEach((value, key) => {
-    if (result.hasOwnProperty(key)) {
-      if (Array.isArray(result[key])) {
-        result[key].push(value);
-      } else {
-        result[key] = [result[key], value];
-      }
-    } else {
-      result[key] = value;
-    }
-  });
-
-  return result;
-}
-
 export function checkRequestParams(keys: string[], params: any) {
   const arr: string[] = [];
   for (const key of keys) {
@@ -50,7 +32,7 @@ export function checkRequestBody(keys: string[], form: FormData) {
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Required payloads are missing  - [ ${arr.join(", ")} ]`);
+    throw new Error(`Required formData are missing  - [ ${arr.join(", ")} ]`);
   }
 }
 
@@ -130,7 +112,8 @@ export async function resolveStringModelPagination(
 export async function resolvePagination(
   req: NextRequest,
   model: any,
-  query: any = {}
+  query: any = {},
+  populate: any
 ) {
   // 현재 페이지
   const currentPage = Number(req.nextUrl.searchParams.get("currentPage"));
@@ -145,6 +128,7 @@ export async function resolvePagination(
 
   const data = await model
     .find(query)
+    .populate(populate)
     .sort(order) // 정렬
     .skip((currentPage - 1) * offset)
     .limit(offset);

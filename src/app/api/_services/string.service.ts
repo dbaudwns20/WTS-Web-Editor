@@ -2,7 +2,7 @@ import { ClientSession } from "mongoose";
 
 import StringModel, { IString } from "@/db/models/string";
 
-import { updateProject } from "./project.service";
+import { updateProject } from "@/app/api/_services/project.service";
 
 type StringInstance = {
   stringNumber: number;

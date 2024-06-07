@@ -20,7 +20,7 @@ import ImageUpload from "@/components/input/image-upload/image.upload";
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
-import { callApi, fileToBase64 } from "@/utils/common";
+import { callApi } from "@/utils/common";
 
 type CreateProjectModalProps = {
   closeModal: Dispatch<SetStateAction<boolean>>;
@@ -55,8 +55,8 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("language", language.toString());
-    formData.append("version", version);
-    formData.append("source", source);
+    if (version) formData.append("version", version);
+    if (source) formData.append("source", source);
     formData.append("imageFile", imageFile!);
     formData.append("wtsStringList", JSON.stringify(wtsStringList));
 
@@ -155,7 +155,12 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
           />
         </div>
         <div className="block">
-          <ImageUpload imageFile={imageFile} setImageFile={setImageFile} />
+          <ImageUpload
+            labelText={"이미지"}
+            isRequired={true}
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+          />
         </div>
         <div className="block">
           <File

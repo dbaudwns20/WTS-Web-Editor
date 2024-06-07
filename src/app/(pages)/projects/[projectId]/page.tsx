@@ -292,8 +292,8 @@ export default function ProjectDetail() {
                   <figure className="image-wrapper">
                     <Image
                       className="image"
-                      src={project!.imageUrl}
-                      alt={project!.title}
+                      src={project!.projectImage.url}
+                      alt={project!.projectImage.pathname}
                       width={500}
                       height={500}
                       priority={true}

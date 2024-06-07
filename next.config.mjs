@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: false,
   // vercel/Blob config
   images: {
-    domains: ["~"],
     minimumCacheTTL: 86400,
     remotePatterns: [
       {

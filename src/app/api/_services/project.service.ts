@@ -1,14 +1,9 @@
 import { ClientSession } from "mongoose";
 
-import Project from "@/types/project";
 import ProjectModel from "@/db/models/project";
 
-import {
-  deleteProjectStrings,
-  updateProjectStrings,
-} from "@/app/api/_services/string.service";
-import { deleteProjectImage } from "./project.image.service";
-import { formDataToObject } from "@/app/api";
+import { deleteProjectStrings } from "@/app/api/_services/string.service";
+import { deleteProjectImage } from "@/app/api/_services/project.image.service";
 
 /**
  * 프로젝트 생성
@@ -16,12 +11,15 @@ import { formDataToObject } from "@/app/api";
  * @returns
  */
 export async function createProject(
-  formData: FormData,
+  createData: any,
   session: ClientSession
 ): Promise<any> {
   const newProject = new ProjectModel({
-    ...formDataToObject(formData),
-    ...{ createdAt: new Date(), updatedAt: new Date() },
+    ...createData,
+    ...{
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   });
   return await newProject.save({ session });
 }
@@ -32,7 +30,9 @@ export async function createProject(
  * @returns
  */
 export async function getProject(projectId: string) {
-  const instance = await ProjectModel.findById(projectId);
+  const instance = await ProjectModel.findById(projectId).populate(
+    "projectImage"
+  );
   if (!instance) throw new Error("Project is not found");
   return instance;
 }
@@ -42,9 +42,8 @@ export async function getProject(projectId: string) {
  * @param projectId
  */
 export async function deleteProject(projectId: string, session: ClientSession) {
-  const project: Project = await getProject(projectId);
-  // vercel/Blob에 업로드 된 이미지 삭제
-  await deleteProjectImage(project.imageUrl);
+  // 프로젝트 이미지 삭제
+  await deleteProjectImage(projectId, session);
   // String 데이터를 삭제
   await deleteProjectStrings(projectId, session);
   // 프로젝트 삭제
@@ -54,7 +53,7 @@ export async function deleteProject(projectId: string, session: ClientSession) {
 /**
  * 프로젝트 수정
  * @param projectId
- * @param updateData
+ * @param formData
  * @returns
  */
 export async function updateProject(
@@ -62,10 +61,6 @@ export async function updateProject(
   updateData: any,
   session: ClientSession
 ) {
-  // wtsStringList 가 존재할 경우
-  if (updateData["wtsStringList"]) {
-    await updateProjectStrings(projectId, updateData["wtsStringList"], session);
-  }
   const instance = await ProjectModel.findByIdAndUpdate(
     projectId,
     {
