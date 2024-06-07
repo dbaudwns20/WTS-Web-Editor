@@ -11,8 +11,8 @@ export default function Header() {
     <header className="main-header">
       <nav className="navbar">
         <Link className="logo" href="/">
-          <Image src={W3} alt="logo_main" width={45} priority />
-          <Image src={Logo_2} alt="logo_main" width={170} priority />
+          <Image src={W3} alt="logo_main" width={50} priority />
+          <Image src={Logo_2} alt="logo_main" width={180} priority />
         </Link>
         <button type="button" className="language-button">
           <span>한국어</span>

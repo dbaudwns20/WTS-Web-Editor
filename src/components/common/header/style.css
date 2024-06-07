@@ -1,6 +1,7 @@
 .main-header {
   @apply h-[--var-header-height];
   @apply mx-auto;
+  @apply px-32;
 }
 
 @media (min-width: 640px) {

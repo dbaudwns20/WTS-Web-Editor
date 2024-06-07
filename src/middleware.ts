@@ -9,5 +9,6 @@ export default createMiddleware({
 
 export const config = {
   // Match only internationalized pathnames
-  matcher: ["/", "/(ko|en)/:path*"],
+  // project, test 경로 추가
+  matcher: ["/", "/(ko|en)/:path*", "/projects/:path*", "/test"],
 };
