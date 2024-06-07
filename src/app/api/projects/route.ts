@@ -5,6 +5,7 @@ import dbConnect from "@/db/database";
 import ProjectModel from "@/db/models/project";
 
 import { createProject } from "@/app/api/_services/project.service";
+import { uploadProjectImage } from "@/app/api/_services/project.image.service";
 import { createStrings } from "@/app/api/_services/string.service";
 
 import {
@@ -17,7 +18,7 @@ import {
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
-    return await resolvePagination(request, ProjectModel);
+    return await resolvePagination(request, ProjectModel, {}, "projectImage");
   } catch (error) {
     return resolveErrors(error);
   }
@@ -29,20 +30,41 @@ export async function POST(request: NextRequest) {
     session = await startSession();
     session.startTransaction();
 
-    const body = await request.json();
-
-    checkRequestBody(["title", "language", "wtsStringList"], body);
+    const formData: FormData = await request.formData();
+    checkRequestBody(
+      ["title", "language", "wtsStringList", "imageFile"],
+      formData
+    );
 
     await dbConnect();
 
-    const newProject = await createProject(body);
-    await createStrings(newProject._id, body["wtsStringList"]);
+    const createData: any = {
+      title: formData.get("title"),
+      language: Number(formData.get("language")),
+      projectImage: await uploadProjectImage(
+        formData.get("imageFile") as File,
+        session
+      ),
+    };
+    if (formData.has("version")) {
+      createData.version = formData.get("version");
+    }
+    if (formData.has("source")) {
+      createData.source = formData.get("source");
+    }
+
+    const wtsStringList = JSON.parse(formData.get("wtsStringList") as string);
+
+    // Project 생성
+    const newProject = await createProject(createData, session);
+    // String 생성
+    await createStrings(newProject._id, wtsStringList, session);
 
     await session.commitTransaction();
     return resolveSuccess(newProject);
   } catch (error: any) {
     if (session && session.inTransaction()) {
-      session.abortTransaction();
+      await session.abortTransaction();
     }
     return resolveErrors(error);
   } finally {

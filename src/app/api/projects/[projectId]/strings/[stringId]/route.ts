@@ -26,17 +26,27 @@ export async function PUT(
     session = await startSession();
     session.startTransaction();
 
-    const body = await request.json();
+    const formData = await request.formData();
 
     checkRequestParams(["projectId", "stringId"], params);
-    checkRequestBody(["translatedText", "isSaveDraft", "isCompleted"], body);
+    checkRequestBody(
+      ["translatedText", "isSaveDraft", "isCompleted"],
+      formData
+    );
 
     await dbConnect();
+
+    const updateData: any = {
+      translatedText: formData.get("translatedText"),
+      isSaveDraft: formData.get("isSaveDraft") === "true",
+      isCompleted: formData.get("isCompleted") === "true",
+    };
 
     const newString = await updateString(
       params["projectId"],
       params["stringId"],
-      body
+      updateData,
+      session
     );
 
     await session.commitTransaction();

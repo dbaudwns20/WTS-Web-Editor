@@ -118,14 +118,18 @@ export async function PUT(
     session = await startSession();
     session.startTransaction();
 
-    const body = await request.json();
+    const formData: FormData = await request.formData();
 
     checkRequestParams(["projectId"], params);
-    checkRequestBody(["wtsStringList"], body);
+    checkRequestBody(["wtsStringList"], formData);
 
     await dbConnect();
 
-    await overwriteWtsStrings(params["projectId"], body["wtsStringList"]);
+    await overwriteWtsStrings(
+      params["projectId"],
+      JSON.parse(formData.get("wtsStringList") as string),
+      session
+    );
 
     await session.commitTransaction();
     return resolveSuccess({});

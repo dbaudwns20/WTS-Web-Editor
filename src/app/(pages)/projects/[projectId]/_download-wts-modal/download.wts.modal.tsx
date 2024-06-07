@@ -78,7 +78,11 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
       setIsModalOpen={closeModal}
       widthClass="lg:!w-[480px]"
     >
-      <form className="grid gap-6 p-6" onSubmit={downloadWts} noValidate>
+      <form
+        className="grid gap-4 px-6 pt-3 pb-6"
+        onSubmit={downloadWts}
+        noValidate
+      >
         <div className="block">
           <label className="label is-required">다운로드 선택</label>
           <div className="download-wrapper">

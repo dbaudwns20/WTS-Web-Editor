@@ -96,3 +96,15 @@ export function emptyToNull(value: string | object | any[]): any {
       else return Object.keys(value).length === 0 ? null : value;
   }
 }
+
+export async function urlToFile(
+  url: string,
+  fileName: string,
+  mimeType: string
+): Promise<File | null> {
+  const response = await fetch(url);
+  if (!response.ok) return null;
+  const blob = await response.blob();
+  const file = new File([blob], fileName, { type: mimeType });
+  return file;
+}

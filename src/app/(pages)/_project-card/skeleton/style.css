@@ -1,7 +1,6 @@
 .project-loading {
   @apply relative;
   @apply w-full;
-  @apply h-[432px];
   @apply bg-white;
   @apply rounded-lg;
   @apply shadow-xl;
@@ -10,6 +9,7 @@
   @apply transition;
   @apply duration-300;
   @apply animate-pulse;
+  height: max-content;
 }
 
 .project-loading > .image {
@@ -20,7 +20,8 @@
 }
 
 .project-loading > .content {
-  @apply py-5;
+  @apply pt-5;
+  @apply pb-0.5;
   @apply px-4;
 }
 

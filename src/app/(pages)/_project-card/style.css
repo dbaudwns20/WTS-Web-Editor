@@ -1,7 +1,6 @@
 .project {
   @apply relative;
   @apply w-full;
-  @apply h-[432px];
   @apply bg-white;
   @apply rounded-lg;
   @apply shadow-xl;
@@ -14,6 +13,7 @@
   @apply ring-black/5;
   @apply focus:outline-none;
   @apply dark:ring-white/20;
+  height: max-content;
 }
 
 .project > .complete {
@@ -101,7 +101,7 @@
 .project-content > .project-content-between > .date-created {
   @apply flex;
   @apply items-center;
-  @apply text-sm;
+  @apply text-xs;
   @apply font-semibold;
   @apply text-gray-400;
 }

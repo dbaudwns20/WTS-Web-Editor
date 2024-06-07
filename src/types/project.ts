@@ -1,4 +1,5 @@
 import { IProject } from "@/db/models/project";
+import ProjectImage, { bindProjectImage } from "./project.image";
 
 export default class Project {
   id: string;
@@ -8,6 +9,7 @@ export default class Project {
   version: string | null;
   source: string | null;
   lastModifiedStringNumber: number;
+  projectImage: ProjectImage;
   createdAt: Date;
   updatedAt: Date;
 
@@ -19,6 +21,7 @@ export default class Project {
     this.version = project.version;
     this.source = project.source;
     this.lastModifiedStringNumber = project.lastModifiedStringNumber;
+    this.projectImage = bindProjectImage(project.projectImage);
     this.createdAt = new Date(project.createdAt);
     this.updatedAt = new Date(project.updatedAt);
   }
