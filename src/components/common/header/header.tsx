@@ -10,15 +10,15 @@ export default function Header() {
     <header className="main-header">
       <nav className="navbar">
         <a className="logo" href="/">
-          <Image src={W3} alt="logo_main" width={35} priority />
-          <Image src={Logo_2} alt="logo_main" width={150} priority />
+          <Image src={W3} alt="logo_main" width={40} priority />
+          <Image src={Logo_2} alt="logo_main" width={160} priority />
         </a>
-        <div className="w-[120px] bg-gray-200 rounded-xl flex items-center justify-between text-sm text-slate-600 py-1.5 px-3">
+        <button type="button" className="language-button">
           <span>한국어</span>
           <span className="icon">
             <i className="material-icons">expand_more</i>
           </span>
-        </div>
+        </button>
       </nav>
     </header>
   );

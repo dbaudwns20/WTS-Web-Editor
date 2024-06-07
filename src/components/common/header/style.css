@@ -1,5 +1,36 @@
 .main-header {
   @apply h-[--var-header-height];
+  @apply mx-auto;
+}
+
+@media (min-width: 640px) {
+  .main-header {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-header {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-header {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .main-header {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .main-header {
+    max-width: 1536px;
+  }
 }
 
 .main-header > .navbar {
@@ -8,9 +39,7 @@
   @apply justify-between;
   @apply w-full;
   @apply h-full;
-  @apply bg-slate-50;
   @apply dark:bg-gray-900;
-  @apply px-36;
 }
 
 .main-header > .navbar > .logo {
@@ -21,4 +50,18 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.main-header > .navbar > .language-button {
+  @apply w-[120px];
+  @apply bg-gray-100;
+  @apply rounded-xl;
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply text-sm;
+  @apply text-slate-600;
+  @apply py-1.5;
+  @apply px-3;
+  @apply hover:bg-gray-200;
 }
