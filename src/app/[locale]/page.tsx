@@ -3,12 +3,12 @@
 import "./style.css";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import Image from "next/image";
 
-import ProjectCard from "@/app/(pages)/_project-card/project.card";
-import ProjectCardSkeleton from "@/app/(pages)/_project-card/skeleton/project.card.skeleton";
-import CreateProjectModal from "@/app/(pages)/_create-project-modal/create.project.modal";
+import ProjectCard from "@/app/[locale]/_project-card/project.card";
+import ProjectCardSkeleton from "@/app/[locale]/_project-card/skeleton/project.card.skeleton";
+import CreateProjectModal from "@/app/[locale]/_create-project-modal/create.project.modal";
 
 import Project, { bindProjectList } from "@/types/project";
 import { type OrderInfo, type PageInfo } from "@/types/api.response";
@@ -17,6 +17,7 @@ import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
 import LogoMain from "@/assets/logo.png";
+import { useTranslations } from "next-intl";
 
 const defaultPageInfo: PageInfo = {
   offset: 8,
@@ -32,7 +33,9 @@ const defaultOrderInfo: OrderInfo = {
 
 export default function RootPage() {
   const router = useRouter();
-  // const dispatch = useDispatch();
+
+  // key
+  const t = useTranslations("Main");
 
   // values
   const [projectList, setProjectList] = useState<Project[]>([]);
@@ -125,9 +128,7 @@ export default function RootPage() {
     }
   };
 
-  const goProject = async (project: Project) => {
-    // 이동할 프로젝트 정보를 storage 에 저장
-    // dispatch({ type: "project/setProject", payload: project });
+  const goProject = (project: Project) => {
     let url: string = `/projects/${project.id}`;
 
     if (project.lastModifiedStringNumber !== -1) {
@@ -155,7 +156,7 @@ export default function RootPage() {
     <>
       <section className="flex flex-col justify-center items-center pb-8">
         <div className="flex justify-center items-center gap-5">
-          <Image src={LogoMain} alt="logo_main" width={400} priority={true} />
+          <Image src={LogoMain} alt="logo_main" width={350} priority={true} />
         </div>
         <div className="">
           <div className="w-full flex justify-center">
@@ -163,7 +164,7 @@ export default function RootPage() {
               className="button is-primary !text-xl !p-5 !m-3.5"
               onClick={newProject}
             >
-              CREATE NEW PROJECT
+              {t("CREATE_PROJECT_BUTTON")}
             </button>
           </div>
         </div>

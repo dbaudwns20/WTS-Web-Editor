@@ -7,9 +7,9 @@ import {
   useCallback,
   Dispatch,
   SetStateAction,
-  useMemo,
 } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@/navigation";
 
 import "./style.css";
 

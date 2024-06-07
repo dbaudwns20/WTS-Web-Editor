@@ -7,7 +7,7 @@ import {
   SetStateAction,
   useImperativeHandle,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 
 import "./style.css";
 

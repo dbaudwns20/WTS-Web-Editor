@@ -12,6 +12,7 @@
     "@vercel/blob": "^0.23.3",
     "mongoose": "^8.2.3",
     "next": "14.1.4",
+    "next-intl": "^3.14.1",
     "perfect-scrollbar": "^1.5.5",
     "react": "^18",
     "react-cropper": "^2.3.3",

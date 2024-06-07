@@ -10,7 +10,8 @@ import {
   Reducer,
   useCallback,
 } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "@/navigation";
 import Image from "next/image";
 
 import Project, { bindProject } from "@/types/project";
