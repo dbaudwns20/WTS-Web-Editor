@@ -118,18 +118,20 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     // 이동 버튼 비활성화
     setMoveButtonState([true, true]);
 
+    // formData 가공
+    const formData: FormData = new FormData();
+    formData.append("translatedText", translatedText);
+    formData.append("isSaveDraft", isSaveDraft.toString());
+    formData.append(
+      "isCompleted",
+      (currentString?.completedAt !== null).toString()
+    );
+
     const response = await callApi(
       `/api/projects/${projectId}/strings/${currentString?.id}`,
       {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          translatedText: translatedText,
-          isSaveDraft: isSaveDraft,
-          isCompleted: currentString?.completedAt !== null,
-        }),
+        body: formData,
       }
     );
 

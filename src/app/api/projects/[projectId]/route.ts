@@ -8,6 +8,8 @@ import {
   getProject,
   updateProject,
 } from "@/app/api/_services/project.service";
+import { updateProjectStrings } from "@/app/api/_services/string.service";
+import { uploadProjectImage } from "@/app/api/_services/project.image.service";
 
 import {
   checkRequestParams,
@@ -46,14 +48,37 @@ export async function PUT(
     session = await startSession();
     session.startTransaction();
 
-    const body = await request.json();
+    const formData: FormData = await request.formData();
+
     checkRequestParams(["projectId"], params);
-    checkRequestBody(["title", "language"], body);
+    checkRequestBody(["title", "language"], formData);
 
     await dbConnect();
 
+    const updateData: any = {
+      title: formData.get("title"),
+      language: Number(formData.get("language")),
+    };
+    if (formData.has("version")) {
+      updateData.version = formData.get("version");
+    }
+    if (formData.has("source")) {
+      updateData.source = formData.get("source");
+    }
+    if (formData.has("imageFile")) {
+      updateData.projectImage = await uploadProjectImage(
+        formData.get("imageFile") as File,
+        session
+      );
+    }
+    if (formData.has("wtsStringList")) {
+      const wtsStringList = JSON.parse(formData.get("wtsStringList") as string);
+      // string 데이터 갱신
+      await updateProjectStrings(params["projectId"], wtsStringList, session);
+    }
+
     // 프로젝트 업데이트
-    const instance = await updateProject(params.projectId, body);
+    const instance = await updateProject(params.projectId, updateData, session);
 
     await session.commitTransaction();
     return resolveSuccess(instance);
@@ -81,7 +106,7 @@ export async function DELETE(
     await dbConnect();
 
     // 프로젝트와 하위 string 제거
-    await deleteProject(params.projectId);
+    await deleteProject(params.projectId, session);
 
     await session.commitTransaction();
     return resolveSuccess({});

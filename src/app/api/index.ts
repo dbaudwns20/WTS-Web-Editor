@@ -24,15 +24,15 @@ export function checkRequestParams(keys: string[], params: any) {
   }
 }
 
-export function checkRequestBody(keys: string[], body: any) {
+export function checkRequestBody(keys: string[], form: FormData) {
   const arr: string[] = [];
   for (const key of keys) {
-    if (!(key in body)) {
+    if (!form.has(key)) {
       arr.push(key);
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Required payloads are missing  - [ ${arr.join(", ")} ]`);
+    throw new Error(`Required formData are missing  - [ ${arr.join(", ")} ]`);
   }
 }
 
@@ -112,7 +112,8 @@ export async function resolveStringModelPagination(
 export async function resolvePagination(
   req: NextRequest,
   model: any,
-  query: any = {}
+  query: any = {},
+  populate: any
 ) {
   // 현재 페이지
   const currentPage = Number(req.nextUrl.searchParams.get("currentPage"));
@@ -127,6 +128,7 @@ export async function resolvePagination(
 
   const data = await model
     .find(query)
+    .populate(populate)
     .sort(order) // 정렬
     .skip((currentPage - 1) * offset)
     .limit(offset);

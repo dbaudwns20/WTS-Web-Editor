@@ -1,6 +1,8 @@
+import { ClientSession } from "mongoose";
+
 import StringModel, { IString } from "@/db/models/string";
 
-import { updateProject } from "./project.service";
+import { updateProject } from "@/app/api/_services/project.service";
 
 type StringInstance = {
   stringNumber: number;
@@ -11,30 +13,34 @@ type StringInstance = {
 
 async function computeCompletedProcess(
   projectId: string,
-  isCompleted: boolean
+  isCompleted: boolean,
+  session: ClientSession
 ): Promise<string> {
-  const result = await StringModel.aggregate([
-    {
-      $facet: {
-        totalCount: [
-          { $match: { projectId: projectId } },
-          { $count: "totalCount" },
-        ],
-        completedCount: [
-          { $match: { projectId: projectId, completedAt: { $ne: null } } },
-          { $count: "completedCount" },
-        ],
-      },
-    },
-    {
-      $project: {
-        totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
-        completedCount: {
-          $arrayElemAt: ["$completedCount.completedCount", 0],
+  const result = await StringModel.aggregate(
+    [
+      {
+        $facet: {
+          totalCount: [
+            { $match: { projectId: projectId } },
+            { $count: "totalCount" },
+          ],
+          completedCount: [
+            { $match: { projectId: projectId, completedAt: { $ne: null } } },
+            { $count: "completedCount" },
+          ],
         },
       },
-    },
-  ]).exec();
+      {
+        $project: {
+          totalCount: { $arrayElemAt: ["$totalCount.totalCount", 0] },
+          completedCount: {
+            $arrayElemAt: ["$completedCount.completedCount", 0],
+          },
+        },
+      },
+    ],
+    { session }
+  ).exec();
   let { completedCount = 0, totalCount } = result[0];
   // 완료된 String 이 아니라면 => 신규, process 계산 기존 완료된 건수 + 1
   if (!isCompleted) {
@@ -48,7 +54,11 @@ async function computeCompletedProcess(
  * @param newProjectId
  * @param wtsStringList
  */
-export async function createStrings(newProjectId: any, wtsStringList: any[]) {
+export async function createStrings(
+  newProjectId: any,
+  wtsStringList: any[],
+  session: ClientSession
+) {
   // 새로운 스트링 생성
   let newStringData = [];
   for (let wtsString of wtsStringList) {
@@ -61,18 +71,24 @@ export async function createStrings(newProjectId: any, wtsStringList: any[]) {
     } as IString);
   }
   // insertMany 로 실행시간 단축
-  await StringModel.insertMany(newStringData);
+  await StringModel.insertMany(newStringData, { session });
 }
 
 /**
  * 스트링 삭제
  * @param projectId
  */
-export async function deleteProjectStrings(projectId: string) {
+export async function deleteProjectStrings(
+  projectId: string,
+  session: ClientSession
+) {
   // 해당 projectId 로 스트링 모두 삭제
-  await StringModel.deleteMany({
-    projectId: projectId,
-  });
+  await StringModel.deleteMany(
+    {
+      projectId: projectId,
+    },
+    { session }
+  );
 }
 
 /**
@@ -85,7 +101,8 @@ export async function deleteProjectStrings(projectId: string) {
 export async function updateString(
   projectId: string,
   stringId: string,
-  updateData: any
+  updateData: any,
+  session: ClientSession
 ) {
   // 프로젝트 업데이트 데이터
   let projectUpdateData = {};
@@ -99,7 +116,7 @@ export async function updateString(
       projectUpdateData = {
         ...projectUpdateData,
         ...{
-          process: await computeCompletedProcess(projectId, false),
+          process: await computeCompletedProcess(projectId, false, session),
         },
       };
     }
@@ -119,23 +136,29 @@ export async function updateString(
     },
     {
       new: true,
+      session,
     }
   );
 
   // 마지막 수정 String number 갱신
-  await updateProject(projectId, {
-    ...projectUpdateData,
-    ...{
-      lastModifiedStringNumber: instance.stringNumber,
+  await updateProject(
+    projectId,
+    {
+      ...projectUpdateData,
+      ...{
+        lastModifiedStringNumber: instance.stringNumber,
+      },
     },
-  });
+    session
+  );
 
   return instance;
 }
 
 export async function updateProjectStrings(
   projectId: string,
-  newWtsStringList: any
+  newWtsStringList: any,
+  session: ClientSession
 ) {
   // upsert 용 list
   const upsertList: StringInstance[] = [];
@@ -209,16 +232,19 @@ export async function updateProjectStrings(
           ...(wtsString.isCompleted && { updatedAt: new Date() }), // 완료된 경우에만 수정일자 갱신
         },
       },
-      { upsert: true, setDefaultsOnInsert: true }
+      { upsert: true, setDefaultsOnInsert: true, session }
     )
   );
 
   // delete
   const deletePromise = deleteList.map((wtsString) => {
-    StringModel.findOneAndDelete({
-      projectId: projectId,
-      stringNumber: wtsString.stringNumber,
-    });
+    StringModel.findOneAndDelete(
+      {
+        projectId: projectId,
+        stringNumber: wtsString.stringNumber,
+      },
+      { session }
+    );
   });
 
   // 병렬 실행
@@ -227,15 +253,20 @@ export async function updateProjectStrings(
 
   if (upsertList.length > 0 || deleteList.length > 0) {
     // 진행률 갱신
-    await updateProject(projectId, {
-      process: await computeCompletedProcess(projectId, true),
-    });
+    await updateProject(
+      projectId,
+      {
+        process: await computeCompletedProcess(projectId, true, session),
+      },
+      session
+    );
   }
 }
 
 export async function overwriteWtsStrings(
   projectId: string,
-  wtsStringList: any[]
+  wtsStringList: any[],
+  session: ClientSession
 ) {
   // translated text 갱신
   const updatePromises = wtsStringList.map((wtsString) =>
@@ -248,7 +279,8 @@ export async function overwriteWtsStrings(
           updatedAt: new Date(),
           completedAt: new Date(),
         },
-      }
+      },
+      { session }
     )
   );
 
@@ -256,7 +288,11 @@ export async function overwriteWtsStrings(
   await Promise.all(updatePromises);
 
   // 진행률 갱신
-  await updateProject(projectId, {
-    process: await computeCompletedProcess(projectId, true),
-  });
+  await updateProject(
+    projectId,
+    {
+      process: await computeCompletedProcess(projectId, true, session),
+    },
+    session
+  );
 }

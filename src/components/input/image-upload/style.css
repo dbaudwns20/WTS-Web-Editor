@@ -1,0 +1,75 @@
+.image-upload {
+  @apply flex;
+  @apply items-center;
+  @apply gap-4;
+}
+
+.image-upload > .image-wrapper {
+  @apply rounded-lg;
+  @apply overflow-hidden;
+  @apply flex-shrink-0;
+}
+
+.image-upload > .image-wrapper > .image {
+  @apply object-cover;
+  @apply aspect-square;
+}
+
+.image-upload > .upload-wrapper {
+  @apply flex;
+  @apply flex-col;
+  @apply w-full;
+  @apply h-[135px];
+  @apply gap-2;
+  @apply relative;
+}
+
+.image-upload > .upload-wrapper > .reset {
+  @apply absolute;
+  @apply top-2;
+  @apply right-3;
+  @apply rounded-full;
+  @apply text-gray-400;
+  @apply opacity-75;
+  @apply hover:opacity-100;
+  @apply outline-none;
+  @apply focus:opacity-100;
+  @apply h-5;
+  @apply w-5;
+  @apply dark:text-gray-200;
+  @apply flex;
+  @apply items-end;
+  @apply justify-center;
+}
+
+.image-upload > .upload-wrapper > .upload-info {
+  @apply bg-gray-100;
+  @apply h-full;
+  @apply border;
+  @apply border-gray-300;
+  @apply dark:bg-gray-700;
+  @apply dark:border-gray-600;
+  @apply rounded-lg;
+  @apply flex flex-col;
+  @apply items-center;
+  @apply justify-center;
+  @apply gap-2;
+}
+
+.image-upload > .upload-wrapper > .upload-info > .type {
+  @apply text-slate-500;
+  @apply dark:text-slate-300;
+  @apply font-semibold;
+  @apply text-sm;
+}
+
+.image-upload > .upload-wrapper > .upload-info > .file-info {
+  @apply text-slate-500;
+  @apply dark:text-slate-400;
+  @apply text-xs;
+}
+
+.image-upload > .upload-wrapper > .button-group {
+  @apply flex;
+  @apply gap-2;
+}

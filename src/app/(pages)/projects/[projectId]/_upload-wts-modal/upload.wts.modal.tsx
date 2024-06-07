@@ -47,14 +47,12 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
 
     setIsFetching(true);
 
+    const formData: FormData = new FormData();
+    formData.append("wtsStringList", JSON.stringify(wtsStringList));
+
     const response = await callApi(`/api/projects/${projectId}/strings`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        wtsStringList,
-      }),
+      body: formData,
     });
 
     setIsFetching(false);
@@ -95,10 +93,9 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
       title="Upload WTS"
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
-      widthClass="lg:!w-[480px]"
     >
       <form
-        className="grid gap-6 md:grid-cols-1 p-6"
+        className="grid gap-4 px-6 pt-3 pb-6"
         onSubmit={overwriteWts}
         noValidate
       >

@@ -1,21 +1,27 @@
+import { ClientSession } from "mongoose";
+
 import ProjectModel from "@/db/models/project";
 
-import {
-  deleteProjectStrings,
-  updateProjectStrings,
-} from "@/app/api/_services/string.service";
+import { deleteProjectStrings } from "@/app/api/_services/string.service";
+import { deleteProjectImage } from "@/app/api/_services/project.image.service";
 
 /**
  * 프로젝트 생성
  * @param createData
  * @returns
  */
-export async function createProject(createData: any): Promise<any> {
+export async function createProject(
+  createData: any,
+  session: ClientSession
+): Promise<any> {
   const newProject = new ProjectModel({
     ...createData,
-    ...{ createdAt: new Date(), updatedAt: new Date() },
+    ...{
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
   });
-  return await newProject.save();
+  return await newProject.save({ session });
 }
 
 /**
@@ -24,7 +30,9 @@ export async function createProject(createData: any): Promise<any> {
  * @returns
  */
 export async function getProject(projectId: string) {
-  const instance = await ProjectModel.findById(projectId);
+  const instance = await ProjectModel.findById(projectId).populate(
+    "projectImage"
+  );
   if (!instance) throw new Error("Project is not found");
   return instance;
 }
@@ -33,30 +41,33 @@ export async function getProject(projectId: string) {
  * 프로젝트 삭제
  * @param projectId
  */
-export async function deleteProject(projectId: string) {
-  // String 데이터를 먼저 삭제
-  await deleteProjectStrings(projectId);
-  await ProjectModel.findByIdAndDelete(projectId);
+export async function deleteProject(projectId: string, session: ClientSession) {
+  // 프로젝트 이미지 삭제
+  await deleteProjectImage(projectId, session);
+  // String 데이터를 삭제
+  await deleteProjectStrings(projectId, session);
+  // 프로젝트 삭제
+  await ProjectModel.findByIdAndDelete(projectId, { session });
 }
 
 /**
  * 프로젝트 수정
  * @param projectId
- * @param updateData
+ * @param formData
  * @returns
  */
-export async function updateProject(projectId: string, updateData: any) {
-  // wtsStringList 가 존재할 경우
-  if (updateData["wtsStringList"]) {
-    await updateProjectStrings(projectId, updateData["wtsStringList"]);
-  }
+export async function updateProject(
+  projectId: string,
+  updateData: any,
+  session: ClientSession
+) {
   const instance = await ProjectModel.findByIdAndUpdate(
     projectId,
     {
       ...updateData,
       ...{ updatedAt: new Date() },
     },
-    { new: true }
+    { new: true, session }
   );
   return instance;
 }

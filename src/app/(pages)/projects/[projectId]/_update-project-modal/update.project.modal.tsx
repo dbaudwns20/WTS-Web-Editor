@@ -17,6 +17,9 @@ import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File, { type FileType } from "@/components/input/file/file";
+import ImageUpload, {
+  type ImageUploadType,
+} from "@/components/input/image-upload/image.upload";
 
 import { checkDataEdited, validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
@@ -37,16 +40,18 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
   const titleRef = useRef<TextType>();
   const submitRef = useRef<SubmitType>();
   const fileRef = useRef<FileType>();
+  const imageUploadRef = useRef<ImageUploadType>();
 
   // values
   const [title, setTitle] = useState<string>(project.title);
   const [language, setLanguage] = useState<number>(project.language);
   const [version, setVersion] = useState<string>(project.version ?? "");
   const [source, setSource] = useState<string>(project.source ?? "");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const handleUpdateProject = (e: any) => {
+  const handleUpdateProject = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (wtsStringList.length > 0) {
@@ -92,10 +97,11 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
           source,
         }
       ) &&
-      wtsStringList.length === 0
+      wtsStringList.length === 0 &&
+      !imageUploadRef.current?.isEdited
     ) {
       showNotificationMessage({
-        message: "No data edited.",
+        message: "변경사항이 없습니다.",
         messageType: "warning",
       });
       return;
@@ -103,18 +109,26 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
 
     setIsFetching(true);
 
+    // formData 가공
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("language", language.toString());
+    if (version && version !== project.version) {
+      formData.append("version", version);
+    }
+    if (source && source !== project.source) {
+      formData.append("source", source);
+    }
+    if (imageUploadRef.current?.isEdited) {
+      formData.append("imageFile", imageFile!);
+    }
+    if (wtsStringList.length > 0) {
+      formData.append("wtsStringList", JSON.stringify(wtsStringList));
+    }
+
     const response = await callApi(`/api/projects/${project.id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        language,
-        version,
-        source,
-        ...(wtsStringList.length > 0 && { wtsStringList }),
-      }),
+      body: formData,
     });
 
     setIsFetching(false);
@@ -131,7 +145,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: "Updated.",
+        message: "업데이트되었습니다.",
         messageType: "success",
       });
       // 모달 닫기
@@ -162,7 +176,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
       setIsModalOpen={closeModal}
     >
       <form
-        className="grid gap-6 p-6"
+        className="grid gap-4 px-6 pt-3 pb-6"
         onSubmit={handleUpdateProject}
         noValidate
       >
@@ -204,6 +218,14 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
             labelText="SOURCE"
             placeholder="type source URL"
             onChange={setSource}
+          />
+        </div>
+        <div className="block">
+          <ImageUpload
+            ref={imageUploadRef}
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+            defaultProjectImage={project.projectImage}
           />
         </div>
         <div className="block">

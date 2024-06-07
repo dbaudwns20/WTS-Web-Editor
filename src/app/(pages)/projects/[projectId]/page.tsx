@@ -42,10 +42,6 @@ import UpdateProjectModal from "./_update-project-modal/update.project.modal";
 import UploadWtsModal from "./_upload-wts-modal/upload.wts.modal";
 import DownloadWtsModal from "./_download-wts-modal/download.wts.modal";
 import Dropdown from "@/components/common/dropdown/dropdown";
-import {
-  BgImage,
-  getBgImageById,
-} from "@/app/(pages)/_project-card/background.image";
 
 import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
@@ -74,7 +70,6 @@ export default function ProjectDetail() {
   const [isDownloadWtsModalOpen, setIsDownloadWtsModalOpen] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [stringGroup, setStringGroup] = useState<(String | null)[]>([]);
-  const image: BgImage = getBgImageById(1);
 
   // 레이아웃 reducer
   const [layoutState, layoutDispatch] = useReducer<
@@ -297,8 +292,11 @@ export default function ProjectDetail() {
                   <figure className="image-wrapper">
                     <Image
                       className="image"
-                      src={image.path}
-                      alt={image.name}
+                      src={project!.projectImage.url}
+                      alt={project!.projectImage.pathname}
+                      width={500}
+                      height={500}
+                      priority={true}
                     />
                   </figure>
                   <div className="info-wrapper">

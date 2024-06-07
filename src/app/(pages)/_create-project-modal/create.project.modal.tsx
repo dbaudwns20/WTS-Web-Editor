@@ -15,6 +15,7 @@ import Select from "@/components/input/select/select";
 import Text, { type TextType } from "@/components/input/text/text";
 import Submit, { type SubmitType } from "@/components/button/submit";
 import File, { type FileType } from "@/components/input/file/file";
+import ImageUpload from "@/components/input/image-upload/image.upload";
 
 import { validateForm } from "@/utils/validator";
 import { readWtsFile } from "@/utils/wts";
@@ -40,6 +41,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   const [language, setLanguage] = useState<number>(0);
   const [version, setVersion] = useState<string>("");
   const [source, setSource] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
 
   // 프로젝트 생성
@@ -50,18 +52,17 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
     setIsFetching(true);
 
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("language", language.toString());
+    if (version) formData.append("version", version);
+    if (source) formData.append("source", source);
+    formData.append("imageFile", imageFile!);
+    formData.append("wtsStringList", JSON.stringify(wtsStringList));
+
     const response = await callApi("/api/projects", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title,
-        language,
-        version,
-        source,
-        wtsStringList,
-      }),
+      body: formData,
     });
 
     setIsFetching(false);
@@ -109,7 +110,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
       setIsModalOpen={closeModal}
     >
       <form
-        className="grid gap-6 md:grid-cols-1 p-6"
+        className="grid gap-4 px-6 pt-3 pb-6"
         onSubmit={createNewProject}
         noValidate
       >
@@ -151,6 +152,14 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             labelText="SOURCE URL"
             placeholder="type source URL"
             onChange={setSource}
+          />
+        </div>
+        <div className="block">
+          <ImageUpload
+            labelText={"이미지"}
+            isRequired={true}
+            imageFile={imageFile}
+            setImageFile={setImageFile}
           />
         </div>
         <div className="block">

@@ -1,10 +1,9 @@
-import { forwardRef, useImperativeHandle, useMemo } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import Image from "next/image";
 
 import "./style.css";
 
 import { getLangTextByValue } from "@/types/language";
-import { type BgImage, getRandomBgImage } from "./background.image";
 
 import { convertDateToString } from "@/utils/common";
 import type Project from "@/types/project";
@@ -19,13 +18,19 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
   useImperativeHandle(ref, () => {});
 
   // values
-  const bgImage: BgImage = useMemo(() => getRandomBgImage(), []);
   const isCompleted: boolean = project.process === "100.0" ? true : false;
 
   return (
     <article className="project">
       {isCompleted ? <span className="complete">COMPLETE</span> : <></>}
-      <Image className="image" src={bgImage?.path} alt={bgImage?.name} />
+      <Image
+        className="image"
+        src={project.projectImage.url}
+        alt={project.projectImage.pathname}
+        priority={true}
+        width={500}
+        height={500}
+      />
       <div className="project-content">
         <p className="title">{project.title}</p>
         <div className="project-content-between">

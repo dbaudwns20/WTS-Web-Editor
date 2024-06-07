@@ -15,6 +15,7 @@ import "./style.css";
 type ModalProps = {
   children: ReactNode;
   title?: string;
+  hideCloseButton?: boolean;
   isCloseOnOverlay?: boolean;
   setIsModalOpen?: Dispatch<SetStateAction<boolean>>;
   widthClass?: string;
@@ -27,6 +28,7 @@ export default function Modal(props: ModalProps) {
   const {
     children,
     title = "Modal",
+    hideCloseButton = false,
     isCloseOnOverlay = false,
     setIsModalOpen,
     widthClass = "",
@@ -79,23 +81,27 @@ export default function Modal(props: ModalProps) {
       <div ref={wrapper} className="modal">
         <header className="header">
           <p className="title">{title}</p>
-          <button type="button" className="close-button" onClick={closeModal}>
-            <svg
-              className="h-6 w-6"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+          {!hideCloseButton ? (
+            <button type="button" className="close-button" onClick={closeModal}>
+              <svg
+                className="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          ) : (
+            <></>
+          )}
         </header>
         <hr />
         <div className="content">{children}</div>
