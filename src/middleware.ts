@@ -1,8 +1,8 @@
 import createMiddleware from "next-intl/middleware";
-import { locales, localePrefix } from "@/navigation";
+import { locales, localePrefix, defaultLocale } from "@/navigation";
 
 export default createMiddleware({
-  defaultLocale: "ko", // 기본 언어
+  defaultLocale, // 기본 언어
   locales, // 지원 언어
   localePrefix,
 });

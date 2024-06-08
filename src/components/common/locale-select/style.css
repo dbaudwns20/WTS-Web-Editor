@@ -1,0 +1,69 @@
+.locale-select-wrapper {
+  @apply min-w-[120px];
+  @apply relative;
+  @apply bg-gray-100;
+  @apply rounded-xl;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.locale-select-wrapper > .locale-select {
+  @apply rounded-xl;
+  @apply w-full;
+  @apply h-[32px];
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply text-sm;
+  @apply text-slate-600;
+  @apply hover:bg-gray-200;
+  @apply py-2;
+  @apply px-3;
+}
+
+.locale-select-wrapper > .locale-select.is-expanded {
+  @apply invisible;
+}
+
+.locale-select-wrapper > .locale-select-list {
+  @apply hidden;
+  @apply absolute;
+  @apply top-0;
+  @apply w-full;
+  @apply bg-gray-100;
+  @apply rounded-xl;
+  @apply h-fit;
+  @apply z-10;
+}
+
+.locale-select-wrapper > .locale-select-list.is-expanded {
+  @apply block;
+}
+
+.locale-select-wrapper > .locale-select-list > li {
+  @apply first:pb-0;
+  @apply pb-0.5;
+}
+
+.locale-select-wrapper > .locale-select-list > li > .locale-select-option {
+  @apply flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply text-sm;
+  @apply text-slate-600;
+  @apply hover:text-sky-400;
+  @apply w-full;
+  @apply h-[32px];
+  @apply pt-2;
+  @apply px-3;
+  @apply first:pt-0;
+}
+
+.locale-select-wrapper
+  > .locale-select-list
+  > li
+  > .locale-select-option.is-active {
+  @apply text-sky-400;
+}
