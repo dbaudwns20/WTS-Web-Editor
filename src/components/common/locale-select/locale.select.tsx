@@ -74,6 +74,15 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
     };
   });
 
+  useEffect(() => {
+    // 쿠키에 저장된 언어 와 현재 언어가 다른 경우
+    // 쿠키에 저장된 언어로 반영한다
+    const NEXT_LOCALE = document.cookie?.split("=")[1];
+    if (NEXT_LOCALE && NEXT_LOCALE !== currentLocale) {
+      router.replace(pathname, { locale: NEXT_LOCALE });
+    }
+  }, [currentLocale, router, pathname]);
+
   return (
     <div className="locale-select-wrapper">
       <button
