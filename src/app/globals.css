@@ -12,7 +12,7 @@ body {
   margin: 0;
   padding: 0;
 
-  --var-header-height: 55px;
+  --var-header-height: 60px;
   --var-footer-height: 60px;
 }
 
@@ -260,7 +260,7 @@ body {
   @apply items-center;
   @apply px-1;
   @apply dark:text-gray-300;
-  @apply hover:text-sky-500;
+  @apply hover:text-sky-400;
   @apply hover:cursor-pointer;
   @apply duration-300;
 }

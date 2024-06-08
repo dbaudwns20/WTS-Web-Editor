@@ -16,7 +16,7 @@ import { type OrderInfo, type PageInfo } from "@/types/api.response";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
-import LogoMain from "@/assets/logo.png";
+import LogoMain from "@/assets/logo.svg";
 import { useTranslations } from "next-intl";
 
 const defaultPageInfo: PageInfo = {

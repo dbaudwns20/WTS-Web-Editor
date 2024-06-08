@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import "./style.css";
 
-import { getLangTextByValue } from "@/types/language";
+import { getLocaleTextByValue } from "@/types/locale";
 
 import { convertDateToString } from "@/utils/common";
 import type Project from "@/types/project";
@@ -35,8 +35,8 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
         <p className="title">{project.title}</p>
         <div className="project-content-between">
           <div className="tag-group">
-            <span className="language">
-              {getLangTextByValue(project.language)}
+            <span className="locale">
+              {getLocaleTextByValue(project.locale)}
             </span>
             {project.version ? (
               <span className="version">{"v" + project.version}</span>

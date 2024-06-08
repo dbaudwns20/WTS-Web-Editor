@@ -7,7 +7,7 @@ import {
   SetStateAction,
 } from "react";
 
-import { getLangOptions } from "@/types/language";
+import { getLocaleOptions } from "@/types/locale";
 import WtsString from "@/types/wts.string";
 
 import Modal from "@/components/common/modal/modal";
@@ -38,7 +38,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   // values
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
-  const [language, setLanguage] = useState<number>(0);
+  const [locale, setLocale] = useState<number>(0);
   const [version, setVersion] = useState<string>("");
   const [source, setSource] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -54,7 +54,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("language", language.toString());
+    formData.append("locale", locale.toString());
     if (version) formData.append("version", version);
     if (source) formData.append("source", source);
     formData.append("imageFile", imageFile!);
@@ -128,11 +128,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         <div className="block-group">
           <div className="block">
             <Select
-              labelText="LANGUAGE"
-              options={getLangOptions()}
-              value={language}
-              onChange={(val) => setLanguage(Number(val))}
-              invalidMsg="Please select your language."
+              labelText="LOCALE"
+              options={getLocaleOptions()}
+              value={locale}
+              onChange={(val) => setLocale(Number(val))}
+              invalidMsg="Please select your locale."
               isRequired={true}
             />
           </div>

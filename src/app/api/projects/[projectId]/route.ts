@@ -51,13 +51,13 @@ export async function PUT(
     const formData: FormData = await request.formData();
 
     checkRequestParams(["projectId"], params);
-    checkRequestBody(["title", "language"], formData);
+    checkRequestBody(["title", "locale"], formData);
 
     await dbConnect();
 
     const updateData: any = {
       title: formData.get("title"),
-      language: Number(formData.get("language")),
+      locale: Number(formData.get("locale")),
     };
     if (formData.has("version")) {
       updateData.version = formData.get("version");

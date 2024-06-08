@@ -1,8 +1,7 @@
-import String from "@/types/string";
 import StringModel from "@/db/models/string";
 
 import Project from "@/types/project";
-import { getLangTextByValue } from "@/types/language";
+import { getLocaleTextByValue } from "@/types/locale";
 
 import { getProject } from "./project.service";
 
@@ -64,7 +63,7 @@ export async function downloadWts(
 export async function getFileName(projectId: string): Promise<string> {
   const instance: Project = await getProject(projectId);
   let fileName: string =
-    instance.title + " " + `[${getLangTextByValue(instance.language)!}]`;
+    instance.title + " " + `[${getLocaleTextByValue(instance.locale)!}]`;
   if (instance.version) {
     fileName += `[${instance.version}]`;
   }

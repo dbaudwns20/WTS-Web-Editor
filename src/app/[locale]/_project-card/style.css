@@ -78,7 +78,7 @@
   @apply gap-1.5;
 }
 
-.project-content > .project-content-between > .tag-group > .language {
+.project-content > .project-content-between > .tag-group > .locale {
   @apply bg-blue-400;
   @apply text-white;
   @apply rounded-lg;

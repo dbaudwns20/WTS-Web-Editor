@@ -8,7 +8,7 @@ import {
   FormEvent,
 } from "react";
 
-import { getLangOptions } from "@/types/language";
+import { getLocaleOptions } from "@/types/locale";
 import WtsString from "@/types/wts.string";
 import Project from "@/types/project";
 
@@ -44,7 +44,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
 
   // values
   const [title, setTitle] = useState<string>(project.title);
-  const [language, setLanguage] = useState<number>(project.language);
+  const [locale, setLocale] = useState<number>(project.locale);
   const [version, setVersion] = useState<string>(project.version ?? "");
   const [source, setSource] = useState<string>(project.source ?? "");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -86,13 +86,13 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
       !checkDataEdited(
         {
           title: project.title,
-          language: project.language,
+          locale: project.locale,
           version: project.version ?? "",
           source: project.source ?? "",
         },
         {
           title,
-          language,
+          locale,
           version,
           source,
         }
@@ -112,7 +112,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
     // formData 가공
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("language", language.toString());
+    formData.append("locale", locale.toString());
     if (version && version !== project.version) {
       formData.append("version", version);
     }
@@ -194,11 +194,11 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         <div className="block-group">
           <div className="block">
             <Select
-              labelText="LANGUAGE"
-              options={getLangOptions()}
-              value={language}
-              onChange={(val) => setLanguage(Number(val))}
-              invalidMsg="Please select your language."
+              labelText="LOCALE"
+              options={getLocaleOptions()}
+              value={locale}
+              onChange={(val) => setLocale(Number(val))}
+              invalidMsg="Please select your locale."
               isRequired={true}
             />
           </div>
