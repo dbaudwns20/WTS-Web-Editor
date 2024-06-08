@@ -8,7 +8,11 @@ import {
   useImperativeHandle,
   useCallback,
 } from "react";
+
+import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/navigation";
+
+import { getPageLocaleList } from "@/types/locale";
 
 import "./style.css";
 
@@ -19,6 +23,7 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
 
   const pathname = usePathname();
   const router = useRouter();
+  const currentLocale = useLocale();
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => {});
@@ -30,6 +35,13 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
   // values
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isOver, setIsOver] = useState<boolean>(false);
+
+  const localeList = () => {
+    return getPageLocaleList().map((locale) => ({
+      ...locale,
+      isActive: locale.locale === currentLocale,
+    }));
+  };
 
   // locale 변경
   const changeLocale = (locale: string) => {
@@ -73,7 +85,7 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
           setIsExpanded(true);
         }}
       >
-        <span>한국어</span>
+        <span>{localeList().find((locale) => locale.isActive)?.text}</span>
         <span className="icon">
           <i className="material-icons">expand_more</i>
         </span>
@@ -84,45 +96,24 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
         onMouseOver={() => setIsOver(true)}
         onMouseLeave={() => setIsOver(false)}
       >
-        <li>
-          <button
-            type="button"
-            className="locale-select-option is-active"
-            onClick={() => changeLocale("ko")}
-          >
-            <span>한국어</span>
-            <span className="icon">
-              <i className="material-icons md-18">check</i>
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            className="locale-select-option"
-            onClick={() => changeLocale("en")}
-          >
-            <span>English</span>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            className="locale-select-option"
-            onClick={() => setIsExpanded(false)}
-          >
-            <span>일본어</span>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            className="locale-select-option"
-            onClick={() => setIsExpanded(false)}
-          >
-            <span>스페인어</span>
-          </button>
-        </li>
+        {localeList().map((locale) => (
+          <li key={locale.locale}>
+            <button
+              type="button"
+              className={`locale-select-option ${
+                locale.isActive ? "is-active" : ""
+              }`}
+              onClick={() => changeLocale(locale.locale)}
+            >
+              <span>{locale.text}</span>
+              {locale.isActive && (
+                <span className="icon">
+                  <i className="material-icons md-18">check</i>
+                </span>
+              )}
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   );

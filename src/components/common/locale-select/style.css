@@ -1,5 +1,5 @@
 .locale-select-wrapper {
-  @apply min-w-[120px];
+  @apply w-[180px];
   @apply relative;
   @apply bg-gray-100;
   @apply rounded-xl;

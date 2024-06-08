@@ -1,6 +1,19 @@
 import { createSharedPathnamesNavigation } from "next-intl/navigation";
 
-export const locales = ["en", "ko"] as const;
+export const locales = [
+  "ko",
+  "en",
+  "cn",
+  "tw",
+  "de",
+  "es",
+  "mx",
+  "fr",
+  "it",
+  "pl",
+  "ru",
+  "ja",
+] as const;
 export const localePrefix = "as-needed"; // 디폴트 제외 표시
 export const defaultLocale = "ko";
 
