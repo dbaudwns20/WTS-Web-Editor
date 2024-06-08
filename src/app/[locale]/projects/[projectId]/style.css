@@ -95,7 +95,7 @@
   > .project-info
   > .info-wrapper
   > .tag-group
-  > .tag.language {
+  > .tag.locale {
   @apply bg-blue-400;
   @apply text-white;
   @apply dark:bg-transparent;

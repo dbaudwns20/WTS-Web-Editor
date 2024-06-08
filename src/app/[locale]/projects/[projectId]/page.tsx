@@ -16,7 +16,7 @@ import Image from "next/image";
 
 import Project, { bindProject } from "@/types/project";
 import String from "@/types/string";
-import { getLangTextByValue } from "@/types/language";
+import { getLocaleTextByValue } from "@/types/locale";
 
 import {
   type LayoutState,
@@ -303,8 +303,8 @@ export default function ProjectDetail() {
                   <div className="info-wrapper">
                     <p className="title">{project?.title}</p>
                     <div className="tag-group">
-                      <span className="tag language">
-                        {getLangTextByValue(project!.language)}
+                      <span className="tag locale">
+                        {getLocaleTextByValue(project!.locale)}
                       </span>
                       {project!.version ? (
                         <span className="tag version">v{project!.version}</span>

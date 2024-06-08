@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     const formData: FormData = await request.formData();
     checkRequestBody(
-      ["title", "language", "wtsStringList", "imageFile"],
+      ["title", "locale", "wtsStringList", "imageFile"],
       formData
     );
 
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     const createData: any = {
       title: formData.get("title"),
-      language: Number(formData.get("language")),
+      locale: Number(formData.get("locale")),
       projectImage: await uploadProjectImage(
         formData.get("imageFile") as File,
         session
