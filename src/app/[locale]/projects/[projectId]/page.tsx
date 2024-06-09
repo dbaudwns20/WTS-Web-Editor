@@ -48,12 +48,16 @@ import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
 import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
 
 import Hotkeys from "react-hot-keys";
+import { useTranslations } from "next-intl";
 
 export default function ProjectDetail() {
   // params
   const { projectId } = useParams();
   // router
   const router = useRouter();
+
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL");
 
   // refs
   const projectInfoSectionRef = useRef<HTMLSelectElement>(null);
@@ -105,14 +109,15 @@ export default function ProjectDetail() {
   // 프로젝트 삭제 핸들링
   const handleDeleteProject = () => {
     showConfirmMessage({
-      message: "delete this project?",
+      title: t("DELETE.CONFIRM.TITLE"),
+      message: t("DELETE.CONFIRM.MESSAGE"),
       buttons: [
         {
-          label: "CANCEL",
+          label: t("DELETE.CONFIRM.CANCEL_LABEL"),
           onClick: null,
         },
         {
-          label: "OK",
+          label: t("DELETE.CONFIRM.OK_LABEL"),
           class: "info",
           onClick: () => deleteProject(),
         },
@@ -136,7 +141,7 @@ export default function ProjectDetail() {
     }
 
     showNotificationMessage({
-      message: "deleted.",
+      message: t("DELETE.SUCCESS_MESSAGE"),
       messageType: "success",
     });
 
@@ -311,7 +316,9 @@ export default function ProjectDetail() {
                       ) : (
                         <></>
                       )}
-                      <span className="tag progress">{`${project?.process}% Translated`}</span>
+                      <span className="tag progress">
+                        {t("INFO.PROGRESS", { process: project?.process })}
+                      </span>
                     </div>
                     <div className="button-group">
                       <button
@@ -324,7 +331,7 @@ export default function ProjectDetail() {
                             <i className="material-icons md-18">download</i>
                           </span>
                           <span className="text-sm font-semibold">
-                            Download
+                            {t("INFO.DOWNLOAD")}
                           </span>
                         </span>
                       </button>
@@ -339,7 +346,7 @@ export default function ProjectDetail() {
                               <i className="material-icons md-18">launch</i>
                             </span>
                             <span className="text-sm font-semibold">
-                              Source Link
+                              {t("INFO.SOURCE_LINK")}
                             </span>
                           </span>
                         </a>
@@ -385,7 +392,7 @@ export default function ProjectDetail() {
                           <span className="icon mr-1.5">
                             <i className="material-icons md-18">edit</i>
                           </span>
-                          <span>Update</span>
+                          <span>{t("MORE_BUTTON.UPDATE")}</span>
                         </a>
                       </li>
                       <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
@@ -396,7 +403,7 @@ export default function ProjectDetail() {
                           <span className="icon mr-1.5">
                             <i className="material-icons md-18">delete</i>
                           </span>
-                          <span>Delete</span>
+                          <span>{t("MORE_BUTTON.DELETE")}</span>
                         </a>
                       </li>
                       <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
@@ -407,7 +414,7 @@ export default function ProjectDetail() {
                           <span className="icon mr-1.5">
                             <i className="material-icons md-18">file_upload</i>
                           </span>
-                          <span>Upload WTS</span>
+                          <span>{t("MORE_BUTTON.UPLOAD_WTS")}</span>
                         </a>
                       </li>
                     </ul>

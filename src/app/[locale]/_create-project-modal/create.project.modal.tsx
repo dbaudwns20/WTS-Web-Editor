@@ -33,7 +33,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   const { closeModal, completeFunction } = props;
 
   // i18n translate key
-  const t = useTranslations("CREATE_NEW_PROJECT_MODAL");
+  const t = useTranslations("PROJECT_MODAL");
 
   // ref
   const titleRef = useRef<TextType>();
@@ -85,7 +85,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: t("SUCCESS_MESSAGE"),
+        message: t("CREATE.SUCCESS_MESSAGE"),
         messageType: "success",
       });
 
@@ -110,7 +110,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
   return (
     <Modal
-      title={t("MODAL_TITLE")}
+      title={t("MODAL_TITLE", { type: "create" })}
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
     >
@@ -180,7 +180,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         <div className="block text-center">
           <Submit
             ref={submitRef}
-            buttonText={t("CREATE_BUTTON")}
+            buttonText={t("CREATE.CREATE_BUTTON")}
             buttonClass="button is-primary"
           />
         </div>

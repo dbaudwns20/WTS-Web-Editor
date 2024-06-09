@@ -39,7 +39,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
   const { project, closeModal, setStringListKey, completeFunction } = props;
 
   // i18n translate key
-  const t = useTranslations("UPDATE_PROJECT_MODAL");
+  const t = useTranslations("PROJECT_MODAL");
 
   // ref
   const titleRef = useRef<TextType>();
@@ -61,16 +61,15 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
 
     if (wtsStringList.length > 0) {
       showConfirmMessage({
-        title: "Update Project",
-        message:
-          "You have uploaded a WTS file. The existing string data will be updated with the new data, and re-translation may be necessary.",
+        title: t("UPDATE.CONFIRM.TITLE"),
+        message: t("UPDATE.CONFIRM.MESSAGE"),
         buttons: [
           {
-            label: "No",
+            label: t("UPDATE.CONFIRM.NO_LABEL"),
             onClick: () => null,
           },
           {
-            label: "Yes",
+            label: t("UPDATE.CONFIRM.OK_LABEL"),
             class: "info",
             onClick: async () => await updateProject(e),
           },
@@ -106,7 +105,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
       !imageUploadRef.current?.isEdited
     ) {
       showNotificationMessage({
-        message: "변경사항이 없습니다.",
+        message: t("UPDATE.NO_EDITED"),
         messageType: "warning",
       });
       return;
@@ -150,7 +149,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: "업데이트되었습니다.",
+        message: t("UPDATE.SUCCESS_MESSAGE"),
         messageType: "success",
       });
       // 모달 닫기
@@ -176,7 +175,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
 
   return (
     <Modal
-      title="Update Project"
+      title={t("MODAL_TITLE", { type: "update" })}
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
     >
@@ -189,9 +188,9 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
           <Text
             ref={titleRef}
             value={title}
-            labelText="TITLE"
-            placeholder="Project Title"
-            invalidMsg="Please enter your project title."
+            labelText={t("TITLE.LABEL")}
+            placeholder={t("TITLE.PLACEHOLDER")}
+            invalidMsg={t("TITLE.INVALID_MESSAGE")}
             isRequired={true}
             onChange={setTitle}
           />
@@ -199,21 +198,20 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         <div className="block-group">
           <div className="block">
             <Select
-              labelText="LOCALE"
+              labelText={t("LOCALE.LABEL")}
               defaultOption={{ id: "", value: t("LOCALE.DEFAULT") }}
               options={getLocaleList()}
               value={locale}
               onChange={(val) => setLocale(Number(val))}
-              invalidMsg="Please select your locale."
+              invalidMsg={t("LOCALE.INVALID_MESSAGE")}
               isRequired={true}
             />
           </div>
           <div className="block">
             <Text
               value={version}
-              labelText="VERSION"
+              labelText={t("VERSION.LABEL")}
               placeholder="ex) 1.0.0"
-              invalidMsg="Please enter your version."
               onChange={setVersion}
             />
           </div>
@@ -221,14 +219,15 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         <div className="block">
           <Text
             value={source}
-            labelText="SOURCE"
-            placeholder="type source URL"
+            labelText={t("SOURCE_URL.LABEL")}
+            placeholder={t("SOURCE_URL.PLACEHOLDER")}
             onChange={setSource}
           />
         </div>
         <div className="block">
           <ImageUpload
             ref={imageUploadRef}
+            labelText={t("IMAGE.LABEL")}
             imageFile={imageFile}
             setImageFile={setImageFile}
             defaultProjectImage={project.projectImage}
@@ -237,16 +236,16 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
         <div className="block">
           <File
             ref={fileRef}
-            labelText="WTS FILE"
+            labelText={t("WTS_FILE.LABEL")}
             onChange={handleUploadWtsFile}
             accept=".wts"
-            invalidMsg="Please upload your wts file."
+            invalidMsg={t("WTS_FILE.INVALID_MESSAGE")}
           />
         </div>
         <div className="block text-center">
           <Submit
             ref={submitRef}
-            buttonText="UPDATE"
+            buttonText={t("UPDATE.UPDATE_BUTTON")}
             buttonClass="button is-primary"
           />
         </div>

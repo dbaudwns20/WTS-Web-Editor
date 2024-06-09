@@ -2,8 +2,8 @@
   "MAIN": {
     "CREATE_PROJECT_BUTTON": "CREATE NEW PROJECT"
   },
-  "CREATE_NEW_PROJECT_MODAL": {
-    "MODAL_TITLE": "New Project",
+  "PROJECT_MODAL": {
+    "MODAL_TITLE": "{type, select, create {New} update {Update} other {}} Project",
     "TITLE": {
       "LABEL": "TITLE",
       "PLACEHOLDER": "Type project title",
@@ -28,10 +28,54 @@
       "LABEL": "WTS FILE",
       "INVALID_MESSAGE": "Please upload your wts file."
     },
-    "CREATE_BUTTON": "Create Project",
-    "SUCCESS_MESSAGE": "Successfully Created."
+    "CREATE": {
+      "CREATE_BUTTON": "Create Project",
+      "SUCCESS_MESSAGE": "Successfully Created."
+    },
+    "UPDATE": {
+      "UPDATE_BUTTON": "Update Project",
+      "SUCCESS_MESSAGE": "Successfully Updated.",
+      "NO_EDITED": "No edited.",
+      "CONFIRM": {
+        "TITLE": "Confirm Update",
+        "MESSAGE": "You have uploaded a WTS file. The existing STRING data will be updated with the new data, and re-translation may be necessary.",
+        "OK_LABEL": "Yes",
+        "NO_LABEL": "No"
+      }
+    }
   },
-  "PROJECT_DETAIL": {},
+  "PROJECT_DETAIL": {
+    "INFO": {
+      "PROGRESS": "{process}% Translated",
+      "DOWNLOAD": "Download",
+      "SOURCE_LINK": "Source Link"
+    },
+    "MORE_BUTTON": {
+      "UPDATE": "Update",
+      "DELETE": "Delete",
+      "UPLOAD_WTS": "Upload WTS"
+    },
+    "DELETE": {
+      "SUCCESS_MESSAGE": "Successfully Deleted.",
+      "CONFIRM": {
+        "TITLE": "Delete Project",
+        "MESSAGE": "Are you sure? This action cannot be undone.",
+        "OK_LABEL": "OK",
+        "CANCEL_LABEL": "Cancel"
+      }
+    },
+    "UPLOAD_WTS_MODAL": {
+      "TITLE": "WTS Upload",
+      "SUCCESS_MESSAGE": "Successfully Updated.",
+      "GUIDE_1": "A processed WTS file can be applied to the project.",
+      "GUIDE_2": "The translate text of the data matching the STRING number will be updated.",
+      "UPLOAD_BUTTON": "Upload",
+      "WTS_FILE": {
+        "LABEL": "WTS FILE",
+        "INVALID_MESSAGE": "Please upload your wts file."
+      }
+    }
+  },
   "COMPONENTS": {
     "FILE": {
       "FILE_NOT_FOUND": "File not found.",

@@ -216,7 +216,9 @@ const File = forwardRef((props: FileProps, ref) => {
           <label className="file is-uploaded" tabIndex={0}>
             <div className="file-content">
               <span className="icon">
-                <i className="material-icons-outlined text-emerald-500">task</i>
+                <i className="material-icons-outlined text-emerald-500">
+                  check_circle_outline
+                </i>
               </span>
               <p className="text">{displayFile}</p>
               <button

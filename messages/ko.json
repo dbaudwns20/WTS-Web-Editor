@@ -2,8 +2,8 @@
   "MAIN": {
     "CREATE_PROJECT_BUTTON": "새 프로젝트 생성"
   },
-  "CREATE_NEW_PROJECT_MODAL": {
-    "MODAL_TITLE": "새 프로젝트 생성",
+  "PROJECT_MODAL": {
+    "MODAL_TITLE": "{type, select, create {새 프로젝트 생성} update {프로젝트 업데이트} other {}}",
     "TITLE": {
       "LABEL": "제목",
       "PLACEHOLDER": "제목을 입력하세요",
@@ -28,10 +28,54 @@
       "LABEL": "WTS 파일",
       "INVALID_MESSAGE": "WTS 파일을 업로드해주세요."
     },
-    "CREATE_BUTTON": "프로젝트 생성",
-    "SUCCESS_MESSAGE": "생성되었습니다."
+    "CREATE": {
+      "CREATE_BUTTON": "프로젝트 생성",
+      "SUCCESS_MESSAGE": "생성되었습니다."
+    },
+    "UPDATE": {
+      "UPDATE_BUTTON": "프로젝트 업데이트",
+      "SUCCESS_MESSAGE": "업데이트되었습니다.",
+      "NO_EDITED": "수정된 내용이 없습니다.",
+      "CONFIRM": {
+        "TITLE": "업데이트 확인",
+        "MESSAGE": "WTS 파일을 업로드하셨습니다. 기존 STRING 데이터는 새로운 데이터로 업데이트되며, 재번역이 필요할 수 있습니다.",
+        "OK_LABEL": "네",
+        "NO_LABEL": "아니요"
+      }
+    }
   },
-  "PROJECT_DETAIL": {},
+  "PROJECT_DETAIL": {
+    "INFO": {
+      "PROGRESS": "{process}% 번역완료",
+      "DOWNLOAD": "다운로드",
+      "SOURCE_LINK": "출처 링크"
+    },
+    "MORE_BUTTON": {
+      "UPDATE": "업데이트",
+      "DELETE": "삭제",
+      "UPLOAD_WTS": "WTS 업로드"
+    },
+    "DELETE": {
+      "SUCCESS_MESSAGE": "삭제되었습니다.",
+      "CONFIRM": {
+        "TITLE": "프로젝트 삭제",
+        "MESSAGE": "정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "OK_LABEL": "네",
+        "CANCEL_LABEL": "취소"
+      }
+    },
+    "UPLOAD_WTS_MODAL": {
+      "TITLE": "WTS 업로드",
+      "SUCCESS_MESSAGE": "업데이트되었습니다.",
+      "GUIDE_1": "작업된 WTS 파일을 프로젝트에 반영할 수 있습니다.",
+      "GUIDE_2": "STRING 숫자와 일치하는 데이터의 번역 텍스트가 갱신됩니다.",
+      "UPLOAD_BUTTON": "업로드",
+      "WTS_FILE": {
+        "LABEL": "WTS 파일",
+        "INVALID_MESSAGE": "WTS 파일을 업로드해주세요."
+      }
+    }
+  },
   "COMPONENTS": {
     "FILE": {
       "FILE_NOT_FOUND": "파일을 찾을 수 없습니다.",

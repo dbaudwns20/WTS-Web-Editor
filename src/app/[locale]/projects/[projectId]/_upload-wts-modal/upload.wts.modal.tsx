@@ -20,6 +20,8 @@ import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
+import { useTranslations } from "next-intl";
+
 type OverwriteWtsModalProps = {
   setStringListKey: Dispatch<SetStateAction<number>>;
   closeModal: Dispatch<SetStateAction<boolean>>;
@@ -31,6 +33,9 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
   // params
   const { projectId } = useParams();
 
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL.UPLOAD_WTS_MODAL");
+
   // ref
   const submitRef = useRef<SubmitType>();
   const fileRef = useRef<FileType>();
@@ -39,7 +44,7 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
   const [wtsStringList, setWtsStringList] = useState<WtsString[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const overwriteWts = async (e: FormEvent<HTMLFormElement>) => {
+  const uploadWts = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // check required values
@@ -69,7 +74,7 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: "Updated.",
+        message: t("UPLOAD_WTS_MODAL.SUCCESS_MESSAGE"),
         messageType: "success",
       });
       // 모달 닫기
@@ -90,39 +95,35 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
 
   return (
     <Modal
-      title="Upload WTS"
+      title={t("TITLE")}
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
     >
       <form
         className="grid gap-4 px-6 pt-3 pb-6"
-        onSubmit={overwriteWts}
+        onSubmit={uploadWts}
         noValidate
       >
         <div className="p-3 border border-gray-300 rounded-lg bg-slate-100 text-slate-500  dark:bg-slate-600 dark:text-white/60 dark:border-gray-500">
           <ul className="list-disc ml-4">
-            <li className="font-semibold text-sm mb-2">
-              작업된 WTS 파일을 프로젝트에 반영할 수 있습니다.
-            </li>
-            <li className="font-semibold text-sm">
-              STRING 숫자와 일치하는 데이터의 번역 텍스트가 갱신됩니다.
-            </li>
+            <li className="font-semibold text-sm mb-2">{t("GUIDE_1")}</li>
+            <li className="font-semibold text-sm">{t("GUIDE_2")}</li>
           </ul>
         </div>
         <div className="block">
           <File
             ref={fileRef}
-            labelText="WTS FILE"
+            labelText={t("WTS_FILE.LABEL")}
             onChange={handleUploadWtsFile}
             isRequired={true}
             accept=".wts"
-            invalidMsg="Please upload your wts file."
+            invalidMsg={t("WTS_FILE.INVALID_MESSAGE")}
           />
         </div>
         <div className="block text-center">
           <Submit
             ref={submitRef}
-            buttonText="UPDATE"
+            buttonText={t("UPLOAD_BUTTON")}
             buttonClass="button is-primary"
           />
         </div>
