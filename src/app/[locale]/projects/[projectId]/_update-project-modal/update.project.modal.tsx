@@ -8,7 +8,7 @@ import {
   FormEvent,
 } from "react";
 
-import { getLocaleOptions } from "@/types/locale";
+import { getLocaleList } from "@/types/locale";
 import WtsString from "@/types/wts.string";
 import Project from "@/types/project";
 
@@ -26,6 +26,8 @@ import { readWtsFile } from "@/utils/wts";
 import { showConfirmMessage, showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
+import { useTranslations } from "next-intl";
+
 type UpdateProjectModalProps = {
   project: Project;
   setStringListKey: Dispatch<SetStateAction<number>>;
@@ -35,6 +37,9 @@ type UpdateProjectModalProps = {
 
 const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
   const { project, closeModal, setStringListKey, completeFunction } = props;
+
+  // i18n translate key
+  const t = useTranslations("UPDATE_PROJECT_MODAL");
 
   // ref
   const titleRef = useRef<TextType>();
@@ -195,7 +200,8 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
           <div className="block">
             <Select
               labelText="LOCALE"
-              options={getLocaleOptions()}
+              defaultOption={{ id: "", value: t("LOCALE.DEFAULT") }}
+              options={getLocaleList()}
               value={locale}
               onChange={(val) => setLocale(Number(val))}
               invalidMsg="Please select your locale."

@@ -1,5 +1,64 @@
 {
-  "Main": {
+  "MAIN": {
     "CREATE_PROJECT_BUTTON": "CREATE NEW PROJECT"
-  }
+  },
+  "CREATE_NEW_PROJECT_MODAL": {
+    "MODAL_TITLE": "New Project",
+    "TITLE": {
+      "LABEL": "TITLE",
+      "PLACEHOLDER": "Type project title",
+      "INVALID_MESSAGE": "Please type your project title."
+    },
+    "LOCALE": {
+      "LABEL": "LOCALE",
+      "DEFAULT": "Select your locale",
+      "INVALID_MESSAGE": "Please select your locale."
+    },
+    "VERSION": {
+      "LABEL": "VERSION"
+    },
+    "SOURCE_URL": {
+      "LABEL": "SOURCE URL",
+      "PLACEHOLDER": "Type source URL"
+    },
+    "IMAGE": {
+      "LABEL": "IMAGE"
+    },
+    "WTS_FILE": {
+      "LABEL": "WTS FILE",
+      "INVALID_MESSAGE": "Please upload your wts file."
+    },
+    "CREATE_BUTTON": "Create Project",
+    "SUCCESS_MESSAGE": "Successfully Created."
+  },
+  "PROJECT_DETAIL": {},
+  "COMPONENTS": {
+    "FILE": {
+      "FILE_NOT_FOUND": "File not found.",
+      "INVALID_TYPE": "Invalid file type.",
+      "EXCEED_SIZE": "File size exceeds {maxSize}MB.",
+      "GUIDE": "Click to upload or drag and drop",
+      "MAX_SIZE": "Maximum upload file size : {maxSize}MB",
+      "DELETE_BUTTON": "Delete"
+    },
+    "IMAGE_UPLOAD": {
+      "FILE_NOT_FOUND": "File not found.",
+      "INVALID_TYPE": "Invalid file type.",
+      "RESET_BUTTON_TOOLTIP": "Reset",
+      "DEFAULT_IMAGE": "Default Image {id}",
+      "UPLOADED_IMAGE": "Uploaded image",
+      "APPLY_DEFAULT_IMAGE_BUTTON": "Apply default image",
+      "SWITCH_DEFAULT_IMAGE_BUTTON": "Switch default image",
+      "UPLOAD_IMAGE_BUTTON": "Upload image",
+      "CROPPER_MODAL": {
+        "FILE_NOT_FOUND": "File not found.",
+        "INVALID_TYPE": "Invalid file type.",
+        "RE_UPLOAD": "Re Upload",
+        "FULL_SIZE": "Full size",
+        "RESET": "Reset",
+        "COMPLETE": "Complete"
+      }
+    }
+  },
+  "DEFAULT_IMAGE": {}
 }

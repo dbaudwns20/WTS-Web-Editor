@@ -13,6 +13,8 @@ import "./style.css";
 
 import Image from "next/image";
 
+import CropperModal from "./cropper-modal/cropper.modal";
+
 import ProjectImage from "@/types/project.image";
 import { type DefaultImage, getDefaultImageById } from "@/types/default.image";
 
@@ -20,7 +22,7 @@ import { convertFileSizeToString, urlToFile } from "@/utils/common";
 import { checkFileType } from "@/utils/validator";
 import { showNotificationMessage } from "@/utils/message";
 
-import CropperModal from "./cropper-modal/cropper.modal";
+import { useTranslations } from "next-intl";
 
 type ImageUploadProps = {
   labelText?: string;
@@ -42,6 +44,8 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
     setImageFile,
     defaultProjectImage,
   } = props;
+
+  const t = useTranslations("COMPONENTS.IMAGE_UPLOAD");
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
@@ -86,7 +90,7 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
     if (!e.target.files) {
       showNotificationMessage({
         messageType: "warning",
-        message: "파일을 찾을 수 없습니다.",
+        message: t("FILE_NOT_FOUND"),
       });
       inputRef.current!.value = "";
       return;
@@ -97,7 +101,7 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
     if (!checkFileType(file, [".jpg", ".jpeg", ".png"])) {
       showNotificationMessage({
         messageType: "warning",
-        message: "Invalid file type",
+        message: t("INVALID_TYPE"),
       });
       inputRef.current!.value = "";
       return;
@@ -156,7 +160,7 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
             <button
               type="button"
               className="reset has-tooltip"
-              data-tooltip="초기화"
+              data-tooltip={t("RESET_BUTTON_TOOLTIP")}
               onClick={() => resetImage()}
             >
               <span className="icon">
@@ -169,8 +173,8 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
           <div className="upload-info">
             <p className="type">
               {croppedImageUrl
-                ? "사용자 이미지"
-                : `기본 이미지 ${defaultImage.id}`}
+                ? t("UPLOADED_IMAGE")
+                : t("DEFAULT_IMAGE", { id: defaultImage.id })}
             </p>
             <p className="file-info">
               {croppedImageUrl && imageFile
@@ -186,14 +190,16 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
               type="button"
               onClick={() => changeDefaultImage()}
             >
-              {croppedImageUrl ? "기본 이미지 사용" : "기본 이미지 변경"}
+              {croppedImageUrl
+                ? t("APPLY_DEFAULT_IMAGE_BUTTON")
+                : t("SWITCH_DEFAULT_IMAGE_BUTTON")}
             </button>
             <button
               className="button is-success !text-xs w-full !shadow-none"
               type="button"
               onClick={() => inputRef.current?.click()}
             >
-              이미지 업로드
+              {t("UPLOAD_IMAGE_BUTTON")}
             </button>
           </div>
         </div>

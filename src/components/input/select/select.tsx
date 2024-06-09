@@ -17,6 +17,7 @@ import { generateRandomText } from "@/utils/common";
 
 type PropsType = {
   value?: any;
+  defaultOption?: any;
   options: any[];
   labelText: string;
   isRequired?: boolean;
@@ -27,10 +28,11 @@ type PropsType = {
 const Select = forwardRef((props: PropsType, ref) => {
   let {
     value = "",
+    defaultOption,
     options,
     labelText,
     isRequired = false,
-    invalidMsg = "Please select your value",
+    invalidMsg = "",
     onChange,
   } = props;
 
@@ -44,6 +46,10 @@ const Select = forwardRef((props: PropsType, ref) => {
   // values
   const elId = useMemo(() => `select_${generateRandomText()}`, []);
   const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
+  const _options = useMemo<any>(() => {
+    if (defaultOption) options.unshift(defaultOption);
+    return options;
+  }, [defaultOption, options]);
 
   // change 이벤트 헨들링
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -74,7 +80,7 @@ const Select = forwardRef((props: PropsType, ref) => {
     <>
       <label
         ref={labelRef}
-        className={isRequired ? "label is-required" : "label"}
+        className={`label${isRequired ? " is-required" : ""}`}
       >
         {labelText}
       </label>
@@ -87,7 +93,7 @@ const Select = forwardRef((props: PropsType, ref) => {
           onInvalid={handleInvalid}
           required={isRequired}
         >
-          {options.map((option: any) => {
+          {_options.map((option: any) => {
             return (
               <option value={option.id} key={option.id}>
                 {option.value}

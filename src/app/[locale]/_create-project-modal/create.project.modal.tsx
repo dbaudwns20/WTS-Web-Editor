@@ -7,7 +7,7 @@ import {
   SetStateAction,
 } from "react";
 
-import { getLocaleOptions } from "@/types/locale";
+import { getLocaleList } from "@/types/locale";
 import WtsString from "@/types/wts.string";
 
 import Modal from "@/components/common/modal/modal";
@@ -22,6 +22,8 @@ import { readWtsFile } from "@/utils/wts";
 import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 
+import { useTranslations } from "next-intl";
+
 type CreateProjectModalProps = {
   closeModal: Dispatch<SetStateAction<boolean>>;
   completeFunction: (...arg: any) => void;
@@ -29,6 +31,9 @@ type CreateProjectModalProps = {
 
 const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
   const { closeModal, completeFunction } = props;
+
+  // i18n translate key
+  const t = useTranslations("CREATE_NEW_PROJECT_MODAL");
 
   // ref
   const titleRef = useRef<TextType>();
@@ -80,7 +85,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: "Created.",
+        message: t("SUCCESS_MESSAGE"),
         messageType: "success",
       });
 
@@ -105,7 +110,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
 
   return (
     <Modal
-      title="New Project"
+      title={t("MODAL_TITLE")}
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
     >
@@ -118,9 +123,9 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
           <Text
             ref={titleRef}
             value={title}
-            labelText="TITLE"
-            placeholder="Project Title"
-            invalidMsg="Please enter your project title."
+            labelText={t("TITLE.LABEL")}
+            placeholder={t("TITLE.PLACEHOLDER")}
+            invalidMsg={t("TITLE.INVALID_MESSAGE")}
             isRequired={true}
             onChange={setTitle}
           />
@@ -128,20 +133,20 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         <div className="block-group">
           <div className="block">
             <Select
-              labelText="LOCALE"
-              options={getLocaleOptions()}
+              labelText={t("LOCALE.LABEL")}
+              defaultOption={{ id: "", value: t("LOCALE.DEFAULT") }}
+              options={getLocaleList()}
               value={locale}
               onChange={(val) => setLocale(Number(val))}
-              invalidMsg="Please select your locale."
+              invalidMsg={t("LOCALE.INVALID_MESSAGE")}
               isRequired={true}
             />
           </div>
           <div className="block">
             <Text
+              labelText={t("VERSION.LABEL")}
               value={version}
-              labelText="VERSION"
               placeholder="ex) 1.0.0"
-              invalidMsg="Please enter your version."
               onChange={setVersion}
             />
           </div>
@@ -149,14 +154,14 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         <div className="block">
           <Text
             value={source}
-            labelText="SOURCE URL"
-            placeholder="type source URL"
+            labelText={t("SOURCE_URL.LABEL")}
+            placeholder={t("SOURCE_URL.PLACEHOLDER")}
             onChange={setSource}
           />
         </div>
         <div className="block">
           <ImageUpload
-            labelText={"이미지"}
+            labelText={t("IMAGE.LABEL")}
             isRequired={true}
             imageFile={imageFile}
             setImageFile={setImageFile}
@@ -165,17 +170,17 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
         <div className="block">
           <File
             ref={fileRef}
-            labelText="WTS FILE"
+            labelText={t("WTS_FILE.LABEL")}
             onChange={handleUploadWtsFile}
             isRequired={true}
             accept=".wts"
-            invalidMsg="Please upload your wts file."
+            invalidMsg={t("WTS_FILE.INVALID_MESSAGE")}
           />
         </div>
         <div className="block text-center">
           <Submit
             ref={submitRef}
-            buttonText="CREATE"
+            buttonText={t("CREATE_BUTTON")}
             buttonClass="button is-primary"
           />
         </div>

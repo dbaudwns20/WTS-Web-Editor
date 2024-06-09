@@ -34,8 +34,8 @@ const defaultOrderInfo: OrderInfo = {
 export default function RootPage() {
   const router = useRouter();
 
-  // key
-  const t = useTranslations("Main");
+  // i18n translate key
+  const t = useTranslations("MAIN");
 
   // values
   const [projectList, setProjectList] = useState<Project[]>([]);
@@ -158,15 +158,13 @@ export default function RootPage() {
         <div className="flex justify-center items-center gap-5">
           <Image src={LogoMain} alt="logo_main" width={350} priority={true} />
         </div>
-        <div className="">
-          <div className="w-full flex justify-center">
-            <button
-              className="button is-primary !text-xl !p-5 !m-3.5"
-              onClick={newProject}
-            >
-              {t("CREATE_PROJECT_BUTTON")}
-            </button>
-          </div>
+        <div className="w-full flex justify-center">
+          <button
+            className="button is-primary !text-xl !p-5 !m-3.5"
+            onClick={newProject}
+          >
+            {t("CREATE_PROJECT_BUTTON")}
+          </button>
         </div>
       </section>
       <section className="project-section">

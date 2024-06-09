@@ -18,6 +18,8 @@ import { checkUploadedFileSize, checkFileType } from "@/utils/validator";
 import { generateRandomText, convertFileSizeToString } from "@/utils/common";
 import { showNotificationMessage } from "@/utils/message";
 
+import { useTranslations } from "next-intl";
+
 type FileProps = {
   labelText?: string;
   isRequired?: boolean;
@@ -34,10 +36,13 @@ const File = forwardRef((props: FileProps, ref) => {
   const {
     labelText = "",
     isRequired = false,
-    invalidMsg = "Please upload your file.",
+    invalidMsg = "",
     accept,
     onChange,
   } = props;
+
+  // i18n translate key
+  const t = useTranslations("COMPONENTS.FILE");
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
@@ -57,14 +62,26 @@ const File = forwardRef((props: FileProps, ref) => {
   const [isDragEnter, setIsDragEnter] = useState<boolean>(false);
 
   // 파일 업로드 처리
-  const fileUpload = (file: File) => {
+  const fileUpload = (fileList: FileList | null) => {
+    // 파일이 없는 경우
+    if (!fileList) {
+      showNotificationMessage({
+        message: t("FILE_NOT_FOUND"),
+        messageType: "warning",
+      });
+      fileRef.current!.value = "";
+      return;
+    }
+
+    const file: File = fileList[0];
+
     // 파일 타입 체크
     if (
       accept &&
       !checkFileType(file, accept.split(/\s+/).join("").split(","))
     ) {
       showNotificationMessage({
-        message: `The file type is not [ ${accept} ]`,
+        message: t("INVALID_TYPE"),
         messageType: "warning",
       });
       fileRef.current!.value = "";
@@ -78,7 +95,7 @@ const File = forwardRef((props: FileProps, ref) => {
     let size: number = file.size;
     if (!checkUploadedFileSize(size)) {
       showNotificationMessage({
-        message: "File size exceeds 2MB",
+        message: t("EXCEED_SIZE", { maxSize: 2 }),
         messageType: "warning",
       });
       fileRef.current!.value = "";
@@ -98,7 +115,7 @@ const File = forwardRef((props: FileProps, ref) => {
     if (event.target.files?.length === 0) return;
 
     // 파일 업로드
-    fileUpload(event.target.files![0]);
+    fileUpload(event.target.files);
   };
 
   // 파일 드롭 업로드 헨들링
@@ -112,7 +129,7 @@ const File = forwardRef((props: FileProps, ref) => {
     setIsDragEnter(false);
 
     // 파일 업로드
-    fileUpload(event.dataTransfer.files[0]);
+    fileUpload(event.dataTransfer.files);
   };
 
   // invalid 이벤트 헨들링
@@ -180,15 +197,10 @@ const File = forwardRef((props: FileProps, ref) => {
           >
             <div className="file-content">
               <span className="icon">
-                <span className="material-icons md-36">upload_file</span>
+                <span className="material-icons md">upload_file</span>
               </span>
-              <p className="text">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text font-semibold">
-                Maximum upload file size : 2MB
-              </p>
+              <p className="text">{t("GUIDE")}</p>
+              <p className="text">{t("MAX_SIZE", { maxSize: 2 })}</p>
             </div>
             <input
               type="file"
@@ -204,9 +216,7 @@ const File = forwardRef((props: FileProps, ref) => {
           <label className="file is-uploaded" tabIndex={0}>
             <div className="file-content">
               <span className="icon">
-                <i className="material-icons-outlined md-36 text-emerald-500">
-                  task
-                </i>
+                <i className="material-icons-outlined text-emerald-500">task</i>
               </span>
               <p className="text">{displayFile}</p>
               <button
@@ -220,7 +230,9 @@ const File = forwardRef((props: FileProps, ref) => {
                     highlight_off
                   </i>
                 </span>
-                <span className="font-semibold text-gray-500">DELETE</span>
+                <span className="font-semibold text-gray-500">
+                  {t("DELETE_BUTTON")}
+                </span>
               </button>
             </div>
           </label>

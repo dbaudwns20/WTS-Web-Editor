@@ -60,10 +60,4 @@ export function getLocaleTextByValue(value: number) {
   for (const [k, v] of Object.entries(Locale)) if (v === value) return k;
 }
 
-export function getLocaleOptions() {
-  const result = getLocaleList();
-  result.unshift({ id: "", value: "Select your locale" });
-  return result;
-}
-
 export default Locale;
