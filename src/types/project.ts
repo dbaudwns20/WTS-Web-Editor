@@ -4,7 +4,7 @@ import ProjectImage, { bindProjectImage } from "./project.image";
 export default class Project {
   id: string;
   title: string;
-  language: number;
+  locale: number;
   process: string;
   version: string | null;
   source: string | null;
@@ -16,7 +16,7 @@ export default class Project {
   constructor(project: IProject) {
     this.id = project._id;
     this.title = project.title;
-    this.language = project.language;
+    this.locale = project.locale;
     this.process = project.process;
     this.version = project.version;
     this.source = project.source;

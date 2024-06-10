@@ -1,0 +1,231 @@
+{
+  "MAIN": {
+    "CREATE_PROJECT_BUTTON": "CREATE NEW PROJECT"
+  },
+  "PROJECT_MODAL": {
+    "MODAL_TITLE": "{type, select, create {New} update {Update} other {}} Project",
+    "TITLE": {
+      "LABEL": "TITLE",
+      "PLACEHOLDER": "Type project title",
+      "INVALID_MESSAGE": "Please type your project title."
+    },
+    "LOCALE": {
+      "LABEL": "LOCALE",
+      "DEFAULT": "Select your locale",
+      "INVALID_MESSAGE": "Please select your locale."
+    },
+    "VERSION": {
+      "LABEL": "VERSION"
+    },
+    "SOURCE_URL": {
+      "LABEL": "SOURCE URL",
+      "PLACEHOLDER": "Type source URL"
+    },
+    "IMAGE": {
+      "LABEL": "IMAGE"
+    },
+    "WTS_FILE": {
+      "LABEL": "WTS FILE",
+      "INVALID_MESSAGE": "Please upload your wts file."
+    },
+    "CREATE": {
+      "CREATE_BUTTON": "Create Project",
+      "SUCCESS_MESSAGE": "Successfully Created."
+    },
+    "UPDATE": {
+      "UPDATE_BUTTON": "Update Project",
+      "SUCCESS_MESSAGE": "Successfully Updated.",
+      "NO_EDITED": "No edited.",
+      "CONFIRM": {
+        "TITLE": "Confirm Update",
+        "MESSAGE": "You have uploaded a WTS file. The existing STRING data will be updated with the new data, and re-translation may be necessary.",
+        "OK_LABEL": "Yes",
+        "NO_LABEL": "No"
+      }
+    }
+  },
+  "PROJECT_DETAIL": {
+    "INFO": {
+      "PROGRESS": "{process}% Translated",
+      "DOWNLOAD": "Download",
+      "SOURCE_LINK": "Source Link",
+      "LAST_EDITED": "Last Edited"
+    },
+    "MORE_BUTTON": {
+      "UPDATE": "Update",
+      "DELETE": "Delete",
+      "UPLOAD_WTS": "Upload WTS"
+    },
+    "DELETE": {
+      "SUCCESS_MESSAGE": "Successfully Deleted.",
+      "CONFIRM": {
+        "TITLE": "Delete Project",
+        "MESSAGE": "Are you sure? This action cannot be undone.",
+        "OK_LABEL": "OK",
+        "CANCEL_LABEL": "Cancel"
+      }
+    },
+    "UPLOAD_WTS_MODAL": {
+      "TITLE": "WTS Upload",
+      "SUCCESS_MESSAGE": "Successfully Updated.",
+      "GUIDE_1": "A processed WTS file can be applied to the project.",
+      "GUIDE_2": "The translate text of the data matching the STRING number will be updated.",
+      "UPLOAD_BUTTON": "Upload",
+      "WTS_FILE": {
+        "LABEL": "WTS FILE",
+        "INVALID_MESSAGE": "Please upload your wts file."
+      }
+    },
+    "DOWNLOAD_WTS_MODAL": {
+      "TITLE": "Download WTS",
+      "DOWNLOAD": {
+        "LABEL": "DOWNLOAD TYPE",
+        "RELEASE": "Release",
+        "RELEASE_GUILD": "Download all STRING data.",
+        "DEBUG": "Debug",
+        "DEBUG_GUILD": "STRING numbers are displayed at the beginning of the text.",
+        "UPLOAD": "Upload",
+        "UPLOAD_GUILD": "Download only STRING data that has been translated."
+      },
+      "DOWNLOAD_BUTTON": "Download"
+    },
+    "STRING_LIST": {
+      "COMPLETE": "Complete",
+      "IN_PROGRESS": "In progress",
+      "UPDATE": "Update",
+      "CONFIRM": {
+        "TITLE": "Warning",
+        "MESSAGE": "Changes exist. Would you like to save?",
+        "IGNORE_LABEL": "Ignore",
+        "SAVE_DRAFT_LABEL": "Save Draft",
+        "COMPLETE_LABEL": "Complete"
+      },
+      "STRING_SEARCH": {
+        "NO_QUERY": "Please enter your keyword or status.",
+        "KEYWORD": {
+          "LABEL": "KEYWORD",
+          "PLACEHOLDER": "type STRING number or keyword."
+        },
+        "STATUS": {
+          "LABEL": "STATUS",
+          "UNEDITED": "Unedited",
+          "COMPLETE": "Complete",
+          "IN_PROGRESS": "In progress",
+          "UPDATE": "Update"
+        },
+        "SEARCH_BUTTON": "Search"
+      },
+      "OPEN_SEARCH_TOOLTIP": "Open Search",
+      "CLOSE_SEARCH_TOOLTIP": "Close Search",
+      "RESET_SEARCH_QUERY": "Reset Search Query",
+      "LOADING": "Loading...",
+      "NO_DATA": "No Data"
+    },
+    "STRING_EDITOR": {
+      "BACK_BUTTON": "BACK",
+      "COMPLETE_BUTTON": "COMPLETE",
+      "NEXT_BUTTON": "NEXT",
+      "EMPTY_TRANSLATE_TEXT_MESSAGE": "Translate text is empty!",
+      "SUCCESS_MESSAGE": "Successfully Saved.",
+      "CONFIRM": {
+        "TITLE": "Warning",
+        "MESSAGE": "Changes exist. Would you like to save?",
+        "IGNORE_LABEL": "Ignore",
+        "SAVE_DRAFT_LABEL": "Save Draft",
+        "COMPLETE_LABEL": "Complete"
+      },
+      "FUNCTIONS": {
+        "LAYOUT": {
+          "LABEL": "Layout",
+          "STRING_LIST": {
+            "LABEL": "STRING List",
+            "TEXT": "Show STRING list"
+          },
+          "EDITOR_VIEW": {
+            "LABEL": "Editor View",
+            "VERTICAL": "Vertical",
+            "HORIZONTAL": "Horizontal"
+          }
+        },
+        "PREFERENCES": {
+          "LABEL": "Preferences",
+          "EDITOR_PREFERENCE": {
+            "LABEL": "Editor Preference",
+            "AUTO_MOVE": {
+              "LABEL": "Auto Move",
+              "TEXT": "Automatically move to the following when saving STRING data"
+            },
+            "SKIP": {
+              "LABEL": "Skip",
+              "TEXT": "Skip translated items when STRING changes"
+            }
+          }
+        },
+        "SHORTCUTS": {
+          "LABEL": "Shortcuts",
+          "SHORTCUT_LIST": {
+            "LABEL": "Shortcut Keys",
+            "SHORTCUT_1": "Complete",
+            "SHORTCUT_2": "Save draft",
+            "SHORTCUT_3": "Search On / Off",
+            "SHORTCUT_4": "Reset search query",
+            "SHORTCUT_5": "Move to next STRING",
+            "SHORTCUT_6": "Move to previous STRING",
+            "SHORTCUT_7": "Reset",
+            "SHORTCUT_8": "Sync"
+          }
+        }
+      },
+      "TRANSLATOR": {
+        "COPY_MESSAGE": "Copied.",
+        "ORIGINAL_TEXT": "Original Text",
+        "COMMENT": "Comment",
+        "SYNC": "Sync",
+        "COPY": "Copy",
+        "TRANSLATE_TEXT": "Translate Text",
+        "PLACEHOLDER": "Type the text to translate",
+        "SAVE_DRAFT": "Save Draft",
+        "RESET": "Reset",
+        "PREVIEW": "Preview",
+        "PREVIEW_MODE": {
+          "LABEL": "Preview Mode",
+          "EXIT_PREVIEW": "Exit Preview"
+        }
+      }
+    }
+  },
+  "COMPONENTS": {
+    "FILE": {
+      "FILE_NOT_FOUND": "File not found.",
+      "INVALID_TYPE": "Invalid file type.",
+      "EXCEED_SIZE": "File size exceeds {maxSize}MB.",
+      "GUIDE": "Click to upload or drag and drop",
+      "MAX_SIZE": "Maximum upload file size : {maxSize}MB",
+      "DELETE_BUTTON": "Delete"
+    },
+    "IMAGE_UPLOAD": {
+      "FILE_NOT_FOUND": "File not found.",
+      "INVALID_TYPE": "Invalid file type.",
+      "RESET_BUTTON_TOOLTIP": "Reset",
+      "DEFAULT_IMAGE": "Default Image {id}",
+      "UPLOADED_IMAGE": "Uploaded image",
+      "APPLY_DEFAULT_IMAGE_BUTTON": "Apply default image",
+      "SWITCH_DEFAULT_IMAGE_BUTTON": "Switch default image",
+      "UPLOAD_IMAGE_BUTTON": "Upload image",
+      "CROPPER_MODAL": {
+        "FILE_NOT_FOUND": "File not found.",
+        "INVALID_TYPE": "Invalid file type.",
+        "RE_UPLOAD": "Re Upload",
+        "FULL_SIZE": "Full size",
+        "RESET": "Reset",
+        "COMPLETE": "Complete"
+      }
+    }
+  },
+  "ERROR": {
+    "ERR_MISSING_PARAMS": "Required parameters are missing  - [ {arg} ]",
+    "ERR_MISSING_FORM_DATA": "Required formData are missing  - [ {arg} ]",
+    "ERR_NO_TRANSLATED_DATA": "Translated data does not exist.",
+    "ERR_NO_PROJECT": "Project does not exist."
+  }
+}

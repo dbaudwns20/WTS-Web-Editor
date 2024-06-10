@@ -1,6 +1,7 @@
 import { ClientSession } from "mongoose";
 
 import ProjectModel from "@/db/models/project";
+import { ErrorResponse } from "@/types/api.response";
 
 import { deleteProjectStrings } from "@/app/api/_services/string.service";
 import { deleteProjectImage } from "@/app/api/_services/project.image.service";
@@ -33,7 +34,7 @@ export async function getProject(projectId: string) {
   const instance = await ProjectModel.findById(projectId).populate(
     "projectImage"
   );
-  if (!instance) throw new Error("Project is not found");
+  if (!instance) throw new ErrorResponse("ERR_NO_PROJECT");
   return instance;
 }
 

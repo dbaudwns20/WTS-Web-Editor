@@ -1,0 +1,215 @@
+.string-list-wrapper {
+  --var-string-list-header-hight: 37px;
+  @apply relative;
+  @apply h-full;
+  @apply flex;
+  @apply flex-col;
+  @apply mr-5;
+  @apply w-[30%];
+  @apply border;
+  @apply border-gray-300;
+  @apply rounded-lg;
+}
+
+.string-list-wrapper.is-hide {
+  @apply invisible;
+  @apply w-0;
+  @apply mr-0;
+}
+
+.string-list-wrapper > .is-loading {
+  @apply w-full;
+  @apply h-full;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
+  @apply [&>svg]:animate-spin;
+  @apply [&>svg]:text-slate-300;
+  @apply [&>svg]:w-[50px];
+  @apply [&>svg]:h-[50px];
+}
+
+.string-list-wrapper > .string-list-header {
+  @apply flex;
+  @apply justify-between;
+  @apply items-center;
+  @apply border-b;
+  @apply border-gray-300;
+  @apply py-1.5;
+  @apply px-2.5;
+  @apply h-[--var-string-list-header-hight];
+  @apply text-gray-400;
+  @apply tracking-wide;
+  @apply [&>span]:text-xs;
+}
+
+.string-list-wrapper > .string-list-header > .button-group {
+  @apply flex;
+  @apply gap-1;
+}
+
+.string-list-wrapper
+  > .string-list-header
+  > .button-group
+  > .string-search-button {
+  @apply flex;
+  @apply items-center;
+  @apply cursor-pointer;
+  @apply rounded-lg;
+  @apply hover:bg-gray-100;
+}
+
+.string-list-wrapper > .string-list {
+  @apply overflow-y-auto;
+  @apply w-full;
+  @apply h-full;
+}
+
+.string-list-wrapper > .string-list > .is-more-loading {
+  @apply w-full;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
+  @apply h-14;
+  @apply [&>svg]:animate-spin;
+  @apply [&>svg]:text-slate-300;
+  @apply [&>svg]:w-[30px];
+  @apply [&>svg]:h-[30px];
+}
+
+.string-list-wrapper > .string-list > .string {
+  @apply relative;
+  @apply p-4;
+  @apply block;
+  @apply border-b;
+  @apply border-gray-200;
+  @apply last:border-b-0;
+  @apply hover:bg-slate-100;
+  @apply dark:hover:bg-slate-700;
+  @apply hover:cursor-pointer;
+  @apply duration-500;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .number {
+  @apply mb-4;
+  @apply font-medium;
+  @apply text-slate-400;
+  @apply dark:text-white;
+  @apply w-fit;
+  @apply text-sm;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .number
+  > .complete {
+  @apply absolute;
+  @apply top-3.5;
+  @apply right-4;
+  @apply border;
+  @apply bg-transparent;
+  @apply border-teal-500;
+  @apply text-teal-500;
+  @apply rounded-full;
+  @apply px-1.5;
+  @apply py-0.5;
+  @apply text-xs;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .number
+  > .update {
+  @apply absolute;
+  @apply top-3.5;
+  @apply right-4;
+  @apply border;
+  @apply bg-transparent;
+  @apply border-red-500;
+  @apply text-red-500;
+  @apply rounded-full;
+  @apply px-1.5;
+  @apply py-0.5;
+  @apply text-xs;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .number
+  > .in-progress {
+  @apply absolute;
+  @apply top-3.5;
+  @apply right-4;
+  @apply border;
+  @apply bg-transparent;
+  @apply border-yellow-500;
+  @apply text-yellow-500;
+  @apply rounded-full;
+  @apply px-1.5;
+  @apply py-0.5;
+  @apply text-xs;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .content {
+  @apply text-sm;
+  @apply text-gray-500;
+  @apply dark:text-gray-400;
+  @apply overflow-hidden;
+  @apply max-w-[90%];
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string
+  > .icon {
+  @apply absolute;
+  @apply bottom-3.5;
+  @apply right-4;
+  @apply text-gray-400;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string.is-active {
+  @apply bg-sky-100/50;
+  @apply dark:bg-sky-700/30;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string.is-active
+  > .number {
+  @apply text-sky-500;
+  @apply font-semibold;
+}
+
+.string-content-section
+  > .string-list-wrapper
+  > .string-list
+  > .string.is-active
+  > .content {
+  @apply font-semibold;
+  @apply dark:text-gray-200;
+}

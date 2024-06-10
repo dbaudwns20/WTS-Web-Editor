@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { type PageInfo, type ApiResponse } from "@/types/api.response";
+import {
+  type PageInfo,
+  type ApiResponse,
+  ErrorResponse,
+} from "@/types/api.response";
 
 function setOrder(req: NextRequest) {
   const sort = req.nextUrl.searchParams.get("sort") || null;
@@ -20,7 +24,7 @@ export function checkRequestParams(keys: string[], params: any) {
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Required parameters are missing - [ ${arr.join(",")} ]`);
+    throw new ErrorResponse("ERR_MISSING_PARAMS", arr.join(","));
   }
 }
 
@@ -32,7 +36,7 @@ export function checkRequestBody(keys: string[], form: FormData) {
     }
   }
   if (arr.length > 0) {
-    throw new Error(`Required formData are missing  - [ ${arr.join(", ")} ]`);
+    throw new ErrorResponse("ERR_MISSING_FORM_DATA", arr.join(","));
   }
 }
 
@@ -155,6 +159,8 @@ export function resolveSuccess(data: any) {
 export function resolveErrors(error: any) {
   return NextResponse.json({
     success: false,
-    message: error.message,
+    message: error?.message,
+    errorCode: error?.errorCode,
+    arg: error?.arg,
   } as ApiResponse);
 }
