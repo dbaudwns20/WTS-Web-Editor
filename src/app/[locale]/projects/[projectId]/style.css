@@ -1,0 +1,234 @@
+.project-info-section {
+  @apply pb-5;
+}
+
+.project-info-section > .project-info-wrapper {
+  @apply flex;
+  @apply w-full;
+  @apply relative;
+}
+
+.project-info-section > .project-info-wrapper > .project-info {
+  @apply flex;
+  @apply justify-center;
+  @apply w-full;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .last-edited-wrapper {
+  @apply absolute;
+  @apply bottom-0;
+  @apply right-2.5;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .last-edited-wrapper
+  > .last-edited {
+  @apply flex;
+  @apply items-center;
+  @apply gap-2;
+}
+
+.project-info-section > .project-info-wrapper > .functions {
+  @apply pt-3;
+  @apply absolute;
+  @apply right-0;
+}
+
+.project-info-section > .project-info-wrapper > .project-info > .image-wrapper {
+  @apply overflow-hidden;
+  @apply flex-shrink-0;
+  @apply flex;
+  @apply justify-center;
+  @apply items-start;
+  @apply w-[120px];
+  @apply pt-2;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .image-wrapper
+  > .image {
+  @apply object-cover;
+  @apply aspect-square;
+  @apply w-full;
+  @apply rounded-lg;
+}
+
+.project-info-section > .project-info-wrapper > .project-info > .info-wrapper {
+  @apply pt-3;
+  @apply pl-5;
+  @apply pr-10;
+  @apply w-full;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .title {
+  @apply text-3xl;
+  @apply font-bold;
+  @apply text-gray-600;
+  @apply dark:text-gray-300;
+  @apply mb-3.5;
+  @apply break-all;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .tag-group {
+  @apply flex;
+  @apply gap-2;
+  @apply mb-3;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .tag-group
+  > .tag.locale {
+  @apply bg-blue-400;
+  @apply text-white;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-blue-400;
+  @apply dark:text-blue-400;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .tag-group
+  > .tag.version {
+  @apply bg-orange-400;
+  @apply text-white;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-orange-400;
+  @apply dark:text-orange-400;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .tag-group
+  > .tag.progress {
+  @apply bg-violet-500/90;
+  @apply text-white;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-violet-400;
+  @apply dark:text-violet-400;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .tag-group
+  > .tag.complete {
+  @apply bg-teal-500;
+  @apply text-white;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-teal-500;
+  @apply dark:text-teal-500;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group {
+  @apply flex;
+  @apply gap-2;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
+  > .source-link {
+  @apply rounded-lg;
+  @apply outline-cyan-200;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
+  .download-button {
+  @apply rounded-lg;
+  @apply outline-emerald-300;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
+  > .source-link
+  > .tag.source {
+  @apply bg-cyan-500;
+  @apply text-white;
+  @apply pl-1;
+  @apply hover:bg-cyan-600;
+  @apply duration-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-cyan-500;
+  @apply dark:text-cyan-500;
+  @apply dark:hover:bg-transparent/30;
+  @apply shadow-md;
+}
+
+.project-info-section
+  > .project-info-wrapper
+  > .project-info
+  > .info-wrapper
+  > .button-group
+  > .download-button
+  > .tag.download {
+  @apply cursor-pointer;
+  @apply bg-emerald-500;
+  @apply text-white;
+  @apply pl-1;
+  @apply hover:bg-emerald-600;
+  @apply duration-300;
+  @apply dark:bg-transparent;
+  @apply dark:border-2;
+  @apply dark:border-emerald-500;
+  @apply dark:text-emerald-500;
+  @apply dark:hover:bg-transparent/30;
+  @apply shadow-md;
+}
+
+.string-content-section {
+  @apply flex;
+}
+
+.more-button {
+  @apply text-gray-500;
+  @apply dark:text-gray-300;
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply rounded-full;
+  @apply p-2;
+  @apply hover:bg-gray-100;
+  @apply hover:cursor-pointer;
+  @apply dark:hover:bg-gray-700;
+}

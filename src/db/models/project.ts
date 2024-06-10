@@ -6,7 +6,7 @@ import { IProjectImage } from "./project.image";
 export interface IProject {
   _id: string;
   title: string;
-  language: number;
+  locale: number;
   process: string;
   version: string | null;
   lastModifiedStringNumber: number;
@@ -24,7 +24,7 @@ const ProjectSchema: Schema<IProject> = new Schema({
     maxlength: 200,
     trim: true,
   },
-  language: {
+  locale: {
     type: Number,
     required: true,
   },

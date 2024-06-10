@@ -1,0 +1,231 @@
+{
+  "MAIN": {
+    "CREATE_PROJECT_BUTTON": "새 프로젝트 생성"
+  },
+  "PROJECT_MODAL": {
+    "MODAL_TITLE": "{type, select, create {새 프로젝트 생성} update {프로젝트 업데이트} other {}}",
+    "TITLE": {
+      "LABEL": "제목",
+      "PLACEHOLDER": "제목을 입력하세요",
+      "INVALID_MESSAGE": "제목을 입력해주세요."
+    },
+    "LOCALE": {
+      "LABEL": "언어",
+      "DEFAULT": "언어를 선택하세요",
+      "INVALID_MESSAGE": "언어를 선택해주세요."
+    },
+    "VERSION": {
+      "LABEL": "버전"
+    },
+    "SOURCE_URL": {
+      "LABEL": "출처 URL",
+      "PLACEHOLDER": "출처 URL을 입력하세요."
+    },
+    "IMAGE": {
+      "LABEL": "이미지"
+    },
+    "WTS_FILE": {
+      "LABEL": "WTS 파일",
+      "INVALID_MESSAGE": "WTS 파일을 업로드해주세요."
+    },
+    "CREATE": {
+      "CREATE_BUTTON": "프로젝트 생성",
+      "SUCCESS_MESSAGE": "생성되었습니다."
+    },
+    "UPDATE": {
+      "UPDATE_BUTTON": "프로젝트 업데이트",
+      "SUCCESS_MESSAGE": "업데이트되었습니다.",
+      "NO_EDITED": "수정된 내용이 없습니다.",
+      "CONFIRM": {
+        "TITLE": "업데이트 확인",
+        "MESSAGE": "WTS 파일을 업로드하셨습니다. 기존 STRING 데이터는 새로운 데이터로 업데이트되며, 재번역이 필요할 수 있습니다.",
+        "OK_LABEL": "네",
+        "NO_LABEL": "아니요"
+      }
+    }
+  },
+  "PROJECT_DETAIL": {
+    "INFO": {
+      "PROGRESS": "{process}% 번역완료",
+      "DOWNLOAD": "다운로드",
+      "SOURCE_LINK": "출처 링크",
+      "LAST_EDITED": "마지막 수정"
+    },
+    "MORE_BUTTON": {
+      "UPDATE": "업데이트",
+      "DELETE": "삭제",
+      "UPLOAD_WTS": "WTS 업로드"
+    },
+    "DELETE": {
+      "SUCCESS_MESSAGE": "삭제되었습니다.",
+      "CONFIRM": {
+        "TITLE": "프로젝트 삭제",
+        "MESSAGE": "정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "OK_LABEL": "네",
+        "CANCEL_LABEL": "취소"
+      }
+    },
+    "UPLOAD_WTS_MODAL": {
+      "TITLE": "WTS 업로드",
+      "SUCCESS_MESSAGE": "업데이트되었습니다.",
+      "GUIDE_1": "작업된 WTS 파일을 프로젝트에 반영할 수 있습니다.",
+      "GUIDE_2": "STRING 숫자와 일치하는 데이터의 번역 텍스트가 갱신됩니다.",
+      "UPLOAD_BUTTON": "업로드",
+      "WTS_FILE": {
+        "LABEL": "WTS 파일",
+        "INVALID_MESSAGE": "WTS 파일을 업로드해주세요."
+      }
+    },
+    "DOWNLOAD_WTS_MODAL": {
+      "TITLE": "WTS 다운로드",
+      "DOWNLOAD": {
+        "LABEL": "다운로드 선택",
+        "RELEASE": "릴리즈",
+        "RELEASE_GUILD": "모든 STRING 데이터를 다운로드합니다.",
+        "DEBUG": "디버그",
+        "DEBUG_GUILD": "STRING 번호가 모든 텍스트 앞에 표시됩니다.",
+        "UPLOAD": "업로드",
+        "UPLOAD_GUILD": "번역된 STRING 데이터만 다운로드합니다."
+      },
+      "DOWNLOAD_BUTTON": "다운로드"
+    },
+    "STRING_LIST": {
+      "COMPLETE": "번역완료",
+      "IN_PROGRESS": "작업중",
+      "UPDATE": "업데이트",
+      "CONFIRM": {
+        "TITLE": "경고",
+        "MESSAGE": "변경사항이 존재합니다. 저장하시겠습니까?",
+        "IGNORE_LABEL": "무시",
+        "SAVE_DRAFT_LABEL": "임시저장",
+        "COMPLETE_LABEL": "완료"
+      },
+      "STRING_SEARCH": {
+        "NO_QUERY": "검색조건을 입력해주세요.",
+        "KEYWORD": {
+          "LABEL": "키워드",
+          "PLACEHOLDER": "STRING 숫자 또는 키워드입력하세요"
+        },
+        "STATUS": {
+          "LABEL": "상태",
+          "UNEDITED": "미작업",
+          "COMPLETE": "번역완료",
+          "IN_PROGRESS": "작업중",
+          "UPDATE": "업데이트"
+        },
+        "SEARCH_BUTTON": "검색"
+      },
+      "OPEN_SEARCH_TOOLTIP": "검색 열기",
+      "CLOSE_SEARCH_TOOLTIP": "검색 닫기",
+      "RESET_SEARCH_QUERY": "검색조건 초기화",
+      "LOADING": "조회중...",
+      "NO_DATA": "결과 없음"
+    },
+    "STRING_EDITOR": {
+      "BACK_BUTTON": "이전",
+      "COMPLETE_BUTTON": "번역완료",
+      "NEXT_BUTTON": "다음",
+      "EMPTY_TRANSLATE_TEXT": "번역 텍스트의 값이 없습니다.",
+      "SUCCESS_MESSAGE": "저장되었습니다.",
+      "CONFIRM": {
+        "TITLE": "경고",
+        "MESSAGE": "변경사항이 존재합니다. 저장하시겠습니까?",
+        "IGNORE_LABEL": "무시",
+        "SAVE_DRAFT_LABEL": "임시저장",
+        "COMPLETE_LABEL": "완료"
+      },
+      "FUNCTIONS": {
+        "LAYOUT": {
+          "LABEL": "레이아웃",
+          "STRING_LIST": {
+            "LABEL": "STRING 목록",
+            "TEXT": "STRING 목록 보기"
+          },
+          "EDITOR_VIEW": {
+            "LABEL": "편집기 모드",
+            "VERTICAL": "세로모드",
+            "HORIZONTAL": "가로모드"
+          }
+        },
+        "PREFERENCES": {
+          "LABEL": "설정",
+          "EDITOR_PREFERENCE": {
+            "LABEL": "편집기 설정",
+            "AUTO_MOVE": {
+              "LABEL": "자동이동",
+              "TEXT": "STRING 데이터 저장 시 자동으로 다음 항목으로 이동"
+            },
+            "SKIP": {
+              "LABEL": "건너뛰기",
+              "TEXT": "STRING 변경 시 완료된 항목은 건너뛰기"
+            }
+          }
+        },
+        "SHORTCUTS": {
+          "LABEL": "단축키",
+          "SHORTCUT_LIST": {
+            "LABEL": "단축기 목록",
+            "SHORTCUT_1": "번역완료",
+            "SHORTCUT_2": "임시저장",
+            "SHORTCUT_3": "검색 열기 / 닫기",
+            "SHORTCUT_4": "검색 조건 초기화",
+            "SHORTCUT_5": "다음 STRING 으로 이동",
+            "SHORTCUT_6": "이전 STRING 으로 이동",
+            "SHORTCUT_7": "초기화",
+            "SHORTCUT_8": "동기화"
+          }
+        }
+      },
+      "TRANSLATOR": {
+        "COPY_MESSAGE": "복사되었습니다.",
+        "ORIGINAL_TEXT": "원문 텍스트",
+        "COMMENT": "주석",
+        "SYNC": "동기화",
+        "COPY": "복사",
+        "TRANSLATE_TEXT": "번역 텍스트",
+        "PLACEHOLDER": "번역할 내용을 입력하세요",
+        "SAVE_DRAFT": "임시저장",
+        "RESET": "초기화",
+        "PREVIEW": "미리보기",
+        "PREVIEW_MODE": {
+          "LABEL": "미리보기",
+          "EXIT_PREVIEW": "미리보기 종료"
+        }
+      }
+    }
+  },
+  "COMPONENTS": {
+    "FILE": {
+      "FILE_NOT_FOUND": "파일을 찾을 수 없습니다.",
+      "INVALID_TYPE": "파일 형식이 잘못되었습니다.",
+      "EXCEED_SIZE": "파일 크기가 {maxSize}MB를 초과합니다.",
+      "GUIDE": "클릭하여 업로드하거나 여기에 드래그하세요",
+      "MAX_SIZE": "최대 용량 : {maxSize}MB",
+      "DELETE_BUTTON": "삭제"
+    },
+    "IMAGE_UPLOAD": {
+      "FILE_NOT_FOUND": "파일을 찾을 수 없습니다.",
+      "INVALID_TYPE": "파일 형식이 잘못되었습니다.",
+      "RESET_BUTTON_TOOLTIP": "초기화",
+      "DEFAULT_IMAGE": "기본 이미지 {id}",
+      "UPLOADED_IMAGE": "업로드 이미지",
+      "APPLY_DEFAULT_IMAGE_BUTTON": "기본 이미지 사용",
+      "SWITCH_DEFAULT_IMAGE_BUTTON": "기본 이미지 변경",
+      "UPLOAD_IMAGE_BUTTON": "이미지 업로드",
+      "CROPPER_MODAL": {
+        "FILE_NOT_FOUND": "파일을 찾을 수 없습니다.",
+        "INVALID_TYPE": "파일 형식이 잘못되었습니다.",
+        "RE_UPLOAD": "재업로드",
+        "FULL_SIZE": "최대화",
+        "RESET": "초기화",
+        "COMPLETE": "완료"
+      }
+    }
+  },
+  "ERROR": {
+    "ERR_MISSING_PARAMS": "필수 파라미터가 누락되었습니다. - [ {arg} ]",
+    "ERR_MISSING_FORM_DATA": "필수 데이터가 누락되었습니다. - [ {arg} ]",
+    "ERR_NO_TRANSLATED_DATA": "번역된 데이터가 존재하지 않습니다.",
+    "ERR_NO_PROJECT": "프로젝트가 존재하지 않습니다."
+  }
+}

@@ -104,10 +104,12 @@
   @apply sm:w-full;
   @apply md:w-1/2;
   @apply lg:w-1/4;
-  @apply h-16;
   @apply shadow-2xl;
   @apply transition;
   @apply duration-300;
+  @apply p-2;
+  @apply min-h-16;
+  height: max-content;
 }
 
 .notification-wrapper.is-left > .notification {

@@ -15,6 +15,7 @@ import { checkFileType } from "@/utils/validator";
 import { showNotificationMessage } from "@/utils/message";
 
 import Cropper, { ReactCropperElement } from "react-cropper";
+import { useTranslations } from "next-intl";
 
 type CropperModalProps = {
   uploadedImageUrl: string;
@@ -34,6 +35,9 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
     setCroppedImageUrl,
     closeModal,
   } = props;
+
+  // i18n translate key
+  const t = useTranslations("COMPONENTS.IMAGE_UPLOAD.CROPPER_MODAL");
 
   // refs
   const cropperRef = createRef<ReactCropperElement>();
@@ -96,7 +100,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
     if (!e.target.files) {
       showNotificationMessage({
         messageType: "warning",
-        message: "파일을 찾을 수 없습니다.",
+        message: t("FILE_NOT_FOUND"),
       });
       return;
     }
@@ -106,7 +110,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
     if (!checkFileType(file, [".jpg", ".jpeg", ".png"])) {
       showNotificationMessage({
         messageType: "warning",
-        message: "Invalid file type",
+        message: t("INVALID_TYPE"),
       });
       return;
     }
@@ -138,7 +142,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
               <span className="icon">
                 <i className="material-icons md-18">upload</i>
               </span>
-              <span>다시업로드</span>
+              <span> {t("RE_UPLOAD")}</span>
             </a>
           </div>
           <div className="cropper-functions">
@@ -150,13 +154,13 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
               <span className="icon">
                 <i className="material-icons md-18">fullscreen</i>
               </span>
-              <span>최대화</span>
+              <span> {t("FULL_SIZE")}</span>
             </a>
             <a type="button" className="anchor-has-icon" onClick={reset}>
               <span className="icon">
                 <i className="material-icons md-18">refresh</i>
               </span>
-              <span>초기화</span>
+              <span> {t("RESET")}</span>
             </a>
           </div>
         </header>
@@ -177,7 +181,7 @@ const CropperModal = forwardRef((props: CropperModalProps, ref) => {
           className="button is-info w-full"
           onClick={applyImage}
         >
-          완료
+          {t("COMPLETE")}
         </button>
         <input
           type="file"

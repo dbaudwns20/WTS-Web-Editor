@@ -21,3 +21,14 @@ export type FileResponse = {
   fileName: string;
   fileContent: string;
 };
+
+export class ErrorResponse extends Error {
+  errorCode: string;
+  arg?: any;
+
+  constructor(errorCode: string, arg?: string) {
+    super();
+    this.errorCode = errorCode;
+    this.arg = arg;
+  }
+}
