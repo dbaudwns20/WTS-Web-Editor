@@ -19,17 +19,21 @@ import { showNotificationMessage } from "@/utils/message";
 import { callApi } from "@/utils/common";
 import { downloadFile } from "@/utils/wts";
 
+import { useTranslations } from "next-intl";
+
 type DownloadWtsModalProps = {
   closeModal: Dispatch<SetStateAction<boolean>>;
-  completeFunction: (...arg: any) => void;
 };
 
 type DownloadPurpose = "RELEASE" | "DEBUG" | "UPLOAD";
 
 const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
-  const { closeModal, completeFunction } = props;
+  const { closeModal } = props;
   // params
   const { projectId } = useParams();
+
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL.DOWNLOAD_WTS_MODAL");
 
   // ref
   const submitRef = useRef<SubmitType>();
@@ -73,10 +77,9 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
 
   return (
     <Modal
-      title="Download WTS"
+      title={t("TITLE")}
       isCloseOnOverlay={false}
       setIsModalOpen={closeModal}
-      widthClass="lg:!w-[480px]"
     >
       <form
         className="grid gap-4 px-6 pt-3 pb-6"
@@ -84,7 +87,7 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
         noValidate
       >
         <div className="block">
-          <label className="label is-required">다운로드 선택</label>
+          <label className="label is-required">{t("DOWNLOAD.LABEL")}</label>
           <div className="download-wrapper">
             <div className="download">
               <input
@@ -101,9 +104,11 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
                   </span>
                 </div>
                 <div className="block">
-                  <div className="w-full font-semibold mb-0.5">Release</div>
+                  <div className="w-full font-semibold mb-0.5">
+                    {t("DOWNLOAD.RELEASE")}
+                  </div>
                   <div className="w-full text-sm break-keep">
-                    모든 STRING 데이터를 다운로드합니다.
+                    {t("DOWNLOAD.RELEASE_GUILD")}
                   </div>
                 </div>
               </label>
@@ -113,7 +118,6 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
                 type="radio"
                 id="DEBUG"
                 checked={downloadPurpose === "DEBUG"}
-                className="hidden peer"
                 onChange={() => setDownloadPurpose("DEBUG")}
                 required
               />
@@ -124,9 +128,11 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
                   </span>
                 </div>
                 <div className="block">
-                  <div className="w-full font-semibold mb-0.5">Debug</div>
+                  <div className="w-full font-semibold mb-0.5">
+                    {t("DOWNLOAD.DEBUG")}
+                  </div>
                   <div className="w-full text-sm break-keep">
-                    텍스트 앞부분에 STRING 숫자가 표시됩니다.
+                    {t("DOWNLOAD.DEBUG_GUILD")}
                   </div>
                 </div>
               </label>
@@ -136,7 +142,6 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
                 type="radio"
                 id="UPLOAD"
                 checked={downloadPurpose === "UPLOAD"}
-                className="hidden peer"
                 onChange={() => setDownloadPurpose("UPLOAD")}
               />
               <label htmlFor="UPLOAD">
@@ -146,9 +151,11 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
                   </span>
                 </div>
                 <div className="block">
-                  <div className="w-full font-semibold mb-0.5">Upload</div>
+                  <div className="w-full font-semibold mb-0.5">
+                    {t("DOWNLOAD.UPLOAD")}
+                  </div>
                   <div className="w-full text-sm break-keep">
-                    번역이 완료된 STRING 데이터만 다운로드합니다.
+                    {t("DOWNLOAD.UPLOAD_GUILD")}
                   </div>
                 </div>
               </label>
@@ -158,7 +165,7 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
         <div className="block text-center">
           <Submit
             ref={submitRef}
-            buttonText="DOWNLOAD"
+            buttonText={t("DOWNLOAD_BUTTON")}
             buttonClass="button is-primary"
           />
         </div>

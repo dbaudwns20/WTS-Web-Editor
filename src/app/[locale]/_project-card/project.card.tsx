@@ -3,10 +3,10 @@ import Image from "next/image";
 
 import "./style.css";
 
+import type Project from "@/types/project";
 import { getLocaleTextByValue } from "@/types/locale";
 
-import { convertDateToString } from "@/utils/common";
-import type Project from "@/types/project";
+import { useFormatter } from "next-intl";
 
 type ProjectProps = {
   project: Project;
@@ -16,6 +16,8 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
   const { project } = props;
 
   useImperativeHandle(ref, () => {});
+
+  const format = useFormatter();
 
   // values
   const isCompleted: boolean = project.process === "100.0" ? true : false;
@@ -46,7 +48,11 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           </div>
           <p className="date-created">
             <span className="material-icons-outlined">schedule</span>
-            {convertDateToString(project.createdAt)}
+            {format.dateTime(project.createdAt, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
           </p>
         </div>
         <div

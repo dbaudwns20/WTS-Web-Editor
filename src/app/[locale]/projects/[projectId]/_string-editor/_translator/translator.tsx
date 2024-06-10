@@ -22,6 +22,8 @@ import {
 
 import { showNotificationMessage } from "@/utils/message";
 
+import { useTranslations } from "next-intl";
+
 export type TranslatorType = {
   setFocus: () => void;
   setDisabled: (val: boolean) => void;
@@ -51,6 +53,9 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     previewDispatch,
     updateString,
   } = props;
+
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL.STRING_EDITOR.TRANSLATOR");
 
   // refs
   const translatorRef = useRef<HTMLDivElement>(null);
@@ -92,7 +97,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   const copy = async () => {
     await window.navigator.clipboard.writeText(originalText);
     showNotificationMessage({
-      message: "Copied.",
+      message: t("COPY_MESSAGE"),
       messageType: "info",
       position: "right",
       timeout: 1500,
@@ -196,7 +201,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
         ) : (
           <>
             <header className="translator-header undraggable">
-              Original Text
+              {t("ORIGINAL_TEXT")}
             </header>
             <textarea
               ref={originalTextAreaRef}
@@ -224,7 +229,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                         sticky_note_2
                       </i>
                     </span>
-                    <span>Comment</span>
+                    <span>{t("COMMENT")}</span>
                   </a>
                 ) : (
                   <></>
@@ -239,7 +244,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   <span className="icon">
                     <i className="material-icons md-18">sync</i>
                   </span>
-                  <span>Sync</span>
+                  <span>{t("SYNC")}</span>
                 </a>
                 <a
                   className="anchor-has-icon undraggable"
@@ -251,7 +256,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   <span className="icon">
                     <i className="material-icons md-18">content_copy</i>
                   </span>
-                  <span>Copy</span>
+                  <span>{t("COPY")}</span>
                 </a>
                 <a
                   className="anchor-has-icon undraggable"
@@ -268,14 +273,14 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                       remove_red_eye
                     </i>
                   </span>
-                  <span>Preview</span>
+                  <span>{t("PREVIEW")}</span>
                 </a>
               </div>
             </footer>
             {showComment ? (
               <div className="comment">
                 <header className="header">
-                  <label className="label">Comment</label>
+                  <label className="label">{t("COMMENT")}</label>
                   <button
                     type="button"
                     className="close"
@@ -317,14 +322,14 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
         ) : (
           <>
             <header className="translator-header undraggable">
-              Translate Text
+              {t("TRANSLATE_TEXT")}
             </header>
             <textarea
               ref={translateTextAreaRef}
               className={`translate-text ${getFontSizeClass(
                 translatedText.length
               )}`}
-              placeholder="번역할 내용을 입력하세요"
+              placeholder={t("PLACEHOLDER")}
               spellCheck={false}
               onFocus={handleFocus}
               onBlur={handleBlur}
@@ -349,7 +354,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                     <span className="icon">
                       <i className="material-icons-outlined md-18">save_as</i>
                     </span>
-                    <span>Save Draft</span>
+                    <span>{t("SAVE_DRAFT")}</span>
                   </a>
                 )}
                 <a
@@ -362,7 +367,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   <span className="icon">
                     <i className="material-icons-outlined md-18">refresh</i>
                   </span>
-                  <span>Reset</span>
+                  <span>{t("RESET")}</span>
                 </a>
                 <a
                   className="anchor-has-icon undraggable"
@@ -379,7 +384,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                       remove_red_eye
                     </i>
                   </span>
-                  <span>Preview</span>
+                  <span>{t("PREVIEW")}</span>
                 </a>
               </div>
             </footer>

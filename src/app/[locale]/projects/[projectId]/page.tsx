@@ -45,10 +45,10 @@ import DownloadWtsModal from "./_download-wts-modal/download.wts.modal";
 import Dropdown from "@/components/common/dropdown/dropdown";
 
 import { showNotificationMessage, showConfirmMessage } from "@/utils/message";
-import { callApi, convertDateToString, DATE_FORMAT } from "@/utils/common";
+import { callApi } from "@/utils/common";
 
 import Hotkeys from "react-hot-keys";
-import { useTranslations } from "next-intl";
+import { useTranslations, useFormatter } from "next-intl";
 
 export default function ProjectDetail() {
   // params
@@ -58,6 +58,7 @@ export default function ProjectDetail() {
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL");
+  const format = useFormatter();
 
   // refs
   const projectInfoSectionRef = useRef<HTMLSelectElement>(null);
@@ -364,14 +365,20 @@ export default function ProjectDetail() {
                           </i>
                         </span>
                         <span className="text-xs text-gray-400">
-                          Last Edited
+                          {t("INFO.LAST_EDITED")}
                         </span>
                       </span>
                       <span className="text-xs text-gray-400">
-                        {`${convertDateToString(
-                          project!.updatedAt,
-                          DATE_FORMAT.DATE_TIME
-                        )}`}
+                        {format.dateTime(project!.updatedAt, {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        }) +
+                          " " +
+                          format.dateTime(project!.updatedAt, {
+                            hour: "2-digit",
+                            minute: "numeric",
+                          })}
                       </span>
                     </div>
                   </div>
@@ -471,10 +478,7 @@ export default function ProjectDetail() {
               <></>
             )}
             {isDownloadWtsModalOpen ? (
-              <DownloadWtsModal
-                completeFunction={completeFunction}
-                closeModal={setIsDownloadWtsModalOpen}
-              />
+              <DownloadWtsModal closeModal={setIsDownloadWtsModalOpen} />
             ) : (
               <></>
             )}

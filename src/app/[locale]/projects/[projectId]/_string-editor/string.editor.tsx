@@ -34,6 +34,8 @@ import {
   type PreviewAction,
 } from "@/reducers/preview.reducer";
 
+import { useTranslations } from "next-intl";
+
 export type StringEditorType = {
   updateString: (isDraft: boolean) => Promise<void>;
   handleMove: (isForward: boolean) => void;
@@ -86,6 +88,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     componentElement: stringEditorWrapperRef.current!,
   }));
 
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL.STRING_EDITOR");
+
   // refs
   const stringEditorWrapperRef = useRef<HTMLDivElement>(null);
   const stringEditorFormRef = useRef<HTMLFormElement>(null);
@@ -107,7 +112,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     // 번역 텍스트가 없을 경우
     if (!translatedText) {
       showNotificationMessage({
-        message: "The value is empty!",
+        message: t("EMPTY_TRANSLATE_TEXT_MESSAGE"),
         messageType: "warning",
         position: "right",
       });
@@ -160,7 +165,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     // 성공 처리
     completeFunction(() => {
       showNotificationMessage({
-        message: "Saved.",
+        message: t("SUCCESS_MESSAGE"),
         messageType: "success",
         position: "right",
       });
@@ -181,12 +186,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     if (isEdited) {
       const buttons: FuncButton[] = [
         {
-          label: "Ignore",
+          label: t("CONFIRM.IGNORE_LABEL"),
           class: "default",
           onClick: () => moveString(isForward),
         },
         {
-          label: "Save Draft",
+          label: t("CONFIRM.SAVE_DRAFT_LABEL"),
           class: "warning",
           onClick: async () => {
             // submit event 실행
@@ -196,7 +201,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
           },
         },
         {
-          label: "Complete",
+          label: t("CONFIRM.COMPLETE_LABEL"),
           class: "success",
           onClick: async () => {
             // submit event 실행
@@ -213,8 +218,8 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       }
 
       showConfirmMessage({
-        title: "Warning",
-        message: "Changes exist. Would you like to save?",
+        title: t("CONFIRM.TITLE"),
+        message: t("CONFIRM.MESSAGE"),
         buttons: buttons,
       });
     } else {
@@ -310,11 +315,13 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span className="icon">
                   <i className="material-icons md-18">space_dashboard</i>
                 </span>
-                <span>Layout</span>
+                <span>{t("FUNCTIONS.LAYOUT.LABEL")}</span>
               </a>
               <ul className="px-4 py-3.5 w-52" role="none">
                 <li className="mb-2" role="menuitem">
-                  <label className="label !text-xs">String List</label>
+                  <label className="label !text-xs">
+                    {t("FUNCTIONS.LAYOUT.STRING_LIST.LABEL")}
+                  </label>
                   <label className="toggle">
                     <input
                       id="switch"
@@ -330,12 +337,14 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                     />
                     <div className="trigger" />
                     <p className="text-gray-400 text-xs undraggable">
-                      String 목록 보이기
+                      {t("FUNCTIONS.LAYOUT.STRING_LIST.TEXT")}
                     </p>
                   </label>
                 </li>
                 <li>
-                  <label className="label !text-xs">Editor View</label>
+                  <label className="label !text-xs">
+                    {t("FUNCTIONS.LAYOUT.EDITOR_VIEW.LABEL")}
+                  </label>
                   <ul className="grid w-full gap-3 grid-cols-2">
                     <li>
                       <div className="view-mode">
@@ -359,7 +368,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                               view_agenda
                             </i>
                           </span>
-                          <span className="text-xs">Horizontal</span>
+                          <span className="text-xs">
+                            {t("FUNCTIONS.LAYOUT.EDITOR_VIEW.HORIZONTAL")}
+                          </span>
                         </label>
                       </div>
                     </li>
@@ -383,7 +394,9 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                               view_agenda
                             </i>
                           </span>
-                          <span className="text-xs">Vertical</span>
+                          <span className="text-xs">
+                            {t("FUNCTIONS.LAYOUT.EDITOR_VIEW.VERTICAL")}
+                          </span>
                         </label>
                       </div>
                     </li>
@@ -396,11 +409,13 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span className="icon">
                   <i className="material-icons md-18">settings</i>
                 </span>
-                <span>Preferences</span>
+                <span>{t("FUNCTIONS.PREFERENCES.LABEL")}</span>
               </a>
               <ul className="w-[230px] px-4 py-3.5" role="none">
                 <li className="mb-2" role="menuitem">
-                  <label className="label !text-xs">Editor Preference</label>
+                  <label className="label !text-xs">
+                    {t("FUNCTIONS.PREFERENCES.EDITOR_PREFERENCE.LABEL")}
+                  </label>
                   <label className="toggle">
                     <input
                       id="switch"
@@ -417,10 +432,14 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                     <div className="trigger" />
                     <div className="leading-4 undraggable">
                       <label className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
-                        자동이동
+                        {t(
+                          "FUNCTIONS.PREFERENCES.EDITOR_PREFERENCE.AUTO_MOVE.LABEL"
+                        )}
                       </label>
                       <p className="text-xs text-gray-400 dark:text-gray-300">
-                        String 데이터 저장 시 자동으로 다음 항목으로 이동
+                        {t(
+                          "FUNCTIONS.PREFERENCES.EDITOR_PREFERENCE.AUTO_MOVE.TEXT"
+                        )}
                       </p>
                     </div>
                   </label>
@@ -442,10 +461,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                     <div className="trigger" />
                     <div className="leading-4 undraggable">
                       <label className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
-                        건너뛰기
+                        {t(
+                          "FUNCTIONS.PREFERENCES.EDITOR_PREFERENCE.SKIP.LABEL"
+                        )}
                       </label>
                       <p className="text-xs text-gray-400 dark:text-gray-300">
-                        String 변경 시 완료된 항목은 건너뛰기
+                        {t("FUNCTIONS.PREFERENCES.EDITOR_PREFERENCE.SKIP.TEXT")}
                       </p>
                     </div>
                   </label>
@@ -457,7 +478,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
                 <span className="icon">
                   <i className="material-icons md-18">keyboard_alt</i>
                 </span>
-                <span>Shortcuts</span>
+                <span>{t("FUNCTIONS.SHORTCUTS.LABEL")}</span>
               </a>
               <Shortcut />
             </Dropdown>
@@ -483,12 +504,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             onClick={() => handleMove(true)}
             className="button move-button"
           >
-            BACK
+            {t("BACK_BUTTON")}
           </button>
           <Submit
             ref={submitRef}
             buttonClass="button is-success"
-            buttonText="COMPLETE"
+            buttonText={t("COMPLETE_BUTTON")}
           />
           <button
             type="button"
@@ -496,7 +517,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             onClick={() => handleMove(false)}
             className="button move-button"
           >
-            NEXT
+            {t("NEXT_BUTTON")}
           </button>
         </footer>
       </form>

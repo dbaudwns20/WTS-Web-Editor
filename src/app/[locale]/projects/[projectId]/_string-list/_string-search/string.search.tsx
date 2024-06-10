@@ -18,6 +18,8 @@ import { type PageInfo } from "@/types/api.response";
 
 import { showNotificationMessage } from "@/utils/message";
 
+import { useTranslations } from "next-intl";
+
 type Status = "unedited" | "complete" | "inProgress" | "update" | "";
 
 type StringSearchProps = {
@@ -47,6 +49,9 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
     setPageInfo,
   } = props;
 
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL.STRING_LIST.STRING_SEARCH");
+
   // refs
   const stringSearchWrapperRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<TextType>();
@@ -63,7 +68,7 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
     // 키워드와 상태 둘 다 없는 경우 경고 메시지 표시
     if (!status && !keyword) {
       showNotificationMessage({
-        message: "Please enter your keyword or status.",
+        message: t("NO_QUERY"),
         messageType: "warning",
       });
       focusKeyword();
@@ -140,13 +145,13 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
           <Text
             ref={searchRef}
             value={keyword}
-            labelText="KEYWORD"
-            placeholder="type string number or keyword."
+            labelText={t("KEYWORD.LABEL")}
+            placeholder={t("KEYWORD.PLACEHOLDER")}
             onChange={setKeyword}
           />
         </div>
         <div className="block">
-          <label className="label">STATUS</label>
+          <label className="label">{t("STATUS.LABEL")}</label>
           <div className="string-status-group">
             <div
               className="string-status"
@@ -160,7 +165,7 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
                 checked={status === "unedited"}
                 onChange={handleChange}
               />
-              <label htmlFor="unedited">UNEDITED</label>
+              <label htmlFor="unedited">{t("STATUS.UNEDITED")}</label>
             </div>
             <div
               className="string-status is-completed"
@@ -174,7 +179,7 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
                 checked={status === "complete"}
                 onChange={handleChange}
               />
-              <label htmlFor="complete">COMPLETE</label>
+              <label htmlFor="complete">{t("STATUS.COMPLETE")}</label>
             </div>
             <div
               className="string-status is-progress"
@@ -188,7 +193,7 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
                 checked={status === "inProgress"}
                 onChange={handleChange}
               />
-              <label htmlFor="inProgress">IN PROGRESS</label>
+              <label htmlFor="inProgress">{t("STATUS.IN_PROGRESS")}</label>
             </div>
             <div
               className="string-status is-updated"
@@ -202,14 +207,14 @@ const StringSearch = forwardRef((props: StringSearchProps, ref) => {
                 checked={status === "update"}
                 onChange={handleChange}
               />
-              <label htmlFor="update">UPDATE</label>
+              <label htmlFor="update">{t("STATUS.UPDATE")}</label>
             </div>
           </div>
         </div>
         <div className="block">
           <Submit
             ref={submitRef}
-            buttonText="SEARCH"
+            buttonText={t("SEARCH_BUTTON")}
             buttonClass="button is-info"
           />
         </div>

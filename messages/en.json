@@ -48,7 +48,8 @@
     "INFO": {
       "PROGRESS": "{process}% Translated",
       "DOWNLOAD": "Download",
-      "SOURCE_LINK": "Source Link"
+      "SOURCE_LINK": "Source Link",
+      "LAST_EDITED": "Last Edited"
     },
     "MORE_BUTTON": {
       "UPDATE": "Update",
@@ -73,6 +74,123 @@
       "WTS_FILE": {
         "LABEL": "WTS FILE",
         "INVALID_MESSAGE": "Please upload your wts file."
+      }
+    },
+    "DOWNLOAD_WTS_MODAL": {
+      "TITLE": "Download WTS",
+      "DOWNLOAD": {
+        "LABEL": "DOWNLOAD TYPE",
+        "RELEASE": "Release",
+        "RELEASE_GUILD": "Download all STRING data.",
+        "DEBUG": "Debug",
+        "DEBUG_GUILD": "STRING numbers are displayed at the beginning of the text.",
+        "UPLOAD": "Upload",
+        "UPLOAD_GUILD": "Download only STRING data that has been translated."
+      },
+      "DOWNLOAD_BUTTON": "Download"
+    },
+    "STRING_LIST": {
+      "COMPLETE": "Complete",
+      "IN_PROGRESS": "In progress",
+      "UPDATE": "Update",
+      "CONFIRM": {
+        "TITLE": "Warning",
+        "MESSAGE": "Changes exist. Would you like to save?",
+        "IGNORE_LABEL": "Ignore",
+        "SAVE_DRAFT_LABEL": "Save Draft",
+        "COMPLETE_LABEL": "Complete"
+      },
+      "STRING_SEARCH": {
+        "NO_QUERY": "Please enter your keyword or status.",
+        "KEYWORD": {
+          "LABEL": "KEYWORD",
+          "PLACEHOLDER": "type STRING number or keyword."
+        },
+        "STATUS": {
+          "LABEL": "STATUS",
+          "UNEDITED": "Unedited",
+          "COMPLETE": "Complete",
+          "IN_PROGRESS": "In progress",
+          "UPDATE": "Update"
+        },
+        "SEARCH_BUTTON": "Search"
+      },
+      "OPEN_SEARCH_TOOLTIP": "Open Search",
+      "CLOSE_SEARCH_TOOLTIP": "Close Search",
+      "RESET_SEARCH_QUERY": "Reset Search Query",
+      "LOADING": "Loading...",
+      "NO_DATA": "No Data"
+    },
+    "STRING_EDITOR": {
+      "BACK_BUTTON": "BACK",
+      "COMPLETE_BUTTON": "COMPLETE",
+      "NEXT_BUTTON": "NEXT",
+      "EMPTY_TRANSLATE_TEXT_MESSAGE": "Translate text is empty!",
+      "SUCCESS_MESSAGE": "Successfully Saved.",
+      "CONFIRM": {
+        "TITLE": "Warning",
+        "MESSAGE": "Changes exist. Would you like to save?",
+        "IGNORE_LABEL": "Ignore",
+        "SAVE_DRAFT_LABEL": "Save Draft",
+        "COMPLETE_LABEL": "Complete"
+      },
+      "FUNCTIONS": {
+        "LAYOUT": {
+          "LABEL": "Layout",
+          "STRING_LIST": {
+            "LABEL": "STRING List",
+            "TEXT": "Show STRING list"
+          },
+          "EDITOR_VIEW": {
+            "LABEL": "Editor View",
+            "VERTICAL": "Vertical",
+            "HORIZONTAL": "Horizontal"
+          }
+        },
+        "PREFERENCES": {
+          "LABEL": "Preferences",
+          "EDITOR_PREFERENCE": {
+            "LABEL": "Editor Preference",
+            "AUTO_MOVE": {
+              "LABEL": "Auto Move",
+              "TEXT": "Automatically move to the following when saving STRING data"
+            },
+            "SKIP": {
+              "LABEL": "Skip",
+              "TEXT": "Skip translated items when STRING changes"
+            }
+          }
+        },
+        "SHORTCUTS": {
+          "LABEL": "Shortcuts",
+          "SHORTCUT_LIST": {
+            "LABEL": "Shortcut Keys",
+            "SHORTCUT_1": "Complete",
+            "SHORTCUT_2": "Save draft",
+            "SHORTCUT_3": "Search On / Off",
+            "SHORTCUT_4": "Reset search query",
+            "SHORTCUT_5": "Move to next STRING",
+            "SHORTCUT_6": "Move to previous STRING",
+            "SHORTCUT_7": "Reset",
+            "SHORTCUT_8": "Sync"
+          }
+        }
+      },
+      "TRANSLATOR": {
+        "COPY_MESSAGE": "Copied.",
+        "ORIGINAL_TEXT": "Original Text",
+        "COMMENT": "Comment",
+        "SYNC": "Sync",
+        "COPY": "Copy",
+        "TRANSLATE_TEXT": "Translate Text",
+        "PLACEHOLDER": "Type the text to translate",
+        "SAVE_DRAFT": "Save Draft",
+        "RESET": "Reset",
+        "PREVIEW": "Preview",
+        "PREVIEW_MODE": {
+          "LABEL": "Preview Mode",
+          "EXIT_PREVIEW": "Exit Preview"
+        }
       }
     }
   },

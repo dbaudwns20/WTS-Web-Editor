@@ -96,7 +96,7 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
       >
         <span>{localeList().find((locale) => locale.isActive)?.text}</span>
         <span className="icon">
-          <i className="material-icons">expand_more</i>
+          <i className="material-icons md-18">language</i>
         </span>
       </button>
       <ul

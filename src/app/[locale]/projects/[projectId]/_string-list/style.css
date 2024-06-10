@@ -118,7 +118,8 @@
   @apply text-teal-500;
   @apply rounded-full;
   @apply px-1.5;
-  font-size: 0.65rem;
+  @apply py-0.5;
+  @apply text-xs;
 }
 
 .string-content-section
@@ -136,7 +137,8 @@
   @apply text-red-500;
   @apply rounded-full;
   @apply px-1.5;
-  font-size: 0.65rem;
+  @apply py-0.5;
+  @apply text-xs;
 }
 
 .string-content-section
@@ -154,7 +156,8 @@
   @apply text-yellow-500;
   @apply rounded-full;
   @apply px-1.5;
-  font-size: 0.65rem;
+  @apply py-0.5;
+  @apply text-xs;
 }
 
 .string-content-section

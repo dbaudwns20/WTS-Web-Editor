@@ -2,12 +2,19 @@ import { forwardRef } from "react";
 
 import { isMacintosh } from "@/utils/validator";
 
+import { useTranslations } from "next-intl";
+
 import "./style.css";
 
 const Shortcut = forwardRef((props: any, ref) => {
+  // i18n translate key
+  const t = useTranslations(
+    "PROJECT_DETAIL.STRING_EDITOR.FUNCTIONS.SHORTCUTS.SHORTCUT_LIST"
+  );
+
   return (
     <div className="shortcut-wrapper">
-      <label className="label">Shortcut Keys</label>
+      <label className="label">{t("LABEL")}</label>
       <div className="shortcut-group">
         <div className="shortcut-list">
           <div className="shortcut">
@@ -18,7 +25,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               <p className="plus" />
               <span className="keyboard">S</span>
             </div>
-            <span className="description">저장</span>
+            <span className="description">{t("SHORTCUT_1")}</span>
           </div>
           <div className="shortcut">
             <div className="keyboards">
@@ -28,7 +35,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               <p className="plus" />
               <span className="keyboard">D</span>
             </div>
-            <span className="description">임시 저장</span>
+            <span className="description">{t("SHORTCUT_2")}</span>
           </div>
           <div className="shortcut">
             <div className="keyboards">
@@ -38,7 +45,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               <p className="plus" />
               <span className="keyboard">F</span>
             </div>
-            <span className="description">검색 열기 / 닫기</span>
+            <span className="description">{t("SHORTCUT_3")}</span>
           </div>
           <div className="shortcut">
             <div className="keyboards">
@@ -48,7 +55,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               <p className="plus" />
               <span className="keyboard">Q</span>
             </div>
-            <span className="description">검색 조건 초기화</span>
+            <span className="description">{t("SHORTCUT_4")}</span>
           </div>
         </div>
         <div className="shortcut-list">
@@ -64,7 +71,7 @@ const Shortcut = forwardRef((props: any, ref) => {
                 </i>
               </span>
             </div>
-            <span className="description">다음 String 으로 이동</span>
+            <span className="description">{t("SHORTCUT_5")}</span>
           </div>
           <div className="shortcut">
             <div className="keyboards">
@@ -82,7 +89,7 @@ const Shortcut = forwardRef((props: any, ref) => {
                 </i>
               </span>
             </div>
-            <span className="description">이전 String 으로 이동</span>
+            <span className="description">{t("SHORTCUT_6")}</span>
           </div>
           <div className="shortcut">
             <div className="keyboards">
@@ -92,7 +99,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               <p className="plus" />
               <span className="keyboard">R</span>
             </div>
-            <span className="description">초기화</span>
+            <span className="description">{t("SHORTCUT_7")}</span>
           </div>
           <div className="shortcut">
             <div className="keyboards">
@@ -102,7 +109,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               <p className="plus" />
               <span className="keyboard">C</span>
             </div>
-            <span className="description">동기화</span>
+            <span className="description">{t("SHORTCUT_8")}</span>
           </div>
         </div>
       </div>

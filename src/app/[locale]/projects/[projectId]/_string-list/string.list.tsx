@@ -26,6 +26,8 @@ import {
 } from "@/utils/message";
 import { PerfectScrollbar } from "@/types/perfect.scrollbar";
 
+import { useTranslations } from "next-intl";
+
 const defaultPageInfo: PageInfo = {
   currentPage: 1,
   offset: 10,
@@ -66,6 +68,9 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // i18n translate key
+  const t = useTranslations("PROJECT_DETAIL.STRING_LIST");
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
@@ -235,12 +240,12 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     if (isEdited) {
       const buttons: FuncButton[] = [
         {
-          label: "Ignore",
+          label: t("CONFIRM.IGNORE_LABEL"),
           class: "default",
           onClick: () => replaceCurrentString(string),
         },
         {
-          label: "Save Draft",
+          label: t("CONFIRM.SAVE_DRAFT_LABEL"),
           class: "warning",
           onClick: async () => {
             await handleUpdateString(true);
@@ -248,7 +253,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
           },
         },
         {
-          label: "Complete",
+          label: t("CONFIRM.COMPLETE_LABEL"),
           class: "success",
           onClick: async () => {
             await handleUpdateString(false);
@@ -263,8 +268,8 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       }
 
       showConfirmMessage({
-        title: "Warning",
-        message: "Changes exist. Would you like to save?",
+        title: t("CONFIRM.TITLE"),
+        message: t("CONFIRM.MESSAGE"),
         buttons: buttons,
       });
     } else {
@@ -408,7 +413,13 @@ const StringList = forwardRef((props: StringListProps, ref) => {
       <>
         <header className="string-list-header">
           {pageInfo.totalCount === 0 ? (
-            <>{isLoading ? <span>Loading...</span> : <span>No Result</span>}</>
+            <>
+              {isLoading ? (
+                <span>{t("LOADING")}</span>
+              ) : (
+                <span>{t("NO_DATA")}</span>
+              )}
+            </>
           ) : (
             <span>{currentIndex + " / " + pageInfo.totalCount}</span>
           )}
@@ -417,7 +428,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
               <button
                 type="button"
                 className="string-search-button has-tooltip has-arrow"
-                data-tooltip="검색조건 초기화"
+                data-tooltip={t("RESET_SEARCH_QUERY")}
                 onClick={() => setStringListKey((prev) => prev + 1)}
               >
                 <span className="icon">
@@ -430,7 +441,11 @@ const StringList = forwardRef((props: StringListProps, ref) => {
             <button
               type="button"
               className="string-search-button has-tooltip has-arrow"
-              data-tooltip={isShowSearch ? "검색 닫기" : "검색 열기"}
+              data-tooltip={
+                isShowSearch
+                  ? t("CLOSE_SEARCH_TOOLTIP")
+                  : t("OPEN_SEARCH_TOOLTIP")
+              }
               onClick={() => setIsShowSearch(!isShowSearch)}
             >
               <span className="icon">
@@ -482,16 +497,20 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                         }
                         if (string.completedAt) {
                           if (string.completedAt >= string.updatedAt!) {
-                            return <span className="complete">COMPLETE</span>;
+                            return (
+                              <span className="complete">{t("COMPLETE")}</span>
+                            );
                           }
-                          return <span className="update">UPDATE</span>;
+                          return <span className="update">{t("UPDATE")}</span>;
                         }
                         if (
                           string.updatedAt &&
                           string.updatedAt > string.createdAt
                         ) {
                           return (
-                            <span className="in-progress">IN PROGRESS</span>
+                            <span className="in-progress">
+                              {t("IN_PROGRESS")}
+                            </span>
                           );
                         }
                         return <></>;

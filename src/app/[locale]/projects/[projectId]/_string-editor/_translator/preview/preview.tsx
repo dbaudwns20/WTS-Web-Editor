@@ -16,6 +16,8 @@ import {
 
 import { parseToHtml } from "@/utils/wts";
 
+import { useTranslations } from "next-intl";
+
 type PreviewProps = {
   text: string;
   fontSizeClass: string;
@@ -27,6 +29,11 @@ type PreviewProps = {
 const Preview = forwardRef((props: PreviewProps, ref) => {
   const { text, fontSizeClass, isOriginal, previewState, previewDispatch } =
     props;
+
+  // i18n translate key
+  const t = useTranslations(
+    "PROJECT_DETAIL.STRING_EDITOR.TRANSLATOR.PREVIEW_MODE"
+  );
 
   // refs
   const previewRef = useRef<HTMLDivElement>(null);
@@ -48,7 +55,7 @@ const Preview = forwardRef((props: PreviewProps, ref) => {
 
   return (
     <>
-      <header className="preview-header undraggable">Preview Mode</header>
+      <header className="preview-header undraggable">{t("LABEL")}</header>
       <div
         ref={previewRef}
         className={`preview ${fontSizeClass}`}
@@ -60,7 +67,7 @@ const Preview = forwardRef((props: PreviewProps, ref) => {
             <span className="icon">
               <i className="material-icons-outlined md-18">visibility_off</i>
             </span>
-            <span>Exit Preview</span>
+            <span>{t("EXIT_PREVIEW")}</span>
           </a>
         </div>
       </footer>
