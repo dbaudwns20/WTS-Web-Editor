@@ -71,6 +71,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL.STRING_LIST");
+  const et = useTranslations("ERROR");
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
@@ -130,8 +131,12 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     const response = await callApi(url);
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
       return;
@@ -174,8 +179,12 @@ const StringList = forwardRef((props: StringListProps, ref) => {
     const response = await callApi(url);
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
       return;

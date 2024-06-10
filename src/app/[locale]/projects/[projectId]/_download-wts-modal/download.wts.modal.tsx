@@ -34,6 +34,7 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL.DOWNLOAD_WTS_MODAL");
+  const et = useTranslations("ERROR");
 
   // ref
   const submitRef = useRef<SubmitType>();
@@ -58,8 +59,12 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
     setIsFetching(false);
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
       return;

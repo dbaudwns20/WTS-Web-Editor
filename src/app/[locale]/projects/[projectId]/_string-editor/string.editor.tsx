@@ -90,6 +90,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL.STRING_EDITOR");
+  const et = useTranslations("ERROR");
 
   // refs
   const stringEditorWrapperRef = useRef<HTMLDivElement>(null);
@@ -146,8 +147,12 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
 
     // onError
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
       return;

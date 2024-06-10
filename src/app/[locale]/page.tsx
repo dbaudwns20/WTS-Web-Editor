@@ -36,6 +36,7 @@ export default function RootPage() {
 
   // i18n translate key
   const t = useTranslations("MAIN");
+  const et = useTranslations("ERROR");
 
   // values
   const [projectList, setProjectList] = useState<Project[]>([]);
@@ -75,13 +76,15 @@ export default function RootPage() {
     );
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
-
       setIsLoading(false);
-
       return;
     }
 
@@ -102,10 +105,15 @@ export default function RootPage() {
     );
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
+      setIsMoreLoading(false);
       return;
     }
 

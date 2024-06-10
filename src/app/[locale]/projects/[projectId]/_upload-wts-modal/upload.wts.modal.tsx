@@ -35,6 +35,7 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL.UPLOAD_WTS_MODAL");
+  const et = useTranslations("ERROR");
 
   // ref
   const submitRef = useRef<SubmitType>();
@@ -63,8 +64,12 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
     setIsFetching(false);
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
       return;

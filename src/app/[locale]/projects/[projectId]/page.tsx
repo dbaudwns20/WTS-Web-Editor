@@ -58,6 +58,7 @@ export default function ProjectDetail() {
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL");
+  const et = useTranslations("ERROR");
   const format = useFormatter();
 
   // refs
@@ -95,11 +96,14 @@ export default function ProjectDetail() {
     const response = await callApi(`/api/projects/${projectId}`);
     // onError
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
-
       // 메인화면으로 이동
       router.push("/");
       return;

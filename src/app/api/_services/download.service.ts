@@ -2,6 +2,7 @@ import StringModel from "@/db/models/string";
 
 import Project from "@/types/project";
 import { getLocaleTextByValue } from "@/types/locale";
+import { ErrorResponse } from "@/types/api.response";
 
 import { getProject } from "./project.service";
 
@@ -29,7 +30,7 @@ export async function downloadWts(
   const instance = await StringModel.find(filter).sort({ StringNumber: 1 });
 
   if (instance.length === 0) {
-    throw new Error("번역된 데이터가 존재하지 않습니다.");
+    throw new ErrorResponse("ERR_NO_TRANSLATED_DATA");
   }
 
   const fileContent = instance

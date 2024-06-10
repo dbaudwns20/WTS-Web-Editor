@@ -40,6 +40,7 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
 
   // i18n translate key
   const t = useTranslations("PROJECT_MODAL");
+  const et = useTranslations("ERROR");
 
   // ref
   const titleRef = useRef<TextType>();
@@ -138,8 +139,12 @@ const UpdateProjectModal = forwardRef((props: UpdateProjectModalProps, ref) => {
     setIsFetching(false);
 
     if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
       showNotificationMessage({
-        message: response.message,
+        message: message,
         messageType: "danger",
       });
       return;
