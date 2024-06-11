@@ -373,17 +373,18 @@ export default function ProjectDetail() {
                         </span>
                       </span>
                       <span className="text-xs text-gray-400">
-                        {format.dateTime(new Date(project!.updatedAt), {
+                        {format.dateTime(project!.updatedAt, {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         }) +
                           " " +
-                          format.dateTime(new Date(project!.updatedAt), {
+                          format.dateTime(project!.updatedAt, {
                             hour: "2-digit",
                             minute: "numeric",
                           })}
                       </span>
+                      <p>{project!.updatedAt.toString()}</p>
                     </div>
                   </div>
                 </div>

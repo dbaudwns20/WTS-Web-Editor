@@ -24,8 +24,8 @@ export default class Project {
     this.source = project.source;
     this.lastModifiedStringNumber = project.lastModifiedStringNumber;
     this.projectImage = bindProjectImage(project.projectImage);
-    this.createdAt = moment.utc(new Date(project.createdAt)).toDate();
-    this.updatedAt = moment.utc(new Date(project.updatedAt)).toDate();
+    this.createdAt = moment.utc(project.createdAt).toDate();
+    this.updatedAt = moment.utc(project.updatedAt).toDate();
   }
 }
 
