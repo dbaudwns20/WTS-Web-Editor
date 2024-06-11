@@ -19,12 +19,13 @@
 .project > .complete {
   @apply absolute;
   @apply top-3;
-  @apply left-4;
+  @apply right-4;
   @apply shadow-xl;
   @apply border-2;
   @apply bg-teal-500;
   @apply border-teal-500;
-  @apply dark:bg-transparent;
+  @apply dark:bg-teal-600;
+  @apply dark:border-teal-600;
   @apply text-white;
   @apply rounded-full;
   @apply px-2;
@@ -86,6 +87,7 @@
   @apply py-1;
   @apply font-semibold;
   @apply text-xs;
+  @apply dark:bg-blue-500;
 }
 
 .project-content > .project-content-between > .tag-group > .version {
@@ -96,6 +98,7 @@
   @apply py-1;
   @apply font-semibold;
   @apply text-xs;
+  @apply bg-orange-500;
 }
 
 .project-content > .project-content-between > .date-created {
@@ -152,6 +155,5 @@
   @apply [&.is-completed]:dark:bg-teal-600;
   @apply [&.is-completed~.percent]:text-white;
   @apply [&.is-proceeding]:bg-blue-500;
-  @apply [&.is-proceeding]:dark:bg-blue-400;
   @apply [&.is-proceeding]:text-white;
 }

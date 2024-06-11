@@ -2,6 +2,7 @@
   @apply w-[180px];
   @apply relative;
   @apply bg-gray-100;
+  @apply dark:bg-gray-600;
   @apply rounded-xl;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -21,6 +22,9 @@
   @apply hover:bg-gray-200;
   @apply py-2;
   @apply px-3;
+  @apply dark:bg-gray-600;
+  @apply dark:text-slate-300;
+  @apply dark:hover:bg-gray-500;
 }
 
 .locale-select-wrapper > .locale-select.is-expanded {
@@ -36,6 +40,7 @@
   @apply rounded-xl;
   @apply h-fit;
   @apply z-10;
+  @apply dark:bg-gray-600;
 }
 
 .locale-select-wrapper > .locale-select-list.is-expanded {
@@ -59,6 +64,8 @@
   @apply pt-2;
   @apply px-3;
   @apply first:pt-0;
+  @apply dark:text-slate-300;
+  @apply dark:hover:text-sky-500;
 }
 
 .locale-select-wrapper
@@ -66,4 +73,5 @@
   > li
   > .locale-select-option.is-active {
   @apply text-sky-400;
+  @apply dark:text-sky-500;
 }

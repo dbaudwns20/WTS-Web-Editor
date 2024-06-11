@@ -129,7 +129,7 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
           <Submit
             ref={submitRef}
             buttonText={t("UPLOAD_BUTTON")}
-            buttonClass="button is-primary"
+            buttonClass="button is-info"
           />
         </div>
       </form>

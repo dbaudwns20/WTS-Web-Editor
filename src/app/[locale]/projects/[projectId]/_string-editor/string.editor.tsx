@@ -318,7 +318,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             <Dropdown position="right">
               <a className="anchor-has-icon undraggable">
                 <span className="icon">
-                  <i className="material-icons md-18">space_dashboard</i>
+                  <i className="material-icons md-18 mr-1">space_dashboard</i>
                 </span>
                 <span>{t("FUNCTIONS.LAYOUT.LABEL")}</span>
               </a>
@@ -412,7 +412,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             <Dropdown position="right">
               <a className="anchor-has-icon undraggable">
                 <span className="icon">
-                  <i className="material-icons md-18">settings</i>
+                  <i className="material-icons md-18 mr-0.5">settings</i>
                 </span>
                 <span>{t("FUNCTIONS.PREFERENCES.LABEL")}</span>
               </a>
@@ -481,7 +481,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             <Dropdown position="right">
               <a className="anchor-has-icon undraggable">
                 <span className="icon">
-                  <i className="material-icons md-18">keyboard_alt</i>
+                  <i className="material-icons md-18 mr-1">keyboard_alt</i>
                 </span>
                 <span>{t("FUNCTIONS.SHORTCUTS.LABEL")}</span>
               </a>

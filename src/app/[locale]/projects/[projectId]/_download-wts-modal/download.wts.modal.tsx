@@ -171,7 +171,7 @@ const DownloadWtsModal = forwardRef((props: DownloadWtsModalProps, ref) => {
           <Submit
             ref={submitRef}
             buttonText={t("DOWNLOAD_BUTTON")}
-            buttonClass="button is-primary"
+            buttonClass="button is-info"
           />
         </div>
       </form>

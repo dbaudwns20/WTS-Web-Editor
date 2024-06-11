@@ -4,8 +4,7 @@
   @apply bg-white;
   @apply rounded-lg;
   @apply shadow-xl;
-  @apply dark:bg-gray-600;
-  @apply dark:border-gray-700;
+  @apply dark:bg-gray-700;
   @apply animate-pulse;
   height: max-content;
 }
@@ -13,6 +12,7 @@
 .project-loading > .image {
   @apply rounded-t-lg;
   @apply bg-slate-200;
+  @apply dark:bg-slate-500;
   @apply h-[276px];
   @apply w-full;
 }
@@ -32,6 +32,7 @@
   @apply h-3.5;
   @apply rounded-lg;
   @apply bg-slate-200;
+  @apply dark:bg-slate-500;
 }
 
 .project-loading > .content > .detail-info {
@@ -51,6 +52,8 @@
 .project-loading > .content > .detail-info > .tag-group > .tag {
   @apply h-5;
   @apply bg-slate-200;
+  @apply dark:bg-slate-500;
+  @apply dark:!border-0;
   @apply rounded-lg;
   @apply w-1/2;
 }
@@ -58,6 +61,7 @@
 .project-loading > .content > .detail-info > .date {
   @apply h-2.5;
   @apply bg-slate-200;
+  @apply dark:bg-slate-500;
   @apply rounded-lg;
   @apply w-[40%];
 }
@@ -66,5 +70,6 @@
   @apply h-5;
   @apply rounded-lg;
   @apply bg-slate-200;
+  @apply dark:bg-slate-500;
   @apply mb-4;
 }

@@ -1,6 +1,9 @@
 {
   "MAIN": {
-    "CREATE_PROJECT_BUTTON": "새 프로젝트 생성"
+    "CREATE_PROJECT_BUTTON": "새 프로젝트 생성",
+    "PROJECT_CARD": {
+      "COMPLETE": "번역완료"
+    }
   },
   "PROJECT_MODAL": {
     "MODAL_TITLE": "{type, select, create {새 프로젝트 생성} update {프로젝트 업데이트} other {}}",

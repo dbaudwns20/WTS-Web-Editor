@@ -6,7 +6,7 @@ import "./style.css";
 import type Project from "@/types/project";
 import { getLocaleTextByValue } from "@/types/locale";
 
-import { useFormatter } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 
 type ProjectProps = {
   project: Project;
@@ -17,6 +17,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
 
   useImperativeHandle(ref, () => {});
 
+  const t = useTranslations("MAIN.PROJECT_CARD");
   const format = useFormatter();
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -25,7 +26,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
 
   return (
     <article className="project">
-      {isCompleted ? <span className="complete">COMPLETE</span> : <></>}
+      {isCompleted ? <span className="complete">{t("COMPLETE")}</span> : <></>}
       <Image
         className="image"
         src={project.projectImage.url}
@@ -66,7 +67,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
         >
           {isCompleted ? (
             <>
-              <p className="percent">COMPLETE</p>
+              <p className="percent">{t("COMPLETE")}</p>
               <div className="progress is-completed"></div>
             </>
           ) : (

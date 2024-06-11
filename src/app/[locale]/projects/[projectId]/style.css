@@ -98,10 +98,7 @@
   > .tag.locale {
   @apply bg-blue-400;
   @apply text-white;
-  @apply dark:bg-transparent;
-  @apply dark:border-2;
-  @apply dark:border-blue-400;
-  @apply dark:text-blue-400;
+  @apply dark:bg-blue-500;
 }
 
 .project-info-section
@@ -112,10 +109,7 @@
   > .tag.version {
   @apply bg-orange-400;
   @apply text-white;
-  @apply dark:bg-transparent;
-  @apply dark:border-2;
-  @apply dark:border-orange-400;
-  @apply dark:text-orange-400;
+  @apply dark:bg-orange-500;
 }
 
 .project-info-section
@@ -126,10 +120,7 @@
   > .tag.progress {
   @apply bg-violet-500/90;
   @apply text-white;
-  @apply dark:bg-transparent;
-  @apply dark:border-2;
-  @apply dark:border-violet-400;
-  @apply dark:text-violet-400;
+  @apply dark:bg-violet-600;
 }
 
 .project-info-section
@@ -186,11 +177,8 @@
   @apply text-white;
   @apply pl-1;
   @apply hover:bg-cyan-600;
-  @apply dark:bg-transparent;
-  @apply dark:border-2;
-  @apply dark:border-cyan-500;
-  @apply dark:text-cyan-500;
-  @apply dark:hover:bg-transparent/30;
+  @apply dark:bg-cyan-600;
+  @apply dark:hover:bg-cyan-700;
   @apply shadow-md;
 }
 
@@ -206,11 +194,8 @@
   @apply text-white;
   @apply pl-1;
   @apply hover:bg-emerald-600;
-  @apply dark:bg-transparent;
-  @apply dark:border-2;
-  @apply dark:border-emerald-500;
-  @apply dark:text-emerald-500;
-  @apply dark:hover:bg-transparent/30;
+  @apply dark:bg-emerald-600;
+  @apply dark:hover:bg-emerald-700;
   @apply shadow-md;
 }
 

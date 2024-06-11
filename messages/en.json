@@ -1,6 +1,9 @@
 {
   "MAIN": {
-    "CREATE_PROJECT_BUTTON": "CREATE NEW PROJECT"
+    "CREATE_PROJECT_BUTTON": "CREATE NEW PROJECT",
+    "PROJECT_CARD": {
+      "COMPLETE": "COMPLETE"
+    }
   },
   "PROJECT_MODAL": {
     "MODAL_TITLE": "{type, select, create {New} update {Update} other {}} Project",

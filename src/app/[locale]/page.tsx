@@ -168,7 +168,7 @@ export default function RootPage() {
         </div>
         <div className="w-full flex justify-center">
           <button
-            className="button is-primary !text-xl !px-5 !py-3 !m-3.5"
+            className="button is-info !text-xl !px-5 !py-3 !m-3.5"
             onClick={newProject}
           >
             {t("CREATE_PROJECT_BUTTON")}
@@ -195,7 +195,7 @@ export default function RootPage() {
             })}
           </>
         )}
-        {isMoreLoading ?? <ProjectCardSkeleton />}
+        {isMoreLoading ? <ProjectCardSkeleton /> : <></>}
       </section>
       {isModalOpen ? (
         <CreateProjectModal

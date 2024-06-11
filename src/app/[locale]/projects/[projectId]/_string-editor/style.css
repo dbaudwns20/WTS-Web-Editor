@@ -38,6 +38,7 @@
   > .string-editor-functions {
   @apply flex;
   @apply pr-2;
+  @apply gap-0.5;
 }
 
 .string-editor-wrapper > .string-editor-form > .string-editor-main {

@@ -12,6 +12,8 @@ body {
   margin: 0;
   padding: 0;
 
+  @apply dark:bg-gray-800;
+
   --var-header-height: 60px;
   --var-footer-height: 60px;
 }
@@ -40,8 +42,6 @@ body {
   @apply h-full;
   @apply flex;
   @apply flex-col;
-  @apply bg-white;
-  @apply dark:bg-gray-800;
   @apply py-4;
   @apply px-32;
   height: auto;
@@ -245,10 +245,6 @@ body {
   @apply text-sm;
   @apply flex;
   @apply items-center;
-  @apply dark:bg-transparent;
-  @apply dark:border-2;
-  @apply dark:border-slate-100;
-  @apply dark:text-slate-100;
 }
 
 .anchor-has-icon {
