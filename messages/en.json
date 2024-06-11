@@ -195,6 +195,9 @@
     }
   },
   "COMPONENTS": {
+    "SUBMIT": {
+      "LOADING": "Processing..."
+    },
     "FILE": {
       "FILE_NOT_FOUND": "File not found.",
       "INVALID_TYPE": "Invalid file type.",

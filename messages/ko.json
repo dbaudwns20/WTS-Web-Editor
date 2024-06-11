@@ -195,6 +195,9 @@
     }
   },
   "COMPONENTS": {
+    "SUBMIT": {
+      "LOADING": "처리중..."
+    },
     "FILE": {
       "FILE_NOT_FOUND": "파일을 찾을 수 없습니다.",
       "INVALID_TYPE": "파일 형식이 잘못되었습니다.",
