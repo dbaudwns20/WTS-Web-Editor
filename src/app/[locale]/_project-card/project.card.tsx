@@ -48,7 +48,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           </div>
           <p className="date-created">
             <span className="material-icons-outlined">schedule</span>
-            {format.dateTime(project.createdAt, {
+            {format.dateTime(new Date(project.createdAt), {
               year: "numeric",
               month: "short",
               day: "numeric",
