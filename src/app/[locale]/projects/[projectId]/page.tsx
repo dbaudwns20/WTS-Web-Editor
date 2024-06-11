@@ -387,7 +387,6 @@ export default function ProjectDetail() {
                             timeZone: timezone,
                           })}
                       </span>
-                      <p>{project!.updatedAt.toString() + " " + timezone}</p>
                     </div>
                   </div>
                 </div>
@@ -399,7 +398,7 @@ export default function ProjectDetail() {
                       </span>
                     </button>
                     <ul className="w-[180px] py-1.5 px-2">
-                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
+                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50">
                         <a
                           className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
                           onClick={() => setIsUpdateModalOpen(true)}
@@ -410,7 +409,7 @@ export default function ProjectDetail() {
                           <span>{t("MORE_BUTTON.UPDATE")}</span>
                         </a>
                       </li>
-                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
+                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50">
                         <a
                           className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
                           onClick={handleDeleteProject}
@@ -421,7 +420,7 @@ export default function ProjectDetail() {
                           <span>{t("MORE_BUTTON.DELETE")}</span>
                         </a>
                       </li>
-                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50 duration-200">
+                      <li className="hover:bg-gray-100 dark:hover:bg-gray-500/50">
                         <a
                           className="anchor-has-icon undraggable !py-2 !pl-2 !pr-3 !text-sm"
                           onClick={() => setIsUploadWtsModalOpen(true)}
