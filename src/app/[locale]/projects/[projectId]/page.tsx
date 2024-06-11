@@ -60,6 +60,7 @@ export default function ProjectDetail() {
   const t = useTranslations("PROJECT_DETAIL");
   const et = useTranslations("ERROR");
   const format = useFormatter();
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // refs
   const projectInfoSectionRef = useRef<HTMLSelectElement>(null);
@@ -377,14 +378,16 @@ export default function ProjectDetail() {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
+                          timeZone: timezone,
                         }) +
                           " " +
                           format.dateTime(project!.updatedAt, {
                             hour: "2-digit",
                             minute: "numeric",
+                            timeZone: timezone,
                           })}
                       </span>
-                      <p>{project!.updatedAt.toString()}</p>
+                      <p>{project!.updatedAt.toString() + " " + timezone}</p>
                     </div>
                   </div>
                 </div>
