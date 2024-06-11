@@ -86,13 +86,14 @@
   @apply text-slate-500;
   @apply ring-1;
   @apply ring-slate-300;
+  @apply dark:text-gray-400;
   @apply dark:ring-slate-200/50;
 }
 
 .string-status-group > .string-status > input:checked + label {
   @apply border-slate-600;
   @apply text-slate-600;
-  @apply dark:border-gray-300;
+  @apply dark:border-gray-400;
   @apply dark:text-gray-400;
 }
 

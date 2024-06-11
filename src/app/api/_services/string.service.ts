@@ -268,31 +268,35 @@ export async function overwriteWtsStrings(
   wtsStringList: any[],
   session: ClientSession
 ) {
-  // translated text 갱신
-  const updatePromises = wtsStringList.map((wtsString) =>
-    StringModel.findOneAndUpdate(
-      { projectId: projectId, stringNumber: wtsString.stringNumber },
-      {
-        $set: {
-          translatedText: wtsString.content,
-          comment: wtsString.comment,
-          updatedAt: new Date(),
-          completedAt: new Date(),
+  // 업데이트에 사용할 현재 시간
+  const currentTime = new Date();
+
+  // 성능 향상을 위한 대량 쓰기 작업 준비
+  const bulkOps = wtsStringList.map((wtsString) => {
+    return {
+      updateOne: {
+        filter: { projectId: projectId, stringNumber: wtsString.stringNumber },
+        update: {
+          $set: {
+            translatedText: wtsString.content,
+            updatedAt: currentTime,
+            completedAt: currentTime,
+          },
         },
       },
-      { session }
-    )
-  );
+    };
+  });
 
-  // 병렬 실행
-  await Promise.all(updatePromises);
-
-  // 진행률 갱신
-  await updateProject(
-    projectId,
-    {
-      process: await computeCompletedProcess(projectId, true, session),
-    },
-    session
-  );
+  if (bulkOps.length > 0) {
+    // 대량 쓰기 작업 수행
+    await StringModel.bulkWrite(bulkOps, { session });
+    // 진행률 갱신
+    await updateProject(
+      projectId,
+      {
+        process: await computeCompletedProcess(projectId, true, session),
+      },
+      session
+    );
+  }
 }
