@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages, getTimeZone } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 
 import "../globals.css";
 
@@ -20,7 +20,6 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   const messages = await getMessages();
-  const timeZone = await getTimeZone();
 
   return (
     <html lang={locale}>
@@ -31,7 +30,10 @@ export default async function RootLayout({
         />
       </head>
       <body>
-        <NextIntlClientProvider messages={messages} timeZone={timeZone}>
+        <NextIntlClientProvider
+          messages={messages}
+          timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
+        >
           <Header />
           <main className="main">{children}</main>
           <Footer />
