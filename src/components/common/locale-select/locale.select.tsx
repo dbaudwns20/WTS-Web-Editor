@@ -11,6 +11,7 @@ import {
 
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { getPageLocaleList } from "@/types/locale";
 
@@ -24,6 +25,7 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
   const pathname = usePathname();
   const router = useRouter();
   const currentLocale = useLocale();
+  const searchParams = useSearchParams();
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => {});
@@ -45,7 +47,12 @@ const LocaleSelect = forwardRef((props: LocaleSelectProps, ref) => {
 
   // locale 변경
   const changeLocale = (locale: string) => {
-    router.replace(pathname, { locale });
+    let url: string = pathname;
+    // strings param 이 존재하면 붙이기
+    if (searchParams.has("strings")) {
+      url += `?${searchParams.toString()}`;
+    }
+    router.replace(url, { locale });
   };
 
   const closeLocaleSelectOption = useCallback(() => {
