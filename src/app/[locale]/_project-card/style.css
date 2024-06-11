@@ -21,11 +21,8 @@
   @apply top-3;
   @apply right-4;
   @apply shadow-xl;
-  @apply border-2;
   @apply bg-teal-500;
-  @apply border-teal-500;
   @apply dark:bg-teal-600;
-  @apply dark:border-teal-600;
   @apply text-white;
   @apply rounded-full;
   @apply px-2;

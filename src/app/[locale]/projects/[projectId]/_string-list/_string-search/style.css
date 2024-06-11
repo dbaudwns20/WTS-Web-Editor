@@ -4,12 +4,14 @@
   @apply w-full;
   @apply h-fit;
   @apply bg-white;
+  @apply dark:bg-gray-800;
   @apply z-10;
   @apply ring-1;
   @apply ring-black/5;
   @apply rounded-b-lg;
   @apply shadow-lg;
   @apply hidden;
+  @apply dark:ring-white/20;
 }
 
 .string-search-wrapper.is-active {
@@ -61,6 +63,8 @@
   @apply border;
   @apply border-gray-300;
   @apply text-gray-400;
+  @apply dark:border-slate-600;
+  @apply dark:text-slate-600;
   @apply rounded-full;
   @apply w-full;
   @apply text-center;
@@ -69,7 +73,7 @@
   @apply px-2;
   @apply font-semibold;
   @apply leading-4;
-  font-size: 0.75rem;
+  @apply text-sm;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -82,11 +86,14 @@
   @apply text-slate-500;
   @apply ring-1;
   @apply ring-slate-300;
+  @apply dark:ring-slate-200/50;
 }
 
 .string-status-group > .string-status > input:checked + label {
   @apply border-slate-600;
   @apply text-slate-600;
+  @apply dark:border-gray-300;
+  @apply dark:text-gray-400;
 }
 
 .string-status-group > .string-status.is-completed > input + label:hover {
@@ -94,6 +101,7 @@
   @apply text-teal-400;
   @apply ring-1;
   @apply ring-teal-200;
+  @apply dark:ring-teal-500/50;
 }
 
 .string-status-group > .string-status.is-completed > input:checked + label {
@@ -106,6 +114,7 @@
   @apply text-yellow-400;
   @apply ring-1;
   @apply ring-yellow-200;
+  @apply dark:ring-yellow-300/50;
 }
 
 .string-status-group > .string-status.is-progress > input:checked + label {
@@ -118,6 +127,7 @@
   @apply text-red-400;
   @apply ring-1;
   @apply ring-red-200;
+  @apply dark:ring-red-400/50;
 }
 
 .string-status-group > .string-status.is-updated > input:checked + label {

@@ -57,6 +57,7 @@
   @apply cursor-pointer;
   @apply rounded-lg;
   @apply hover:bg-gray-100;
+  @apply dark:hover:bg-gray-700;
 }
 
 .string-list-wrapper > .string-list {

@@ -44,6 +44,9 @@ export default function ConfirmTest() {
         <button className="button is-primary" onClick={confirm}>
           show confirm dialog
         </button>
+        <button className="button" onClick={confirm}>
+          show confirm dialog
+        </button>
       </div>
     </section>
   );
