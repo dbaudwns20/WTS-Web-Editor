@@ -164,11 +164,11 @@ export default function RootPage() {
     <>
       <section className="flex flex-col justify-center items-center pb-8">
         <div className="flex justify-center items-center gap-5">
-          <Image src={LogoMain} alt="logo_main" width={350} priority={true} />
+          <Image src={LogoMain} alt="logo_main" width={350} priority />
         </div>
         <div className="w-full flex justify-center">
           <button
-            className="button is-primary !text-xl !p-5 !m-3.5"
+            className="button is-primary !text-xl !px-5 !py-3 !m-3.5"
             onClick={newProject}
           >
             {t("CREATE_PROJECT_BUTTON")}

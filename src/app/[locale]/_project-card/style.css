@@ -148,12 +148,10 @@
   @apply text-gray-700;
   @apply text-center;
   @apply whitespace-nowrap;
-  @apply transition;
-  @apply duration-500;
   @apply [&.is-completed]:bg-teal-500;
   @apply [&.is-completed]:dark:bg-teal-600;
   @apply [&.is-completed~.percent]:text-white;
   @apply [&.is-proceeding]:bg-blue-500;
-  @apply [&.is-proceeding]:dark:bg-blue-600;
+  @apply [&.is-proceeding]:dark:bg-blue-400;
   @apply [&.is-proceeding]:text-white;
 }

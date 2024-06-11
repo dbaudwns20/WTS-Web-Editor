@@ -30,7 +30,6 @@
   @apply text-sky-500;
   @apply hover:text-sky-600;
   @apply hover:cursor-pointer;
-  @apply duration-300;
 }
 
 .string-editor-wrapper

@@ -4,10 +4,8 @@
   @apply bg-white;
   @apply rounded-lg;
   @apply shadow-xl;
-  @apply dark:bg-gray-800;
+  @apply dark:bg-gray-600;
   @apply dark:border-gray-700;
-  @apply transition;
-  @apply duration-300;
   @apply animate-pulse;
   height: max-content;
 }

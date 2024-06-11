@@ -28,54 +28,6 @@ export function convertFileSizeToString(size: number): string {
   }
 }
 
-export enum DATE_FORMAT {
-  DATE,
-  TIME,
-  DATE_TIME,
-}
-
-export function convertDateToString(
-  date: Date | string | null,
-  format: DATE_FORMAT = DATE_FORMAT.DATE
-): string {
-  if (typeof date === "string") {
-    date = new Date(date);
-  }
-  if (date === null) {
-    return "";
-  }
-
-  let result: string = "";
-  switch (format) {
-    case DATE_FORMAT.DATE:
-      result =
-        date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(date.getDate()).padStart(2, "0");
-      break;
-    case DATE_FORMAT.TIME:
-      const times: string[] = date.toTimeString().split(" ")[0].split(":");
-      // AM/PM 처리
-      let meridiem: string = "AM";
-      if (Number(times[0]) >= 12) {
-        times[0] = String(Number(times[0]) - 12).padStart(2, "0");
-        meridiem = "PM";
-      }
-      result = times[0] + ":" + times[1] + ":" + times[2] + " " + meridiem;
-      break;
-    case DATE_FORMAT.DATE_TIME:
-      result =
-        convertDateToString(date) +
-        " " +
-        convertDateToString(date, DATE_FORMAT.TIME);
-      break;
-  }
-
-  return result;
-}
-
 /**
  * Api 호출
  * @param url

@@ -124,8 +124,6 @@ body {
   @apply text-black/65;
   @apply font-semibold;
   @apply text-sm;
-  @apply transition;
-  @apply duration-300;
   @apply focus:outline-none;
   @apply focus:ring;
   @apply focus:ring-gray-200;
@@ -262,7 +260,6 @@ body {
   @apply dark:text-gray-300;
   @apply hover:text-sky-400;
   @apply hover:cursor-pointer;
-  @apply duration-300;
 }
 
 .toggle {
@@ -341,14 +338,12 @@ body {
   @apply -mt-[4px];
   @apply min-w-[45px];
   @apply max-w-[120px];
-  @apply duration-100;
   @apply pointer-events-none;
   content: attr(data-tooltip);
   width: max-content;
 }
 
 .has-tooltip.has-arrow::after {
-  @apply duration-100;
   @apply opacity-0;
   @apply hover:opacity-100;
   @apply absolute;

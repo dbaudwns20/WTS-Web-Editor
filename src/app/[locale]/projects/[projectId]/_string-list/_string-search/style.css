@@ -68,7 +68,6 @@
   @apply py-1;
   @apply px-2;
   @apply font-semibold;
-  @apply duration-100;
   @apply leading-4;
   font-size: 0.75rem;
   -webkit-user-select: none;

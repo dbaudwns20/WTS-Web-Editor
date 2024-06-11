@@ -6,7 +6,6 @@
   @apply rounded-lg;
   @apply px-4;
   @apply relative;
-  @apply duration-200;
 }
 
 .translator.is-original-text {

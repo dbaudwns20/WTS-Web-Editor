@@ -87,7 +87,6 @@
   @apply hover:bg-slate-100;
   @apply dark:hover:bg-slate-700;
   @apply hover:cursor-pointer;
-  @apply duration-500;
 }
 
 .string-content-section

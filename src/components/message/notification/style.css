@@ -105,8 +105,6 @@
   @apply md:w-1/2;
   @apply lg:w-1/4;
   @apply shadow-2xl;
-  @apply transition;
-  @apply duration-300;
   @apply p-2;
   @apply min-h-16;
   height: max-content;
@@ -183,8 +181,6 @@
   @apply opacity-0;
   @apply hover:opacity-100;
   @apply pr-4;
-  @apply transition;
-  @apply duration-300;
   @apply cursor-pointer;
 }
 

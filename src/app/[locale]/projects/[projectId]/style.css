@@ -186,7 +186,6 @@
   @apply text-white;
   @apply pl-1;
   @apply hover:bg-cyan-600;
-  @apply duration-300;
   @apply dark:bg-transparent;
   @apply dark:border-2;
   @apply dark:border-cyan-500;
@@ -207,7 +206,6 @@
   @apply text-white;
   @apply pl-1;
   @apply hover:bg-emerald-600;
-  @apply duration-300;
   @apply dark:bg-transparent;
   @apply dark:border-2;
   @apply dark:border-emerald-500;
