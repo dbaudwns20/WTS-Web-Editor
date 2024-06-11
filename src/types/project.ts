@@ -1,8 +1,6 @@
 import { IProject } from "@/db/models/project";
 import ProjectImage, { bindProjectImage } from "./project.image";
 
-import moment from "moment";
-
 export default class Project {
   id: string;
   title: string;
@@ -24,8 +22,8 @@ export default class Project {
     this.source = project.source;
     this.lastModifiedStringNumber = project.lastModifiedStringNumber;
     this.projectImage = bindProjectImage(project.projectImage);
-    this.createdAt = moment.utc(project.createdAt).toDate();
-    this.updatedAt = moment.utc(project.updatedAt).toDate();
+    this.createdAt = new Date(project.createdAt);
+    this.updatedAt = new Date(project.updatedAt);
   }
 }
 

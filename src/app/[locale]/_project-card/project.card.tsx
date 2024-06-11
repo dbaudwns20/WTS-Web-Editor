@@ -18,6 +18,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
   useImperativeHandle(ref, () => {});
 
   const format = useFormatter();
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // values
   const isCompleted: boolean = project.process === "100.0" ? true : false;
@@ -48,10 +49,11 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
           </div>
           <p className="date-created">
             <span className="material-icons-outlined">schedule</span>
-            {format.dateTime(new Date(project.createdAt), {
+            {format.dateTime(project.createdAt, {
               year: "numeric",
               month: "short",
               day: "numeric",
+              timeZone: timezone,
             })}
           </p>
         </div>
