@@ -16,7 +16,6 @@ export default getRequestConfig(async ({ locale }) => {
     // 위치 확인
     return {
       messages,
-      now: new Date(),
     };
   }
 });
