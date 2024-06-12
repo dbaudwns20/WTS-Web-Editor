@@ -129,7 +129,7 @@ body {
   @apply focus:ring-gray-200;
   @apply dark:bg-gray-600;
   @apply dark:text-white/80;
-  @apply dark:focus:ring-gray-700/50;
+  @apply dark:focus:ring-gray-800/50;
   @apply shadow-md;
   @apply flex;
   @apply justify-center;
@@ -154,7 +154,7 @@ body {
   @apply focus:ring-sky-300/50;
   @apply dark:bg-sky-700;
   @apply dark:text-white/80;
-  @apply dark:focus:ring-sky-800/50;
+  @apply dark:focus:ring-sky-900/50;
 }
 
 .button.is-info:not(:disabled) {

@@ -6,9 +6,8 @@
   @apply text-gray-900;
   @apply text-sm;
   @apply rounded-lg;
-  @apply focus:ring-sky-400;
   @apply focus:border-sky-400;
-  @apply focus:outline-sky-400;
+  @apply focus:ring-sky-100;
   @apply block;
   @apply w-full;
   @apply py-2;
@@ -17,9 +16,10 @@
   @apply dark:border-gray-600;
   @apply dark:placeholder-gray-400;
   @apply dark:text-white;
-  @apply dark:focus:ring-sky-600;
   @apply dark:focus:border-sky-600;
-  @apply dark:focus:outline-sky-600;
+  @apply dark:focus:ring-sky-800/50;
+  @apply focus:ring-2;
+  @apply focus:outline-none;
 }
 
 .select.is-invalid {
