@@ -7,13 +7,14 @@ import "./style.css";
 import { clearMessageBox, type FuncButton } from "@/utils/message";
 
 type ConfirmProps = {
+  messageRootId: string;
   title?: string;
   message: string;
   buttons: FuncButton[];
 };
 
 const Confirm = forwardRef((props: ConfirmProps, ref) => {
-  const { title = "Confirm", message, buttons } = props;
+  const { messageRootId, title = "Confirm", message, buttons } = props;
 
   // refs
   const overlay = useRef<HTMLDivElement>(null);
@@ -23,7 +24,7 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
   const closeConfirm = () => {
     overlay.current?.classList.add("is-hiding");
     setTimeout(() => {
-      clearMessageBox();
+      clearMessageBox(messageRootId);
     }, 200);
   };
 

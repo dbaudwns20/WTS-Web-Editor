@@ -24,6 +24,12 @@
   @apply dark:border-gray-600;
   @apply dark:hover:border-gray-500;
   @apply dark:hover:bg-gray-600;
+  @apply focus:border-sky-400;
+  @apply focus:ring-sky-100;
+  @apply dark:focus:border-sky-600;
+  @apply dark:focus:ring-sky-800/50;
+  @apply focus:ring-2;
+  @apply focus:outline-none;
 }
 
 .file.is-drag-enter {

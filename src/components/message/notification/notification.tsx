@@ -2,11 +2,12 @@
 
 import { useRef, useEffect, useCallback, useState } from "react";
 
-import { clearMessageBox } from "@/utils/message";
-
 import "./style.css";
 
+import { clearMessageBox } from "@/utils/message";
+
 type NotificationProps = {
+  messageRootId: string;
   message?: string;
   position?: "left" | "center" | "right";
   messageType?: "info" | "success" | "warning" | "danger";
@@ -15,6 +16,7 @@ type NotificationProps = {
 
 export default function Notification(props: NotificationProps) {
   const {
+    messageRootId,
     message = "empty message",
     position = "center",
     messageType = "is-info",
@@ -23,6 +25,7 @@ export default function Notification(props: NotificationProps) {
 
   // ref
   const wrapper = useRef<HTMLDivElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
   const notification = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<number>();
 
@@ -31,19 +34,19 @@ export default function Notification(props: NotificationProps) {
   const [isClose, setIsCode] = useState<boolean>(false);
 
   // 자동 닫기
-  const close = () => {
+  const close = useCallback(() => {
     setIsCode(true);
     setTimeout(() => {
-      clearMessageBox();
+      clearMessageBox(messageRootId);
     }, 400);
-  };
+  }, [messageRootId]);
 
   // 자동 닫기 타임아웃 설정
   const setAutoCloseTimeout = useCallback(() => {
     timeoutRef.current = window.setTimeout(() => {
       close();
     }, timeout);
-  }, [timeout]);
+  }, [timeout, close]);
 
   // 수동 닫기
   const manualClose = () => {
@@ -100,7 +103,7 @@ export default function Notification(props: NotificationProps) {
   }, [setPosition, setMessageType, setAutoCloseTimeout]);
 
   return (
-    <div className="notification-background">
+    <div className="notification-background" ref={overlay}>
       <div className="notification-wrapper" ref={wrapper}>
         <div
           className="notification"
