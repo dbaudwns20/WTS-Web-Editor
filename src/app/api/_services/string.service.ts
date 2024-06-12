@@ -8,7 +8,6 @@ type StringInstance = {
   stringNumber: number;
   content: string;
   comment: string | null;
-  isCompleted?: boolean;
 };
 
 async function computeCompletedProcess(
@@ -160,15 +159,10 @@ export async function updateProjectStrings(
   newWtsStringList: any,
   session: ClientSession
 ) {
-  // upsert 용 list
-  const upsertList: StringInstance[] = [];
-  // 삭제용 list
-  const deleteList: StringInstance[] = [];
-
   // 사용중인 string 리스트
   const usingStringList: IString[] = await StringModel.find({
     projectId: projectId,
-  });
+  }).session(session);
 
   // 업데이트할 string hash map 생성
   const updateStringMap: Map<number, StringInstance> = new Map<
@@ -179,6 +173,9 @@ export async function updateProjectStrings(
     updateStringMap.set(wtsString.stringNumber, wtsString);
   }
 
+  const bulkOps: any[] = [];
+  const currentDate: Date = new Date();
+
   for (const string of usingStringList) {
     const instance: StringInstance | undefined = updateStringMap.get(
       string.stringNumber
@@ -186,72 +183,59 @@ export async function updateProjectStrings(
 
     // 사용중인 String 이 없을경우 삭제대상으로 취급
     if (!instance) {
-      deleteList.push({
-        stringNumber: string.stringNumber,
-        content: string.originalText,
-        comment: string.comment,
-      } as StringInstance);
-      continue;
+      bulkOps.push({
+        deleteOne: {
+          filter: {
+            projectId: projectId,
+            stringNumber: string.stringNumber,
+          },
+        },
+      });
     } else {
       // map 에서 대상 삭제
       updateStringMap.delete(string.stringNumber);
+      // 기존 string 과 다른 경우에만 갱신
+      if (
+        string.originalText !== instance.content ||
+        string.comment !== instance.comment
+      ) {
+        bulkOps.push({
+          updateOne: {
+            filter: {
+              projectId: projectId,
+              stringNumber: instance.stringNumber,
+            },
+            update: {
+              $set: {
+                originalText: instance.content,
+                comment: instance.comment,
+                ...(string.completedAt !== null && { updatedAt: currentDate }), // 완료된 경우에만 수정일자 갱신
+              },
+              upsert: true,
+            },
+          },
+        });
+      }
     }
-    // 기존 string 과 다른 경우에만 갱신
-    if (
-      string.originalText !== instance.content ||
-      string.comment !== instance.comment
-    )
-      upsertList.push({
-        stringNumber: instance.stringNumber,
-        content: instance.content,
-        comment: instance.comment,
-        isCompleted: string.completedAt !== null, // 대상 String 의 완료여부
-      });
   }
 
-  // 추가 되어야 할 string map 이 존재한다면 upsert 배열에 추가
-  if (updateStringMap.size > 0) {
-    Array.from(updateStringMap.values()).forEach((value) =>
-      upsertList.push(value)
-    );
-  }
-
-  // upsert
-  const updatePromises = upsertList.map((wtsString) =>
-    StringModel.findOneAndUpdate(
-      { projectId: projectId, stringNumber: wtsString.stringNumber },
-      {
-        $setOnInsert: {
-          createdAt: new Date(),
+  // 추가 되어야 할 string map 이 존재한다면 bulkOps 배열에 추가
+  updateStringMap.forEach((value) => {
+    bulkOps.push({
+      insertOne: {
+        document: {
           projectId: projectId,
-          stringNumber: wtsString.stringNumber,
-        },
-        $set: {
-          originalText: wtsString.content,
-          comment: wtsString.comment,
-          ...(wtsString.isCompleted && { updatedAt: new Date() }), // 완료된 경우에만 수정일자 갱신
+          stringNumber: value.stringNumber,
+          originalText: value.content,
+          comment: value.comment,
+          createdAt: currentDate,
         },
       },
-      { upsert: true, setDefaultsOnInsert: true, session }
-    )
-  );
-
-  // delete
-  const deletePromise = deleteList.map((wtsString) => {
-    StringModel.findOneAndDelete(
-      {
-        projectId: projectId,
-        stringNumber: wtsString.stringNumber,
-      },
-      { session }
-    );
+    });
   });
 
-  // 병렬 실행
-  await Promise.all(updatePromises);
-  await Promise.all(deletePromise);
-
-  if (upsertList.length > 0 || deleteList.length > 0) {
+  if (bulkOps.length > 0) {
+    await StringModel.bulkWrite(bulkOps, { session });
     // 진행률 갱신
     await updateProject(
       projectId,
