@@ -30,10 +30,7 @@ export default async function RootLayout({
         />
       </head>
       <body>
-        <NextIntlClientProvider
-          messages={messages}
-          timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
-        >
+        <NextIntlClientProvider messages={messages}>
           <Header />
           <main className="main">{children}</main>
           <Footer />
