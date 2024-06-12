@@ -105,7 +105,8 @@ body {
 }
 
 .invalid-message {
-  @apply text-sm;
+  @apply pl-1;
+  @apply text-xs;
   @apply text-red-600;
   @apply dark:text-red-500;
 }

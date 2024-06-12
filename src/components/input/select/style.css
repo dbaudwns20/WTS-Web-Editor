@@ -23,8 +23,9 @@
 }
 
 .select.is-invalid {
-  @apply invalid:!border-red-600;
   @apply focus:border-red-600;
-  @apply focus:outline-red-500;
+  @apply focus:ring-red-100;
+  @apply dark:focus:border-red-800;
+  @apply dark:focus:ring-red-600/50;
   @apply mb-1;
 }
