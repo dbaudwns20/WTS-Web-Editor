@@ -79,7 +79,7 @@ const OverwriteWtsModal = forwardRef((props: OverwriteWtsModalProps, ref) => {
     completeFunction(() => {
       // 메시지 출력
       showNotificationMessage({
-        message: t("UPLOAD_WTS_MODAL.SUCCESS_MESSAGE"),
+        message: t("SUCCESS_MESSAGE"),
         messageType: "success",
       });
       // 모달 닫기
