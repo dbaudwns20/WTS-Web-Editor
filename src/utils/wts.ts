@@ -109,7 +109,7 @@ export function downloadFile(fileResponse: FileResponse) {
   const decodedString: string = new TextDecoder("utf-8").decode(bytes);
 
   // Windows 스타일 줄바꿈(CR LF)으로 변환
-  const windowsString: string = decodedString.replace(/\n/g, "\r\n");
+  const windowsString: string = decodedString.replace(/\r?\n/g, "\r\n");
 
   // UTF-8 BOM 추가
   const utf8Bom: string = "\uFEFF";
