@@ -130,7 +130,7 @@
       "BACK_BUTTON": "이전",
       "COMPLETE_BUTTON": "번역완료",
       "NEXT_BUTTON": "다음",
-      "EMPTY_TRANSLATE_TEXT": "번역 텍스트의 값이 없습니다.",
+      "EMPTY_TRANSLATE_TEXT_MESSAGE": "번역 텍스트의 값이 없습니다.",
       "SUCCESS_MESSAGE": "저장되었습니다.",
       "CONFIRM": {
         "TITLE": "경고",
