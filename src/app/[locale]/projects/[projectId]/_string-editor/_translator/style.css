@@ -5,6 +5,7 @@
   @apply border-gray-300;
   @apply rounded-lg;
   @apply px-4;
+  @apply pb-4;
   @apply relative;
 }
 

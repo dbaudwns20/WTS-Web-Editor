@@ -162,7 +162,7 @@
             },
             "SKIP": {
               "LABEL": "Skip",
-              "TEXT": "Skip translated items when STRING changes"
+              "TEXT": "Skip translated items when STRING moves"
             }
           }
         },
