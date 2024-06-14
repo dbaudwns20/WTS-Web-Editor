@@ -195,9 +195,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             ref={fileRef}
             labelText={t("WTS_FILE.LABEL")}
             onChange={handleUploadWtsFile}
-            isRequired={true}
+            required={{
+              isRequired: true,
+              invalidMessage: t("WTS_FILE.INVALID_MESSAGE"),
+            }}
             accept=".wts"
-            invalidMsg={t("WTS_FILE.INVALID_MESSAGE")}
           />
         </div>
         <div className="block text-center">

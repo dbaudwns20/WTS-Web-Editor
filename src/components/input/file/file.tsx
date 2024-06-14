@@ -14,6 +14,8 @@ import {
 
 import "./style.css";
 
+import { type Required } from "@/types/components";
+
 import { checkUploadedFileSize, checkFileType } from "@/utils/validator";
 import { generateRandomText, convertFileSizeToString } from "@/utils/common";
 import { showNotificationMessage } from "@/utils/message";
@@ -22,21 +24,23 @@ import { useTranslations } from "next-intl";
 
 type FileProps = {
   labelText?: string;
-  isRequired?: boolean;
-  invalidMsg?: string;
+  required?: Required;
   accept?: string;
   onChange: Dispatch<File>;
 };
 
 export type FileType = {
+  setFocus: () => void;
   setDisableReloadButton: (isDisabled: boolean) => void;
 };
 
 const File = forwardRef((props: FileProps, ref) => {
   const {
     labelText = "",
-    isRequired = false,
-    invalidMsg = "",
+    required = {
+      isRequired: false,
+      invalidMessage: "",
+    },
     accept,
     onChange,
   } = props;
@@ -47,6 +51,7 @@ const File = forwardRef((props: FileProps, ref) => {
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
     setDisableReloadButton,
+    setFocus,
   }));
 
   // ref
@@ -57,7 +62,7 @@ const File = forwardRef((props: FileProps, ref) => {
 
   // values
   const elId = useMemo(() => `file_${generateRandomText()}`, []);
-  const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
+  const [invalidMessage, setInvalidMessage] = useState<string | null>(null);
   const [displayFile, setDisplayFile] = useState<string>("");
   const [isDragEnter, setIsDragEnter] = useState<boolean>(false);
 
@@ -88,8 +93,8 @@ const File = forwardRef((props: FileProps, ref) => {
       return;
     }
 
-    if (isRequired && file) {
-      setInvalidMsg(null);
+    if (required.isRequired && file) {
+      setInvalidMessage(null);
     }
 
     let size: number = file.size;
@@ -134,11 +139,13 @@ const File = forwardRef((props: FileProps, ref) => {
 
   // invalid 이벤트 헨들링
   const handleInvalid = (event: InvalidEvent<HTMLInputElement>) => {
-    if (!isRequired) return;
+    const value = event.target.value;
 
-    const value: string = event.target.value;
+    if (required.isRequired && !value) {
+      setInvalidMessage(required.invalidMessage);
+    }
 
-    value ? setInvalidMsg(null) : setInvalidMsg(invalidMsg);
+    setFocus();
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLLabelElement>) => {
@@ -151,6 +158,10 @@ const File = forwardRef((props: FileProps, ref) => {
   const handleReupload = () => {
     setDisplayFile("");
     setTimeout(() => (fileRef.current!.value = ""));
+  };
+
+  const setFocus = () => {
+    innerLabel.current!.focus();
   };
 
   const setDisableReloadButton = (isDisabled: boolean) => {
@@ -176,7 +187,7 @@ const File = forwardRef((props: FileProps, ref) => {
       {labelText.length > 0 ? (
         <label
           ref={labelRef}
-          className={isRequired ? "label is-required" : "label"}
+          className={required.isRequired ? "label is-required" : "label"}
         >
           {labelText}
         </label>
@@ -193,7 +204,7 @@ const File = forwardRef((props: FileProps, ref) => {
             onDragLeave={() => setIsDragEnter(false)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
-            className={_invalidMsg !== null ? "file is-invalid" : "file"}
+            className={invalidMessage !== null ? "file is-invalid" : "file"}
           >
             <div className="file-content">
               <span className="icon">
@@ -206,7 +217,7 @@ const File = forwardRef((props: FileProps, ref) => {
               type="file"
               className="hidden"
               ref={fileRef}
-              required={isRequired}
+              required={required.isRequired}
               onChange={handleChange}
               onInvalid={handleInvalid}
               accept={accept}
@@ -240,8 +251,8 @@ const File = forwardRef((props: FileProps, ref) => {
           </label>
         )}
       </div>
-      {_invalidMsg !== null ? (
-        <p className="invalid-message">{invalidMsg}</p>
+      {invalidMessage !== null ? (
+        <p className="invalid-message">{invalidMessage}</p>
       ) : (
         <></>
       )}

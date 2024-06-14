@@ -86,5 +86,5 @@
   @apply focus:ring-red-100;
   @apply dark:focus:border-red-800;
   @apply dark:focus:ring-red-600/50;
-  @apply mb-1;
+  @apply mb-2;
 }

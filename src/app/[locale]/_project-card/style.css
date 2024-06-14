@@ -95,7 +95,7 @@
   @apply py-1;
   @apply font-semibold;
   @apply text-xs;
-  @apply bg-orange-500;
+  @apply dark:bg-orange-500;
 }
 
 .project-content > .project-content-between > .date-created {
