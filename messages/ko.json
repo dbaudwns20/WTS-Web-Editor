@@ -10,26 +10,28 @@
     "TITLE": {
       "LABEL": "제목",
       "PLACEHOLDER": "제목을 입력하세요",
-      "INVALID_MESSAGE": "제목을 입력해주세요."
+      "INVALID_MESSAGE": "제목은 필수 항목입니다."
     },
     "LOCALE": {
       "LABEL": "언어",
       "DEFAULT": "언어를 선택하세요",
-      "INVALID_MESSAGE": "언어를 선택해주세요."
+      "INVALID_MESSAGE": "언어는 필수 항목입니다."
     },
     "VERSION": {
-      "LABEL": "버전"
+      "LABEL": "버전",
+      "INVALID_MESSAGE": "유효하지 않은 버전 형식입니다."
     },
     "SOURCE_URL": {
       "LABEL": "출처 URL",
-      "PLACEHOLDER": "출처 URL을 입력하세요"
+      "PLACEHOLDER": "출처 URL을 입력하세요",
+      "INVALID_MESSAGE": "유효하지 않은 URL 형식입니다."
     },
     "IMAGE": {
       "LABEL": "이미지"
     },
     "WTS_FILE": {
       "LABEL": "WTS 파일",
-      "INVALID_MESSAGE": "WTS 파일을 업로드해주세요."
+      "INVALID_MESSAGE": "WTS 파일은 필수 항목입니다."
     },
     "CREATE": {
       "CREATE_BUTTON": "프로젝트 생성",
@@ -128,7 +130,7 @@
       "BACK_BUTTON": "이전",
       "COMPLETE_BUTTON": "번역완료",
       "NEXT_BUTTON": "다음",
-      "EMPTY_TRANSLATE_TEXT": "번역 텍스트의 값이 없습니다.",
+      "EMPTY_TRANSLATE_TEXT_MESSAGE": "번역 텍스트의 값이 없습니다.",
       "SUCCESS_MESSAGE": "저장되었습니다.",
       "CONFIRM": {
         "TITLE": "경고",
@@ -198,6 +200,10 @@
     }
   },
   "COMPONENTS": {
+    "TEXT": {
+      "INVALID_MIN_LENGTH": "최소 {min}자 이상 입력해야합니다.",
+      "INVALID_MAX_LENGTH": "최대 {max}자 까지만 입력가능합니다."
+    },
     "SUBMIT": {
       "LOADING": "처리중..."
     },

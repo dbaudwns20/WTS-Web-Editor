@@ -10,26 +10,28 @@
     "TITLE": {
       "LABEL": "TITLE",
       "PLACEHOLDER": "Type project title",
-      "INVALID_MESSAGE": "Please type your project title."
+      "INVALID_MESSAGE": "Title is required."
     },
     "LOCALE": {
       "LABEL": "LOCALE",
       "DEFAULT": "Select your locale",
-      "INVALID_MESSAGE": "Please select your locale."
+      "INVALID_MESSAGE": "Locale is required."
     },
     "VERSION": {
-      "LABEL": "VERSION"
+      "LABEL": "VERSION",
+      "INVALID_MESSAGE": "Invalid version format."
     },
     "SOURCE_URL": {
       "LABEL": "SOURCE URL",
-      "PLACEHOLDER": "Type source URL"
+      "PLACEHOLDER": "Type source URL",
+      "INVALID_MESSAGE": "Invalid URL format."
     },
     "IMAGE": {
       "LABEL": "IMAGE"
     },
     "WTS_FILE": {
       "LABEL": "WTS FILE",
-      "INVALID_MESSAGE": "Please upload your wts file."
+      "INVALID_MESSAGE": "WTS file is required."
     },
     "CREATE": {
       "CREATE_BUTTON": "Create Project",
@@ -198,6 +200,10 @@
     }
   },
   "COMPONENTS": {
+    "TEXT": {
+      "INVALID_MIN_LENGTH": "Please enter {min} or more characters",
+      "INVALID_MAX_LENGTH": "Please enter {max} or less characters"
+    },
     "SUBMIT": {
       "LOADING": "Processing..."
     },

@@ -14,7 +14,7 @@ export default function NotificationTest() {
     showNotificationMessage({
       message: "success message",
       messageType: "success",
-      timeout: 6000,
+      timeout: 10000,
     });
   };
 

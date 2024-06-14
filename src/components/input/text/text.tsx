@@ -1,6 +1,7 @@
 import {
   useRef,
   useEffect,
+  useMemo,
   SetStateAction,
   forwardRef,
   useImperativeHandle,
@@ -12,16 +13,22 @@ import {
 
 import "./style.css";
 
+import { type Required, type Pattern } from "@/types/components";
+
 import { generateRandomText } from "@/utils/common";
+
+import { useTranslations } from "next-intl";
 
 type TextProps = {
   value: string | null;
-  labelText: string;
+  labelText?: string;
   placeholder?: string;
   isDisabled?: boolean;
   isReadOnly?: boolean;
-  isRequired?: boolean;
-  invalidMsg?: string;
+  min?: number | undefined;
+  max?: number | undefined;
+  required?: Required;
+  pattern?: Pattern;
   onChange: Dispatch<SetStateAction<string>>;
 };
 
@@ -36,8 +43,16 @@ const Text = forwardRef((props: TextProps, ref) => {
     placeholder,
     isDisabled = false,
     isReadOnly = false,
-    isRequired = false,
-    invalidMsg = "Please enter your value",
+    min,
+    max,
+    required = {
+      isRequired: false,
+      invalidMessage: "",
+    },
+    pattern = {
+      regExp: null,
+      invalidMessage: "",
+    },
     onChange,
   }: TextProps = props;
 
@@ -46,19 +61,16 @@ const Text = forwardRef((props: TextProps, ref) => {
     setFocus,
   }));
 
+  // i18n translate key
+  const t = useTranslations("COMPONENTS.TEXT");
+
   // ref
   const labelRef = useRef<HTMLLabelElement>(null);
   const textRef = useRef<HTMLInputElement>(null);
 
   // values
-  const elId: string = `text_${generateRandomText()}`;
-  const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
-
-  // set element id
-  useEffect(() => {
-    labelRef.current!.setAttribute("for", elId);
-    textRef.current!.setAttribute("id", elId);
-  }, [elId]);
+  const elId: string = useMemo(() => `text_${generateRandomText()}`, []);
+  const [invalidMessage, setInvalidMessage] = useState<string | null>(null);
 
   const setFocus = () => {
     textRef.current!.focus();
@@ -66,38 +78,78 @@ const Text = forwardRef((props: TextProps, ref) => {
     textRef.current!.setSelectionRange(0, 999); // For mobile devices.
   };
 
+  // 커스텀규칙 정의
+  const setCustomValidity = (errorMessage: string, helperText: string = "") => {
+    textRef.current?.setCustomValidity(errorMessage);
+    setInvalidMessage(helperText.length > 0 ? helperText : null);
+  };
+
   // change 이벤트 헨들링
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value: string = event.target.value;
 
-    if (isRequired && value) {
-      setInvalidMsg(null);
+    if (value.length === 0) {
+      setCustomValidity("");
+      onChange("");
+      return;
     }
 
+    let errorMessage: string = "";
+    let helperText: string = "";
+
+    // 정규식 체크
+    if (pattern.regExp) {
+      const { regExp, invalidMessage } = pattern;
+      if (!regExp.test(value)) {
+        errorMessage = "input value is invalid";
+        helperText = invalidMessage;
+      }
+    }
+
+    // value 길이 체크
+    if (min && value.length < min) {
+      errorMessage = "input value length is invalid";
+      helperText = t("INVALID_MIN_LENGTH", { min: min });
+    } else if (max && value.length > max) {
+      errorMessage = "input value length is invalid";
+      helperText = t("INVALID_MAX_LENGTH", { max: max });
+    }
+
+    setCustomValidity(errorMessage, helperText);
     onChange(value);
   };
 
-  // invalid 이벤트 헨들링
+  // invalid 이벤트 헨들링 => Submit 이벤트 후 처리
   const handleInvalid = (event: InvalidEvent<HTMLInputElement>) => {
-    if (!isRequired) return;
-
     const value: string = event.target.value;
 
-    value ? setInvalidMsg(null) : setInvalidMsg(invalidMsg);
+    if (required.isRequired && !value) {
+      setInvalidMessage(required.invalidMessage);
+    }
 
     setFocus();
   };
 
+  // set element id
+  useEffect(() => {
+    labelRef.current?.setAttribute("for", elId);
+    textRef.current!.setAttribute("id", elId);
+  }, [elId]);
+
   return (
     <>
-      <label
-        className={isRequired ? "label is-required" : "label"}
-        ref={labelRef}
-      >
-        {labelText}
-      </label>
+      {labelText ? (
+        <label
+          className={required.isRequired ? "label is-required" : "label"}
+          ref={labelRef}
+        >
+          {labelText}
+        </label>
+      ) : (
+        <></>
+      )}
       <input
-        className={_invalidMsg !== null ? "input is-invalid" : "input"}
+        className={invalidMessage !== null ? "input is-invalid" : "input"}
         type="text"
         ref={textRef}
         placeholder={placeholder}
@@ -106,10 +158,10 @@ const Text = forwardRef((props: TextProps, ref) => {
         onInvalid={handleInvalid}
         disabled={isDisabled}
         readOnly={isReadOnly}
-        required={isRequired}
+        required={required.isRequired}
       />
-      {_invalidMsg !== null ? (
-        <p className="invalid-message">{invalidMsg}</p>
+      {invalidMessage !== null ? (
+        <p className="invalid-message">{invalidMessage}</p>
       ) : (
         <></>
       )}

@@ -130,8 +130,12 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             value={title}
             labelText={t("TITLE.LABEL")}
             placeholder={t("TITLE.PLACEHOLDER")}
-            invalidMsg={t("TITLE.INVALID_MESSAGE")}
-            isRequired={true}
+            min={2}
+            max={200}
+            required={{
+              isRequired: true,
+              invalidMessage: t("TITLE.INVALID_MESSAGE"),
+            }}
             onChange={setTitle}
           />
         </div>
@@ -142,9 +146,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
               defaultOption={{ id: "", value: t("LOCALE.DEFAULT") }}
               options={getLocaleList()}
               value={locale}
+              required={{
+                isRequired: true,
+                invalidMessage: t("LOCALE.INVALID_MESSAGE"),
+              }}
               onChange={(val) => setLocale(Number(val))}
-              invalidMsg={t("LOCALE.INVALID_MESSAGE")}
-              isRequired={true}
             />
           </div>
           <div className="block">
@@ -152,6 +158,13 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
               labelText={t("VERSION.LABEL")}
               value={version}
               placeholder="ex) 1.0.0"
+              max={20}
+              pattern={{
+                regExp: new RegExp(
+                  /^\d+\.\d+\.\d+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?(\+[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$/
+                ),
+                invalidMessage: t("VERSION.INVALID_MESSAGE"),
+              }}
               onChange={setVersion}
             />
           </div>
@@ -161,6 +174,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             value={source}
             labelText={t("SOURCE_URL.LABEL")}
             placeholder={t("SOURCE_URL.PLACEHOLDER")}
+            max={250}
+            pattern={{
+              regExp: new RegExp(/^(https?):\/\/[^\s/$.?#].[^\s]*$/),
+              invalidMessage: t("SOURCE_URL.INVALID_MESSAGE"),
+            }}
             onChange={setSource}
           />
         </div>
@@ -177,9 +195,11 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             ref={fileRef}
             labelText={t("WTS_FILE.LABEL")}
             onChange={handleUploadWtsFile}
-            isRequired={true}
+            required={{
+              isRequired: true,
+              invalidMessage: t("WTS_FILE.INVALID_MESSAGE"),
+            }}
             accept=".wts"
-            invalidMsg={t("WTS_FILE.INVALID_MESSAGE")}
           />
         </div>
         <div className="block text-center">
