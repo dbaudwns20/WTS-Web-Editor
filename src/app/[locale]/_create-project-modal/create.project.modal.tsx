@@ -158,7 +158,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
               labelText={t("VERSION.LABEL")}
               value={version}
               placeholder="ex) 1.0.0"
-              max={10}
+              max={20}
               pattern={{
                 regExp: new RegExp(
                   /^\d+\.\d+\.\d+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?(\+[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$/
@@ -174,7 +174,7 @@ const CreateProjectModal = forwardRef((props: CreateProjectModalProps, ref) => {
             value={source}
             labelText={t("SOURCE_URL.LABEL")}
             placeholder={t("SOURCE_URL.PLACEHOLDER")}
-            max={100}
+            max={250}
             pattern={{
               regExp: new RegExp(/^(https?):\/\/[^\s/$.?#].[^\s]*$/),
               invalidMessage: t("SOURCE_URL.INVALID_MESSAGE"),

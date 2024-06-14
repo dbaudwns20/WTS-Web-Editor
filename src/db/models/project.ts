@@ -36,7 +36,7 @@ const ProjectSchema: Schema<IProject> = new Schema({
     type: String,
     default: null,
     set: emptyToNull,
-    maxlength: 10,
+    maxlength: 20,
     trim: true,
   },
   lastModifiedStringNumber: {
@@ -47,7 +47,7 @@ const ProjectSchema: Schema<IProject> = new Schema({
     type: String,
     default: null,
     set: emptyToNull,
-    maxlength: 100,
+    maxlength: 250,
     trim: true,
   },
   createdAt: {
