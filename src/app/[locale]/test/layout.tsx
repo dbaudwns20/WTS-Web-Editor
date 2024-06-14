@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "WTS Web Editor - 테스트 페이지",
@@ -9,16 +10,19 @@ export default function TestLayout({
   children,
   notification,
   confirm,
+  components,
 }: Readonly<{
   children: React.ReactNode;
   notification: React.ReactNode;
   confirm: React.ReactNode;
+  components: React.ReactNode;
 }>) {
   return (
     <div className="py-8">
       {children}
       {notification}
       {confirm}
+      {components}
     </div>
   );
 }

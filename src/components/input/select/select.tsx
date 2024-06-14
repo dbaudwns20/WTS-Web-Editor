@@ -13,15 +13,16 @@ import {
 
 import "./style.css";
 
+import { type Required } from "@/types/components";
+
 import { generateRandomText } from "@/utils/common";
 
 type PropsType = {
   value?: any;
   defaultOption?: any;
   options: any[];
-  labelText: string;
-  isRequired?: boolean;
-  invalidMsg?: string;
+  labelText?: string;
+  required?: Required;
   onChange: Dispatch<SetStateAction<any>>;
 };
 
@@ -31,13 +32,17 @@ const Select = forwardRef((props: PropsType, ref) => {
     defaultOption,
     options,
     labelText,
-    isRequired = false,
-    invalidMsg = "",
+    required = {
+      isRequired: false,
+      invalidMessage: "",
+    },
     onChange,
   } = props;
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
-  useImperativeHandle(ref, () => ({}));
+  useImperativeHandle(ref, () => ({
+    setFocus,
+  }));
 
   // ref
   const labelRef = useRef<HTMLLabelElement>(null);
@@ -45,18 +50,22 @@ const Select = forwardRef((props: PropsType, ref) => {
 
   // values
   const elId = useMemo(() => `select_${generateRandomText()}`, []);
-  const [_invalidMsg, setInvalidMsg] = useState<string | null>(null);
+  const [invalidMessage, setInvalidMessage] = useState<string | null>(null);
   const _options = useMemo<any>(() => {
     if (defaultOption) options.unshift(defaultOption);
     return options;
   }, [defaultOption, options]);
 
+  const setFocus = () => {
+    selectRef.current!.focus();
+  };
+
   // change 이벤트 헨들링
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: any = event.target.value;
 
-    if (isRequired && value) {
-      setInvalidMsg(null);
+    if (required.isRequired && value) {
+      setInvalidMessage(null);
     }
 
     onChange(value);
@@ -64,34 +73,40 @@ const Select = forwardRef((props: PropsType, ref) => {
 
   // invalid 이벤트 헨들링
   const handleInvalid = (event: InvalidEvent<HTMLSelectElement>) => {
-    if (!isRequired) return;
-
     const value: string = event.target.value;
 
-    value ? setInvalidMsg(null) : setInvalidMsg(invalidMsg);
+    if (required.isRequired && !value) {
+      setInvalidMessage(required.invalidMessage);
+    }
+
+    setFocus();
   };
 
   useEffect(() => {
-    labelRef.current!.setAttribute("for", elId);
+    labelRef.current?.setAttribute("for", elId);
     selectRef.current!.setAttribute("id", elId);
   }, [elId]);
 
   return (
     <>
-      <label
-        ref={labelRef}
-        className={`label${isRequired ? " is-required" : ""}`}
-      >
-        {labelText}
-      </label>
+      {labelText ? (
+        <label
+          className={required.isRequired ? "label is-required" : "label"}
+          ref={labelRef}
+        >
+          {labelText}
+        </label>
+      ) : (
+        <></>
+      )}
       <div className="relative">
         <select
-          className={_invalidMsg !== null ? "select is-invalid" : "select"}
+          className={invalidMessage !== null ? "select is-invalid" : "select"}
           ref={selectRef}
           value={value}
           onChange={handleChange}
           onInvalid={handleInvalid}
-          required={isRequired}
+          required={required.isRequired}
         >
           {_options.map((option: any) => {
             return (
@@ -111,8 +126,8 @@ const Select = forwardRef((props: PropsType, ref) => {
           </svg>
         </div>
       </div>
-      {_invalidMsg !== null ? (
-        <p className="invalid-message">{invalidMsg}</p>
+      {invalidMessage !== null ? (
+        <p className="invalid-message">{invalidMessage}</p>
       ) : (
         <></>
       )}
