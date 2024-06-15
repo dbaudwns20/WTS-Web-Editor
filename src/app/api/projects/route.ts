@@ -27,6 +27,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   let session;
   try {
+    await dbConnect();
+
     session = await startSession();
     session.startTransaction();
 
@@ -35,8 +37,6 @@ export async function POST(request: NextRequest) {
       ["title", "locale", "wtsStringList", "imageFile"],
       formData
     );
-
-    await dbConnect();
 
     const createData: any = {
       title: formData.get("title"),

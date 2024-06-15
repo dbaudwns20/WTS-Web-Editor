@@ -23,6 +23,8 @@ export async function PUT(
 ) {
   let session;
   try {
+    await dbConnect();
+
     session = await startSession();
     session.startTransaction();
 
@@ -33,8 +35,6 @@ export async function PUT(
       ["translatedText", "isSaveDraft", "isCompleted"],
       formData
     );
-
-    await dbConnect();
 
     const updateData: any = {
       translatedText: formData.get("translatedText"),

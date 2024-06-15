@@ -115,6 +115,8 @@ export async function PUT(
 ) {
   let session;
   try {
+    await dbConnect();
+
     session = await startSession();
     session.startTransaction();
 
@@ -122,8 +124,6 @@ export async function PUT(
 
     checkRequestParams(["projectId"], params);
     checkRequestBody(["wtsStringList"], formData);
-
-    await dbConnect();
 
     await overwriteWtsStrings(
       params["projectId"],

@@ -45,6 +45,8 @@ export async function PUT(
 ) {
   let session;
   try {
+    await dbConnect();
+
     session = await startSession();
     session.startTransaction();
 
@@ -52,8 +54,6 @@ export async function PUT(
 
     checkRequestParams(["projectId"], params);
     checkRequestBody(["title", "locale"], formData);
-
-    await dbConnect();
 
     const updateData: any = {
       title: formData.get("title"),
@@ -98,12 +98,12 @@ export async function DELETE(
 ) {
   let session;
   try {
+    await dbConnect();
+
     session = await startSession();
     session.startTransaction();
 
     checkRequestParams(["projectId"], params);
-
-    await dbConnect();
 
     // 프로젝트와 하위 string 제거
     await deleteProject(params.projectId, session);
