@@ -101,7 +101,7 @@
       "CONFIRM": {
         "TITLE": "Warning",
         "MESSAGE": "Changes exist. Would you like to save?",
-        "IGNORE_LABEL": "Ignore",
+        "IGNORE_LABEL": "Discard",
         "SAVE_DRAFT_LABEL": "Save Draft",
         "COMPLETE_LABEL": "Complete"
       },
@@ -135,7 +135,7 @@
       "CONFIRM": {
         "TITLE": "Warning",
         "MESSAGE": "Changes exist. Would you like to save?",
-        "IGNORE_LABEL": "Ignore",
+        "IGNORE_LABEL": "Discard",
         "SAVE_DRAFT_LABEL": "Save Draft",
         "COMPLETE_LABEL": "Complete"
       },
