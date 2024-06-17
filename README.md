@@ -1,4 +1,8 @@
-# WTS WEB EDITOR
+
+
+<p align="center">
+  <img src="https://github.com/dbaudwns20/WTS-Web-Editor/assets/33855022/aa5db49c-302d-497f-bfe7-3e37b1c7929e" width="500" />
+</p>
 
 ## 소개
 WTS 웹 에디터는 워크래프트 3 맵의 텍스트 파일을 쉽게 번역할 수 있도록 웹 페이지로 구현한 웹 에디터입니다.
@@ -28,6 +32,58 @@ WTS 웹 에디터는 워크래프트 3 맵의 텍스트 파일을 쉽게 번역�
 - **react-cropper**: 이미지 크롭
 
 - **react-hot-keys**: 단축키 사용
+
+# 프로젝트 설치 및 진행 가이드
+
+### 필요사항
+
+- Vercel Hobby Plan 계정
+  - Vercel은 프론트엔드 프로젝트를 손쉽게 배포할 수 있는 클라우드 플랫폼입니다. [Vercel 홈페이지](https://vercel.com/)에서 무료로 가입할 수 있습니다.
+- Vercel Blob Storage API 키 발급
+  - Blob Storage는 파일 저장소로, API 키를 통해 접근할 수 있습니다. Vercel 대시보드에서 API 키를 생성하세요.
+- MongoDB Atlas 개인 클러스터
+  - MongoDB Atlas는 클라우드 기반의 NoSQL 데이터베이스 서비스입니다. [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)에서 개인 클러스터를 생성하세요.
+
+### 환경 변수 설정
+
+root 디렉토리에 `.env.local` 파일을 만들고 다음 값을 입력해야 합니다:
+
+```plaintext
+BLOB_READ_WRITE_TOKEN=""
+MONGODB_DB=""
+MONGODB_URI=""
+```
+
+- `BLOB_READ_WRITE_TOKEN`: Vercel Blob Storage API 키를 입력합니다.
+- `MONGODB_DB`: MongoDB 데이터베이스 이름을 입력합니다.
+- `MONGODB_URI`: MongoDB 클러스터의 URI를 입력합니다.
+
+### 패키지 설치
+
+프로젝트 디렉토리에서 다음 명령어를 실행하여 필요한 패키지를 설치합니다:
+
+```bash
+npm install
+```
+
+### 개발 서버 실행
+
+다음 명령어를 실행하여 개발 서버를 시작합니다:
+
+```bash
+npm run dev
+```
+
+개발 서버가 시작되면, 웹 브라우저에서 `http://localhost:3000`을 열어 애플리케이션을 확인할 수 있습니다.
+
+### 추가 설명
+
+- **Vercel 설정**: 프로젝트를 Vercel에 배포하기 위해 Vercel CLI를 설치하고 로그인하세요. 그런 다음, `vercel` 명령어를 사용하여 프로젝트를 배포할 수 있습니다.
+- **MongoDB 설정**: MongoDB Atlas에서 데이터베이스를 설정한 후, 사용자와 비밀번호를 생성하고, 네트워크 접근 설정을 통해 IP 화이트리스트를 구성하세요.
+- **환경 변수 관리**: `.env.local` 파일을 통해 로컬 개발 환경에서 필요한 환경 변수를 관리합니다. 배포 환경에서는 Vercel의 환경 변수 설정을 사용하여 보안을 유지하세요.
+
+위의 과정을 따라 프로젝트를 설정하고 진행할 수 있습니다. 추가적인 도움이 필요하면 프로젝트 문서나 관련 자료를 참고하세요.
+
 
 ## 기능
 WTS 웹 에디터는 워크래프트 3 맵 파일 중 WTS 파일을 프로젝트 단위로 생성하여 관리할 수 있습니다. 생성된 프로젝트는 WTS 파일 내용으로 STRING 데이터를 생성합니다. 프로젝트 상세 페이지에서 STRING 목록과 편집기를 확인할 수 있습니다. 각 페이지에서 사용할 수 있는 기능은 다음과 같습니다.
@@ -171,12 +227,4 @@ WTS 웹 에디터는 워크래프트 3 맵 파일 중 WTS 파일을 프로젝트
 
 - **번역 완료 버튼**: 현재 STRING을 번역 완료합니다. "번역 완료" 상태로 UI에 표시됩니다. "자동 이동" 설정의 영향을 받습니다.
 
-### 임시 저장, 번역 완료 기능이 성공적으로 처리되면 해당 STRING 번호를 기록하여 다음 프로젝트 상세 페이지 방문 시 자동으로 현재 STRING으로 설정됩니다.
-
-## 설치 및 실행
-```sh
-# 패키지 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
+#### * 임시 저장, 번역 완료 기능이 성공적으로 처리되면 해당 STRING 번호를 기록하여 다음 프로젝트 상세 페이지 방문 시 자동으로 현재 STRING으로 설정됩니다.
