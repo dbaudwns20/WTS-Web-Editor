@@ -172,11 +172,11 @@ export default function ComponentsTest() {
             </div>
           </div>
 
-          <div className="block w-[250px]">
+          <div className="block lg:w-[250px] sm:w-full">
             <Submit
               ref={submitRef}
               buttonText="Submit Button"
-              buttonClass="button is-primary w-[250px]"
+              buttonClass="button is-primary"
             />
           </div>
         </form>
