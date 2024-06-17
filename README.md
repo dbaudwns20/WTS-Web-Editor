@@ -1,37 +1,26 @@
-
-
 <p align="center">
-  <img src="https://github.com/dbaudwns20/WTS-Web-Editor/assets/33855022/aa5db49c-302d-497f-bfe7-3e37b1c7929e" width="500" />
+  <img src="https://github.com/dbaudwns20/WTS-Web-Editor/assets/33855022/aa5db49c-302d-497f-bfe7-3e37b1c7929e" width="450" />
 </p>
 
-## 소개
-WTS 웹 에디터는 워크래프트 3 맵의 텍스트 파일을 쉽게 번역할 수 있도록 웹 페이지로 구현한 웹 에디터입니다.
+# 소개
+WTS Web Editor는 게임 워크래프트3의 인게임 텍스트 파일을 손쉽게 번역할 수 있는 사용자 인터페이스를 제공하며, 번역된 파일을 다운로드할 수 있는 웹 페이지입니다. 
 
 ## 기술 스택
-- **Next.js 14**
+![next](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=fff&style=for-the-badge)
+![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![ts](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![mongo](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
-- **React 18**
+## 사용된 라이브러리들
 
-- **TypeScript**
-
-- **Tailwind CSS**
-
-- **MongoDB**
-
-## 외부 라이브러리
-- **next**: Next.js 프레임워크
-
-- **vercel/blob**: 외부 이미지 저장 및 호스팅 연계
-
-- **mongoose**: MongoDB ORM
-
-- **next-intl**: Next.js 다국어 기능 제공 (한국어 / 영어)
-
-- **perfect-scrollbar**: 스크롤바 디자인
-
-- **react-cropper**: 이미지 크롭
-
-- **react-hot-keys**: 단축키 사용
+- [Next.js](https://nextjs.org/): React를 기반으로 한 서버사이드 렌더링 프레임워크
+- [Vercel Blob](https://vercel.com/docs/storage/blobs): 외부 이미지 저장 및 호스팅 연계
+- [Mongoose](https://mongoosejs.com/): MongoDB를 위한 ORM
+- [next-intl](https://github.com/amannn/next-intl): Next.js 다국어 기능 제공 (한국어 / 영어)
+- [perfect-scrollbar](https://github.com/mdbootstrap/perfect-scrollbar): 스크롤바 디자인
+- [react-cropper](https://github.com/react-cropper/react-cropper): 이미지 크롭
+- [react-hotkeys](https://github.com/greena13/react-hotkeys): 단축키 사용
 
 # 프로젝트 설치 및 진행 가이드
 
@@ -82,14 +71,13 @@ npm run dev
 - **MongoDB 설정**: MongoDB Atlas에서 데이터베이스를 설정한 후, 사용자와 비밀번호를 생성하고, 네트워크 접근 설정을 통해 IP 화이트리스트를 구성하세요.
 - **환경 변수 관리**: `.env.local` 파일을 통해 로컬 개발 환경에서 필요한 환경 변수를 관리합니다. 배포 환경에서는 Vercel의 환경 변수 설정을 사용하여 보안을 유지하세요.
 
-위의 과정을 따라 프로젝트를 설정하고 진행할 수 있습니다. 추가적인 도움이 필요하면 프로젝트 문서나 관련 자료를 참고하세요.
-
-
-## 기능
+#  기능
 WTS 웹 에디터는 워크래프트 3 맵 파일 중 WTS 파일을 프로젝트 단위로 생성하여 관리할 수 있습니다. 생성된 프로젝트는 WTS 파일 내용으로 STRING 데이터를 생성합니다. 프로젝트 상세 페이지에서 STRING 목록과 편집기를 확인할 수 있습니다. 각 페이지에서 사용할 수 있는 기능은 다음과 같습니다.
 
 ### 메인 페이지
 - **프로젝트 조회**: offset 8개 단위, 생성일자 역순으로 조회됩니다. 스크롤을 끝까지 내리면 추가 조회가 가능합니다.
+
+- **다국어 지원**: 한국어, English 다국어를 지원합니다.
 
 - **프로젝트 생성**: 다음 값을 입력 받아 프로젝트를 생성할 수 있습니다. __(* 표시는 필수값입니다.)__
 
