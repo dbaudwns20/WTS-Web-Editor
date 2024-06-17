@@ -36,12 +36,26 @@ export default function ConfirmTest() {
     });
   };
 
+  const confirm_1 = () => {
+    showConfirmMessage({
+      title: "확인 창",
+      message: `메시지를 입력해주세요.<br/> Esc 키로 창을 닫을 수 있습니다.`,
+      buttons: [
+        {
+          label: "success",
+          class: "success",
+          onClick: null,
+        },
+      ],
+    });
+  };
+
   return (
     <section className="w-full mb-12">
       <p className="text-2xl font-semibold text-gray-500">Confirm</p>
       <hr className="mt-4" />
       <div className="w-full flex mt-5 gap-2">
-        <button className="button is-primary" onClick={confirm}>
+        <button className="button is-primary" onClick={confirm_1}>
           show confirm dialog
         </button>
         <button className="button" onClick={confirm}>

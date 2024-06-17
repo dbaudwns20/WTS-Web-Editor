@@ -47,7 +47,9 @@ const Dropdown = forwardRef((props: DropdownProps, ref: any) => {
     }
   };
 
-  const handleDropdownTriggerClick = () => {
+  const handleDropdownTriggerClick = (e: any) => {
+    e.stopPropagation();
+
     if (dropdownMenuRef.current?.classList.contains("is-active")) {
       // is-active -> is-hiding 변경
       dropdownMenuRef.current?.classList.replace("is-active", "is-hiding");

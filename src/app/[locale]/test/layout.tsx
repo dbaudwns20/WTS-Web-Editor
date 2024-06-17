@@ -10,18 +10,23 @@ export default function TestLayout({
   children,
   notification,
   confirm,
+  modal,
   components,
 }: Readonly<{
   children: React.ReactNode;
   notification: React.ReactNode;
   confirm: React.ReactNode;
+  modal: React.ReactNode;
   components: React.ReactNode;
 }>) {
   return (
     <div className="py-8">
       {children}
       {notification}
-      {confirm}
+      <div className="grid grid-cols-2 gap-5">
+        {confirm}
+        {modal}
+      </div>
       {components}
     </div>
   );
