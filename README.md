@@ -8,6 +8,7 @@ WTS Web Editor는 게임 워크래프트3의 인게임 텍스트 파일을 손�
 ## 기술 스택
 ![next](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=fff&style=for-the-badge)
 ![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 ![tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![ts](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![mongo](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
@@ -216,3 +217,6 @@ WTS 웹 에디터는 워크래프트 3 맵 파일 중 WTS 파일을 프로젝트
 - **번역 완료 버튼**: 현재 STRING을 번역 완료합니다. "번역 완료" 상태로 UI에 표시됩니다. "자동 이동" 설정의 영향을 받습니다.
 
 #### * 임시 저장, 번역 완료 기능이 성공적으로 처리되면 해당 STRING 번호를 기록하여 다음 프로젝트 상세 페이지 방문 시 자동으로 현재 STRING으로 설정됩니다.
+
+# 마치며
+이 프로젝트는 무료 서비스 내에서 구현되었습니다. 사용량을 주의하고 각 플랫폼의 비용 정책이 변경될 수 있으므로 유의하시기 바랍니다.
