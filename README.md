@@ -1,39 +1,84 @@
-# WTS WEB EDITOR
+<p align="center">
+  <img src="https://github.com/dbaudwns20/WTS-Web-Editor/assets/33855022/aa5db49c-302d-497f-bfe7-3e37b1c7929e" width="450" />
+</p>
 
-## 소개
-WTS 웹 에디터는 워크래프트 3 맵의 텍스트 파일을 쉽게 번역할 수 있도록 웹 페이지로 구현한 웹 에디터입니다.
+# 소개
+WTS Web Editor는 게임 워크래프트3의 인게임 텍스트 파일을 손쉽게 번역할 수 있는 사용자 인터페이스를 제공하며, 번역된 파일을 다운로드할 수 있는 웹 페이지입니다. 
 
 ## 기술 스택
-- **Next.js 14**
+![next](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=fff&style=for-the-badge)
+![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+![tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![ts](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![mongo](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
-- **React 18**
+## 사용된 라이브러리들
 
-- **TypeScript**
+- [Next.js](https://nextjs.org/): React를 기반으로 한 서버사이드 렌더링 프레임워크
+- [Vercel Blob](https://vercel.com/docs/storage/blobs): 외부 이미지 저장 및 호스팅 연계
+- [Mongoose](https://mongoosejs.com/): MongoDB를 위한 ORM
+- [next-intl](https://github.com/amannn/next-intl): Next.js 다국어 기능 제공 (한국어 / 영어)
+- [perfect-scrollbar](https://github.com/mdbootstrap/perfect-scrollbar): 스크롤바 디자인
+- [react-cropper](https://github.com/react-cropper/react-cropper): 이미지 크롭
+- [react-hotkeys](https://github.com/greena13/react-hotkeys): 단축키 사용
 
-- **Tailwind CSS**
+# 프로젝트 설치 및 진행 가이드
 
-- **MongoDB**
+### 필요사항
 
-## 외부 라이브러리
-- **next**: Next.js 프레임워크
+- Vercel Hobby Plan 계정
+  - Vercel은 프론트엔드 프로젝트를 손쉽게 배포할 수 있는 클라우드 플랫폼입니다. [Vercel 홈페이지](https://vercel.com/)에서 무료로 가입할 수 있습니다.
+- Vercel Blob Storage API 키 발급
+  - Blob Storage는 파일 저장소로, API 키를 통해 접근할 수 있습니다. Vercel 대시보드에서 API 키를 생성하세요.
+- MongoDB Atlas 개인 클러스터
+  - MongoDB Atlas는 클라우드 기반의 NoSQL 데이터베이스 서비스입니다. [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)에서 개인 클러스터를 생성하세요.
 
-- **vercel/blob**: 외부 이미지 저장 및 호스팅 연계
+### 환경 변수 설정
 
-- **mongoose**: MongoDB ORM
+root 디렉토리에 `.env.local` 파일을 만들고 다음 값을 입력해야 합니다:
 
-- **next-intl**: Next.js 다국어 기능 제공 (한국어 / 영어)
+```plaintext
+BLOB_READ_WRITE_TOKEN=""
+MONGODB_DB=""
+MONGODB_URI=""
+```
 
-- **perfect-scrollbar**: 스크롤바 디자인
+- `BLOB_READ_WRITE_TOKEN`: Vercel Blob Storage API 키를 입력합니다.
+- `MONGODB_DB`: MongoDB 데이터베이스 이름을 입력합니다.
+- `MONGODB_URI`: MongoDB 클러스터의 URI를 입력합니다.
 
-- **react-cropper**: 이미지 크롭
+### 패키지 설치
 
-- **react-hot-keys**: 단축키 사용
+프로젝트 디렉토리에서 다음 명령어를 실행하여 필요한 패키지를 설치합니다:
 
-## 기능
+```bash
+npm install
+```
+
+### 개발 서버 실행
+
+다음 명령어를 실행하여 개발 서버를 시작합니다:
+
+```bash
+npm run dev
+```
+
+개발 서버가 시작되면, 웹 브라우저에서 `http://localhost:3000`을 열어 애플리케이션을 확인할 수 있습니다.
+
+### 추가 설명
+
+- **Vercel 설정**: 프로젝트를 Vercel에 배포하기 위해 Vercel CLI를 설치하고 로그인하세요. 그런 다음, `vercel` 명령어를 사용하여 프로젝트를 배포할 수 있습니다.
+- **MongoDB 설정**: MongoDB Atlas에서 데이터베이스를 설정한 후, 사용자와 비밀번호를 생성하고, 네트워크 접근 설정을 통해 IP 화이트리스트를 구성하세요.
+- **환경 변수 관리**: `.env.local` 파일을 통해 로컬 개발 환경에서 필요한 환경 변수를 관리합니다. 배포 환경에서는 Vercel의 환경 변수 설정을 사용하여 보안을 유지하세요.
+
+#  기능
 WTS 웹 에디터는 워크래프트 3 맵 파일 중 WTS 파일을 프로젝트 단위로 생성하여 관리할 수 있습니다. 생성된 프로젝트는 WTS 파일 내용으로 STRING 데이터를 생성합니다. 프로젝트 상세 페이지에서 STRING 목록과 편집기를 확인할 수 있습니다. 각 페이지에서 사용할 수 있는 기능은 다음과 같습니다.
 
 ### 메인 페이지
 - **프로젝트 조회**: offset 8개 단위, 생성일자 역순으로 조회됩니다. 스크롤을 끝까지 내리면 추가 조회가 가능합니다.
+
+- **다국어 지원**: 한국어, English 다국어를 지원합니다.
 
 - **프로젝트 생성**: 다음 값을 입력 받아 프로젝트를 생성할 수 있습니다. __(* 표시는 필수값입니다.)__
 
@@ -171,12 +216,7 @@ WTS 웹 에디터는 워크래프트 3 맵 파일 중 WTS 파일을 프로젝트
 
 - **번역 완료 버튼**: 현재 STRING을 번역 완료합니다. "번역 완료" 상태로 UI에 표시됩니다. "자동 이동" 설정의 영향을 받습니다.
 
-### 임시 저장, 번역 완료 기능이 성공적으로 처리되면 해당 STRING 번호를 기록하여 다음 프로젝트 상세 페이지 방문 시 자동으로 현재 STRING으로 설정됩니다.
+#### * 임시 저장, 번역 완료 기능이 성공적으로 처리되면 해당 STRING 번호를 기록하여 다음 프로젝트 상세 페이지 방문 시 자동으로 현재 STRING으로 설정됩니다.
 
-## 설치 및 실행
-```sh
-# 패키지 설치
-npm install
-
-# 개발 서버 실행
-npm run dev
+# 마치며
+이 프로젝트는 무료 서비스 내에서 구현되었습니다. 사용량을 주의하고 각 플랫폼의 비용 정책이 변경될 수 있으므로 유의하시기 바랍니다.
