@@ -42,11 +42,10 @@ body {
   @apply h-full;
   @apply flex;
   @apply flex-col;
-  @apply py-4;
   @apply px-32;
   height: auto;
   min-height: calc(
-    100% - calc(var(--var-footer-height) + var(--var-header-height))
+    100% - calc(var(--var-header-height) + calc(var(--var-footer-height)))
   );
 }
 
