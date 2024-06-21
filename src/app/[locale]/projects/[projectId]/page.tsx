@@ -209,7 +209,7 @@ export default function ProjectDetail() {
 
     // string list section 높이 지정
     stringListRef.current!.componentElement!.style.height = `${
-      mainHeight - projectInfoSectionHeight - 32 // -2rem
+      mainHeight - projectInfoSectionHeight - 16 // -1rem
     }px`;
   }, []);
 
