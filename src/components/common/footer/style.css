@@ -18,7 +18,7 @@
 .main-footer > .navbar > .links {
   @apply flex;
   @apply items-center;
-  @apply gap-3;
+  @apply gap-3.5;
 }
 
 @media (min-width: 640px) {
@@ -49,4 +49,58 @@
   .main-footer > .navbar {
     max-width: 1536px;
   }
+}
+
+.theme-mode-wrapper {
+  @apply border;
+  @apply border-slate-300/50;
+  @apply dark:border-gray-600;
+  @apply text-slate-400/50;
+  @apply rounded-full;
+  @apply flex;
+  @apply items-center;
+  @apply w-fit;
+  @apply px-1;
+  @apply py-0.5;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.main-footer > .navbar > .theme-mode-wrapper > .theme {
+  @apply w-full;
+  @apply h-full;
+}
+
+.main-footer > .navbar > .theme-mode-wrapper > .theme > input {
+  @apply hidden;
+}
+
+.main-footer > .navbar > .theme-mode-wrapper > .theme > label {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply rounded-full;
+  @apply p-1;
+}
+
+.main-footer > .navbar > .theme-mode-wrapper > .theme > input:checked + label {
+  @apply bg-slate-200;
+  @apply text-slate-500;
+  @apply dark:bg-slate-600;
+  @apply dark:text-slate-200;
+}
+
+.main-footer
+  > .navbar
+  > .theme-mode-wrapper
+  > .theme
+  > input:not(:checked)
+  + label:hover {
+  @apply bg-slate-200/80;
+  @apply text-slate-400;
+  @apply dark:bg-slate-600/80;
+  @apply dark:text-slate-200;
+  @apply cursor-pointer;
 }
