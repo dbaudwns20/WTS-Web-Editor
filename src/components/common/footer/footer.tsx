@@ -1,26 +1,31 @@
 import Image from "next/image";
-import { Link } from "@/navigation";
-
-import LocaleSelect from "@/components/common/locale-select/locale.select";
-
-import W3 from "@/assets/warcraft-iii.svg";
-import Banner from "@/assets/banner.svg";
 
 import "./style.css";
 
+import Email from "@/assets/email.svg";
+import Github from "@/assets/github.svg";
+import User from "@/assets/user.svg";
+
 export default function Footer() {
+  const { CREATOR_EMAIL, GITHUB_REPO_LINK, GITHUB_LINK } = process.env;
+
   return (
     <footer className="main-footer">
       <nav className="navbar">
-        <Link className="w-full flex items-center" href="/">
-          <Image src={W3} alt="w3" width={30} priority />
-          <Image src={Banner} alt="banner" width={120} priority />
-        </Link>
-        <p className="w-full text-end text-sm">medjed8181@gmail.com</p>
-      </nav>
-      <hr className="border-gray-200 mx-auto" />
-      <nav className="navbar">
-        <LocaleSelect />
+        <div className="links">
+          <a href={`mailto:${CREATOR_EMAIL}`}>
+            <Image src={Email} alt="Email" width={20} height={20} priority />
+          </a>
+          <a href={GITHUB_REPO_LINK} target="_blank">
+            <Image src={Github} alt="Github" width={20} height={20} priority />
+          </a>
+          <a href={GITHUB_LINK} target="_blank">
+            <Image src={User} alt="User" width={20} height={20} priority />
+          </a>
+        </div>
+        <div>
+          <span className="text-xs fill-gray-300">Created By Junim</span>
+        </div>
       </nav>
     </footer>
   );

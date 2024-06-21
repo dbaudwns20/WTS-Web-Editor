@@ -1,14 +1,11 @@
 .main-footer {
-  @apply py-5;
   @apply text-gray-500;
   @apply bg-slate-50;
   @apply dark:bg-gray-900;
-  /* @apply h-[--var-footer-height]; */
-  height: max-content;
+  @apply h-[--var-footer-height];
 }
 
 .main-footer > .navbar {
-  @apply py-2;
   @apply mx-auto;
   @apply flex;
   @apply items-center;
@@ -16,6 +13,12 @@
   @apply w-full;
   @apply h-full;
   @apply px-10;
+}
+
+.main-footer > .navbar > .links {
+  @apply flex;
+  @apply items-center;
+  @apply gap-3;
 }
 
 @media (min-width: 640px) {

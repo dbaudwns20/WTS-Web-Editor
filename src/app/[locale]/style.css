@@ -3,6 +3,6 @@
   @apply grid-cols-1;
   @apply lg:grid-cols-4;
   @apply gap-8;
-  @apply mx-10;
+  @apply mx-2;
   @apply mb-10;
 }
