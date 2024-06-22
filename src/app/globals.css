@@ -43,6 +43,7 @@ body {
   @apply flex;
   @apply flex-col;
   @apply px-32;
+  @apply pb-4;
   height: auto;
   min-height: calc(
     100% - calc(var(--var-header-height) + calc(var(--var-footer-height)))
