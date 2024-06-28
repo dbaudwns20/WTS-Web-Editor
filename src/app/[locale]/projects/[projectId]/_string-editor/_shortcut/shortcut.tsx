@@ -23,7 +23,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_1")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <span className="keyboard is-mac">
                   <Image src={MacCommand} alt="command" />
                 </span>
@@ -36,7 +36,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_2")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <span className="keyboard is-mac">
                   <Image src={MacCommand} alt="command" />
                 </span>
@@ -49,7 +49,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_3")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <span className="keyboard is-mac">
                   <Image src={MacCommand} alt="command" />
                 </span>
@@ -62,7 +62,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_4")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
                     <Image src={MacShift} alt="shift" />
@@ -85,7 +85,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_5")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
                     <Image src={MacCommand} alt="command" />
@@ -115,7 +115,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_8")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
                     <Image src={MacShift} alt="shift" />
@@ -136,7 +136,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_6")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
                     <Image src={MacShift} alt="shift" />
@@ -157,7 +157,7 @@ const Shortcut = forwardRef((props: any, ref) => {
           <div className="shortcut">
             <span className="description">{t("SHORTCUT_7")}</span>
             <div className="keyboards">
-              {!isMacintosh() ? (
+              {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
                     <Image src={MacShift} alt="shift" />
