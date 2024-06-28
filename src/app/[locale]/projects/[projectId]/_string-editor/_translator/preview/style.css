@@ -6,7 +6,6 @@
 }
 
 .translator > .preview-header {
-  @apply pt-3;
   @apply mb-2.5;
   @apply text-xs;
   @apply text-orange-400;

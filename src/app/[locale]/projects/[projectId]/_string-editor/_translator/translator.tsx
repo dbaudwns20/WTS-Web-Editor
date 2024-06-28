@@ -29,6 +29,7 @@ export type TranslatorType = {
   setDisabled: (val: boolean) => void;
   setHeight: () => void;
   sync: () => void;
+  copy: () => void;
 };
 
 type TranslatorProps = {
@@ -73,6 +74,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     setDisabled,
     setHeight,
     sync,
+    copy,
   }));
 
   const setDisabled = (val: boolean) => {

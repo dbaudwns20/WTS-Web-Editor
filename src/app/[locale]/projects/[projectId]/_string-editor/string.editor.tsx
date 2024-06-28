@@ -41,6 +41,7 @@ export type StringEditorType = {
   handleMove: (isForward: boolean) => void;
   sync: () => void;
   reset: () => void;
+  copy: () => void;
   componentElement: HTMLElement;
 };
 
@@ -84,6 +85,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
     updateString,
     handleMove,
     sync: translatorRef.current?.sync,
+    copy: translatorRef.current?.copy,
     reset: resetTranslateText,
     componentElement: stringEditorWrapperRef.current!,
   }));

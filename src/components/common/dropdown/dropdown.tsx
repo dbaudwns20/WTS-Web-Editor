@@ -48,8 +48,6 @@ const Dropdown = forwardRef((props: DropdownProps, ref: any) => {
   };
 
   const handleDropdownTriggerClick = (e: any) => {
-    e.stopPropagation();
-
     if (dropdownMenuRef.current?.classList.contains("is-active")) {
       // is-active -> is-hiding 변경
       dropdownMenuRef.current?.classList.replace("is-active", "is-hiding");
@@ -68,9 +66,9 @@ const Dropdown = forwardRef((props: DropdownProps, ref: any) => {
 
   useEffect(() => {
     // 전역 클릭 이벤트 설정
-    window.addEventListener("click", closeDropdownMenu);
+    document.addEventListener("click", closeDropdownMenu);
     return () => {
-      window.removeEventListener("click", closeDropdownMenu);
+      document.removeEventListener("click", closeDropdownMenu);
     };
   });
 

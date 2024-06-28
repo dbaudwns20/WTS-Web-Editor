@@ -1,12 +1,12 @@
 .shortcut-wrapper {
+  @apply w-[35rem];
   @apply p-4;
-  width: max-content;
 }
 
 .shortcut-wrapper > .shortcut-group {
   @apply grid;
   @apply grid-cols-2;
-  @apply gap-4;
+  @apply gap-6;
 }
 
 .shortcut-wrapper > .shortcut-group > .shortcut-list {
@@ -16,15 +16,15 @@
 
 .shortcut-wrapper > .shortcut-group > .shortcut-list > .shortcut {
   @apply flex;
-  @apply gap-4;
   @apply items-center;
+  @apply justify-between;
 }
 
 .shortcut-wrapper > .shortcut-group > .shortcut-list > .shortcut > .keyboards {
   @apply inline-flex;
   @apply items-center;
   @apply justify-center;
-  @apply gap-1;
+  @apply gap-1.5;
 }
 
 .keyboard {
@@ -32,39 +32,32 @@
   @apply flex;
   @apply items-center;
   @apply justify-center;
-  @apply text-gray-400;
+  @apply text-gray-500;
   @apply dark:text-gray-300;
   @apply text-xs;
   @apply border;
   @apply border-gray-400;
   @apply dark:border-gray-300;
   @apply rounded-[0.25rem];
-  @apply w-5;
-  @apply h-5;
+  @apply w-[26px];
+  @apply h-[26px];
+  @apply shadow-sm;
+  @apply shadow-black/15;
 }
 
-.option,
-.plus,
-.alt {
-  @apply text-gray-400;
-  @apply dark:text-gray-300;
+.keyboard.is-mac {
+  @apply p-0.5;
+  @apply w-[32px];
 }
 
-.option::after {
-  font-family: "Material Icons", serif;
-  content: "\eae8";
-  font-size: 15px;
+.keyboard.is-win {
+  @apply w-[32px];
+  @apply text-[0.65rem];
 }
 
-.plus::after {
-  font-family: "Material Icons", serif;
-  content: "\e145";
-  font-size: 15px;
-}
-
-.alt::after {
-  content: "Alt";
-  font-size: 12px;
+.keyboard.is-win-shift {
+  @apply w-[35px];
+  @apply text-[0.65rem];
 }
 
 .description {
