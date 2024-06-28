@@ -19,6 +19,7 @@ import Shortcut from "./_shortcut/shortcut";
 import String, { bindString } from "@/types/string";
 
 import { callApi } from "@/utils/common";
+import { isMacintosh } from "@/utils/validator";
 import {
   type FuncButton,
   showConfirmMessage,
@@ -509,20 +510,23 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             type="button"
             disabled={moveButtonState[0]}
             onClick={() => handleMove(true)}
-            className="button move-button"
+            className="button move-button has-tooltip has-arrow"
+            data-tooltip={isMacintosh() ? "⌘ + ←" : "Ctrl + ←"}
           >
             {t("BACK_BUTTON")}
           </button>
           <Submit
             ref={submitRef}
-            buttonClass="button is-success"
             buttonText={t("COMPLETE_BUTTON")}
+            buttonClass="button is-success has-tooltip has-arrow"
+            dataTooltip={isMacintosh() ? "⌘ + S" : "Ctrl + S"}
           />
           <button
             type="button"
             disabled={moveButtonState[1]}
             onClick={() => handleMove(false)}
-            className="button move-button"
+            className="button move-button has-tooltip has-arrow"
+            data-tooltip={isMacintosh() ? "⌘ + →" : "Ctrl + →"}
           >
             {t("NEXT_BUTTON")}
           </button>

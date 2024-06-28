@@ -120,9 +120,8 @@
         },
         "SEARCH_BUTTON": "Search"
       },
-      "OPEN_SEARCH_TOOLTIP": "Open Search",
-      "CLOSE_SEARCH_TOOLTIP": "Close Search",
-      "RESET_SEARCH_QUERY": "Reset Search Query",
+      "SEARCH_TOOLTIP": "Search",
+      "RESET_SEARCH_QUERY": "Reset",
       "LOADING": "Loading...",
       "NO_DATA": "No Data"
     },

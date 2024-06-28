@@ -53,6 +53,7 @@
   > .button-group
   > .string-search-button {
   @apply flex;
+  @apply pr-1.5;
   @apply items-center;
   @apply cursor-pointer;
   @apply rounded-lg;

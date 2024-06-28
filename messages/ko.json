@@ -120,9 +120,8 @@
         },
         "SEARCH_BUTTON": "검색"
       },
-      "OPEN_SEARCH_TOOLTIP": "검색 열기",
-      "CLOSE_SEARCH_TOOLTIP": "검색 닫기",
-      "RESET_SEARCH_QUERY": "검색조건 초기화",
+      "SEARCH_TOOLTIP": "검색",
+      "RESET_SEARCH_QUERY": "초기화",
       "LOADING": "조회중...",
       "NO_DATA": "결과 없음"
     },

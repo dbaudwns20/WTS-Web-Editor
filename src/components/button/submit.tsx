@@ -17,6 +17,7 @@ type SubmitProps = {
   buttonText: string;
   buttonClass?: string;
   isDisabled?: boolean;
+  dataTooltip?: string;
 };
 
 export type SubmitType = {
@@ -28,6 +29,7 @@ const Submit = forwardRef((props: SubmitProps, ref) => {
     buttonText,
     buttonClass = "button",
     isDisabled = false,
+    dataTooltip,
   }: SubmitProps = props;
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
@@ -56,7 +58,10 @@ const Submit = forwardRef((props: SubmitProps, ref) => {
   // set element id
   useEffect(() => {
     submitRef.current!.setAttribute("id", elId);
-  }, [elId]);
+    if (dataTooltip) {
+      submitRef.current!.setAttribute("data-tooltip", dataTooltip);
+    }
+  }, [elId, dataTooltip]);
 
   return (
     <button
@@ -64,6 +69,7 @@ const Submit = forwardRef((props: SubmitProps, ref) => {
       type="submit"
       disabled={_isDisabled}
       className={`submit ${_buttonClass}`}
+      data-tooltip={dataTooltip}
     >
       {isFetching ? (
         <>

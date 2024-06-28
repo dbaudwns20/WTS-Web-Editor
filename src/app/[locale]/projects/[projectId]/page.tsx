@@ -235,7 +235,6 @@ export default function ProjectDetail() {
 
   //
   const executeShortcutCommand = (key: string) => {
-    console.log(key);
     switch (key) {
       case "ArrowRight":
         stringEditorRef.current?.handleMove(false);
