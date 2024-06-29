@@ -237,6 +237,7 @@
     "ERR_MISSING_PARAMS": "Required parameters are missing  - [ {arg} ]",
     "ERR_MISSING_FORM_DATA": "Required formData are missing  - [ {arg} ]",
     "ERR_NO_TRANSLATED_DATA": "Translated data does not exist.",
-    "ERR_NO_PROJECT": "Project does not exist."
+    "ERR_NO_PROJECT": "Project does not exist.",
+    "ERR_NO_STRING": "STRING does not exist."
   }
 }
