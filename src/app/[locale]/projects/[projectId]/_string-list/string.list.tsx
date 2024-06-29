@@ -25,7 +25,6 @@ import {
   showConfirmMessage,
   FuncButton,
 } from "@/utils/message";
-import { PerfectScrollbar } from "@/types/perfect.scrollbar";
 
 import { useTranslations } from "next-intl";
 
@@ -109,8 +108,6 @@ const StringList = forwardRef((props: StringListProps, ref) => {
   const [query, setQuery] = useState<string>("");
   // 검색조건 적용중 여부
   const [isApplySearch, setIsApplySearch] = useState<boolean>(false);
-
-  let scrollbar = useRef<PerfectScrollbar | null>(null);
 
   // project 의 string list 조회
   const getStringList = async () => {
@@ -229,21 +226,15 @@ const StringList = forwardRef((props: StringListProps, ref) => {
         break;
       }
     }
+    const options = { top: offsetTop };
     // 최초엔 즉시 이동
     if (isFirst.current) {
-      // 부드러운 스크롤 함수 호출
-      scrollbar.current?.smoothScroll(node, offsetTop, 300);
+      Object.assign(options, { behavior: "smooth" });
     } else {
       isFirst.current = true;
-      node.scrollTop = offsetTop;
     }
-    // perfect 스크롤바 적용
-    if (scrollbar.current?.perfectScrollbar) {
-      scrollbar.current.destroy();
-      scrollbar.current = null;
-    }
-    scrollbar.current = new PerfectScrollbar(node);
-  }, [currentStringNumber, scrollbar]);
+    node.scrollTo(options);
+  }, [currentStringNumber]);
 
   const handleMove = (string: _String) => {
     // 편집된 상태인 경우
