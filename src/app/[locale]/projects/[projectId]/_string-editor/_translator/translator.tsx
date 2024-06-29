@@ -21,6 +21,7 @@ import {
 } from "@/reducers/preview.reducer";
 
 import { showNotificationMessage } from "@/utils/message";
+import { isMacintosh } from "@/utils/validator";
 
 import { useTranslations } from "next-intl";
 
@@ -29,6 +30,7 @@ export type TranslatorType = {
   setDisabled: (val: boolean) => void;
   setHeight: () => void;
   sync: () => void;
+  copy: () => void;
 };
 
 type TranslatorProps = {
@@ -73,6 +75,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     setDisabled,
     setHeight,
     sync,
+    copy,
   }));
 
   const setDisabled = (val: boolean) => {
@@ -235,7 +238,10 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   <></>
                 )}
                 <a
-                  className="anchor-has-icon undraggable"
+                  className="anchor-has-icon undraggable has-tooltip has-arrow"
+                  data-tooltip={
+                    isMacintosh() ? "⇧ + ⌘ + X" : "Shift + Ctrl + X"
+                  }
                   onClick={(e) => {
                     e.stopPropagation();
                     sync();
@@ -247,7 +253,10 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   <span>{t("SYNC")}</span>
                 </a>
                 <a
-                  className="anchor-has-icon undraggable"
+                  className="anchor-has-icon undraggable has-tooltip has-arrow"
+                  data-tooltip={
+                    isMacintosh() ? "⇧ + ⌘ + C" : "Shift + Ctrl + C"
+                  }
                   onClick={(e) => {
                     e.stopPropagation();
                     copy();
@@ -345,7 +354,8 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   <></>
                 ) : (
                   <a
-                    className="anchor-has-icon undraggable"
+                    className="anchor-has-icon undraggable has-tooltip has-arrow"
+                    data-tooltip={isMacintosh() ? "⌘ + D" : "Ctrl + D"}
                     onClick={(e) => {
                       e.stopPropagation();
                       saveDraft();
@@ -358,7 +368,10 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                   </a>
                 )}
                 <a
-                  className="anchor-has-icon undraggable"
+                  className="anchor-has-icon undraggable has-tooltip has-arrow"
+                  data-tooltip={
+                    isMacintosh() ? "⇧ + ⌘ + E" : "Shift + Ctrl + E"
+                  }
                   onClick={(e) => {
                     e.stopPropagation();
                     resetTranslateText();

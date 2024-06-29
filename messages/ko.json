@@ -120,9 +120,8 @@
         },
         "SEARCH_BUTTON": "검색"
       },
-      "OPEN_SEARCH_TOOLTIP": "검색 열기",
-      "CLOSE_SEARCH_TOOLTIP": "검색 닫기",
-      "RESET_SEARCH_QUERY": "검색조건 초기화",
+      "SEARCH_TOOLTIP": "검색",
+      "RESET_SEARCH_QUERY": "초기화",
       "LOADING": "조회중...",
       "NO_DATA": "결과 없음"
     },
@@ -169,13 +168,13 @@
         "SHORTCUTS": {
           "LABEL": "단축키",
           "SHORTCUT_LIST": {
-            "LABEL": "단축기 목록",
+            "LABEL": "단축키 목록",
             "SHORTCUT_1": "번역완료",
             "SHORTCUT_2": "임시저장",
             "SHORTCUT_3": "검색 열기 / 닫기",
             "SHORTCUT_4": "검색 조건 초기화",
-            "SHORTCUT_5": "다음 STRING 으로 이동",
-            "SHORTCUT_6": "이전 STRING 으로 이동",
+            "SHORTCUT_5": "STRING 이동",
+            "SHORTCUT_6": "원본 텍스트 복사",
             "SHORTCUT_7": "초기화",
             "SHORTCUT_8": "동기화"
           }

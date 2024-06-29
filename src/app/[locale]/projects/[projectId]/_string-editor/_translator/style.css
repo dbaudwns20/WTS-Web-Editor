@@ -4,8 +4,7 @@
   @apply border;
   @apply border-gray-300;
   @apply rounded-lg;
-  @apply px-4;
-  @apply pb-4;
+  @apply p-4;
   @apply relative;
 }
 
@@ -35,7 +34,6 @@
 }
 
 .translator > .translator-header {
-  @apply pt-3;
   @apply mb-2.5;
   @apply text-xs;
   @apply text-gray-400;

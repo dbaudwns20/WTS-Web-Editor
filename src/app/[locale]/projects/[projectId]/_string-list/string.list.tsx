@@ -19,6 +19,7 @@ import String, { bindStringList } from "@/types/string";
 import { type PageInfo } from "@/types/api.response";
 
 import { callApi } from "@/utils/common";
+import { isMacintosh } from "@/utils/validator";
 import {
   showNotificationMessage,
   showConfirmMessage,
@@ -437,12 +438,13 @@ const StringList = forwardRef((props: StringListProps, ref) => {
               <button
                 type="button"
                 className="string-search-button has-tooltip has-arrow"
-                data-tooltip={t("RESET_SEARCH_QUERY")}
+                data-tooltip={isMacintosh() ? "⇧ + ⌘ + F" : "Shift + Ctrl + F"}
                 onClick={() => setStringListKey((prev) => prev + 1)}
               >
                 <span className="icon">
                   <i className="material-icons-outlined md-18">refresh</i>
                 </span>
+                <span className="text-xs">{t("RESET_SEARCH_QUERY")}</span>
               </button>
             ) : (
               <></>
@@ -450,11 +452,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
             <button
               type="button"
               className="string-search-button has-tooltip has-arrow"
-              data-tooltip={
-                isShowSearch
-                  ? t("CLOSE_SEARCH_TOOLTIP")
-                  : t("OPEN_SEARCH_TOOLTIP")
-              }
+              data-tooltip={isMacintosh() ? "⌘ + F" : "Ctrl + F"}
               onClick={() => setIsShowSearch(!isShowSearch)}
             >
               <span className="icon">
@@ -462,6 +460,7 @@ const StringList = forwardRef((props: StringListProps, ref) => {
                   {isShowSearch ? "close" : "search"}
                 </i>
               </span>
+              <span className="text-xs">{t("SEARCH_TOOLTIP")}</span>
             </button>
           </div>
         </header>

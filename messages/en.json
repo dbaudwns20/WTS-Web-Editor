@@ -120,9 +120,8 @@
         },
         "SEARCH_BUTTON": "Search"
       },
-      "OPEN_SEARCH_TOOLTIP": "Open Search",
-      "CLOSE_SEARCH_TOOLTIP": "Close Search",
-      "RESET_SEARCH_QUERY": "Reset Search Query",
+      "SEARCH_TOOLTIP": "Search",
+      "RESET_SEARCH_QUERY": "Reset",
       "LOADING": "Loading...",
       "NO_DATA": "No Data"
     },
@@ -174,8 +173,8 @@
             "SHORTCUT_2": "Save draft",
             "SHORTCUT_3": "Search On / Off",
             "SHORTCUT_4": "Reset search query",
-            "SHORTCUT_5": "Move to next STRING",
-            "SHORTCUT_6": "Move to previous STRING",
+            "SHORTCUT_5": "Move STRING",
+            "SHORTCUT_6": "Copy original text",
             "SHORTCUT_7": "Reset",
             "SHORTCUT_8": "Sync"
           }

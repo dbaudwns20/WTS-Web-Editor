@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "A web page that easily handles wts files from Warcraft 3 custom maps.",
 };
 
-export default async function RootLayout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
