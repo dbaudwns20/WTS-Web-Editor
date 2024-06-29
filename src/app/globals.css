@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Perfect Scrollbar */
-@import "~perfect-scrollbar/css/perfect-scrollbar.css";
-
 html,
 body {
   box-sizing: border-box;
@@ -16,24 +13,6 @@ body {
 
   --var-header-height: 60px;
   --var-footer-height: 60px;
-}
-
-/* 스크롤바 숨기기 */
-@media screen and (min-width: 1024px) {
-  *::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-}
-
-.ps__rail-y,
-.ps__rail-x {
-  @apply z-[9];
-}
-
-.ps > .ps__rail-y {
-  @apply hover:dark:bg-gray-300/10;
-  @apply active:dark:bg-gray-300/10;
 }
 
 .main {
