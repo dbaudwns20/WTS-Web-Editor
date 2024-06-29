@@ -7,7 +7,7 @@
   @apply dark:bg-gray-700;
   @apply dark:border-gray-700;
   @apply duration-200;
-  @apply hover:scale-110;
+  @apply hover:scale-105;
   @apply hover:shadow-2xl;
   @apply ring-1;
   @apply ring-black/5;
