@@ -19,8 +19,8 @@ WTS Web Editor는 게임 워크래프트3의 인게임 텍스트 파일을 손�
 - [Vercel Blob](https://vercel.com/docs/storage/blobs): 외부 이미지 저장 및 호스팅 연계
 - [Mongoose](https://mongoosejs.com/): MongoDB를 위한 ORM
 - [next-intl](https://github.com/amannn/next-intl): Next.js 다국어 기능 제공 (한국어 / 영어)
-- [perfect-scrollbar](https://github.com/mdbootstrap/perfect-scrollbar): 스크롤바 디자인
 - [react-cropper](https://github.com/react-cropper/react-cropper): 이미지 크롭
+- ~[perfect-scrollbar](https://github.com/mdbootstrap/perfect-scrollbar): 스크롤바 디자인~ (제거)
 - ~[react-hotkeys](https://github.com/greena13/react-hotkeys): 단축키 사용~ (제거)
 
 # 프로젝트 설치 및 진행 가이드
