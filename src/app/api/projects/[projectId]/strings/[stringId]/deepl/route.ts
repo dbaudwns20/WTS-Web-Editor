@@ -2,9 +2,8 @@ import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
 
-import StringModel from "@/db/models/string";
-
 import { getString } from "@/app/api/_services/string.service";
+import { translateText } from "@/app/api/_services/deepl.service";
 
 import {
   checkRequestBody,
@@ -24,9 +23,30 @@ export async function GET(
 ) {
   try {
     checkRequestParams(["projectId", "stringId"], params);
-    await dbConnect();
-    const string = await getString(params["projectId"], params["stringId"]);
-    return resolveSuccess(string);
+    return resolveSuccess({});
+  } catch (error) {
+    return resolveErrors(error);
+  }
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Params }
+) {
+  try {
+    const formData = await request.formData();
+
+    checkRequestParams(["projectId", "stringId"], params);
+    checkRequestBody(["originalText", "targetLang"], formData);
+
+    const translatedText: string = await translateText(
+      formData.get("originalText") as string,
+      formData.get("targetLang") as string
+    );
+
+    return resolveSuccess({
+      translatedText: translatedText,
+    });
   } catch (error) {
     return resolveErrors(error);
   }

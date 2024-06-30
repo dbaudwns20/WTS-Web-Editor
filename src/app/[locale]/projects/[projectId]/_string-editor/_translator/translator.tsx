@@ -42,6 +42,7 @@ type TranslatorProps = {
   previewState: PreviewState;
   previewDispatch: Dispatch<PreviewAction>;
   updateString: (isDraft: boolean) => Promise<void>;
+  translateByAi: () => Promise<void>;
 };
 
 const Translator = forwardRef((props: TranslatorProps, ref) => {
@@ -54,6 +55,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     previewState,
     previewDispatch,
     updateString,
+    translateByAi,
   } = props;
 
   // i18n translate key
@@ -117,6 +119,11 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   // 임시저장
   const saveDraft = async () => {
     await updateString(true);
+    setFocus();
+  };
+
+  const doUseAi = async () => {
+    await translateByAi();
     setFocus();
   };
 
@@ -237,6 +244,20 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                 ) : (
                   <></>
                 )}
+                <a
+                  className="anchor-has-icon undraggable"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    doUseAi();
+                  }}
+                >
+                  <span className="icon">
+                    <i className="material-icons-outlined md-18 mr-1">
+                      translate
+                    </i>
+                  </span>
+                  <span>{t("AI_TRANSLATE")}</span>
+                </a>
                 <a
                   className="anchor-has-icon undraggable has-tooltip has-arrow"
                   data-tooltip={

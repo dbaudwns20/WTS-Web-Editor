@@ -48,6 +48,7 @@ export type StringEditorType = {
 
 type StringEditorProps = {
   projectId: string;
+  projectLocale: string;
   stringGroup: (String | null)[];
   setStringGroup: Dispatch<SetStateAction<(String | null)[]>>;
   isEdited: boolean;
@@ -65,6 +66,7 @@ type StringEditorProps = {
 const StringEditor = forwardRef((props: StringEditorProps, ref) => {
   const {
     projectId,
+    projectLocale,
     stringGroup,
     setStringGroup,
     isEdited,
@@ -186,6 +188,46 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
       // 편집기 focus
       translatorRef.current?.setFocus();
     });
+  };
+
+  // DeepL Ai 번역 호출
+  const translateByAi = async () => {
+    setIsFetching(true);
+    // 이동 버튼 비활성화
+    setMoveButtonState([true, true]);
+
+    // formData 가공
+    const formData: FormData = new FormData();
+    formData.append("originalText", currentString!.originalText);
+    formData.append("targetLang", projectLocale.substring(0, 2));
+
+    const response = await callApi(
+      `/api/projects/${projectId}/strings/${currentString?.id}/deepl`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    setIsFetching(false);
+    // 이동 버튼 활성화
+    setMoveButtonState([false, false]);
+
+    // onError
+    if (!response.success) {
+      let message: string = response.message;
+      if (response.errorCode) {
+        message = et(response.errorCode, { arg: response.arg });
+      }
+      showNotificationMessage({
+        message: message,
+        messageType: "danger",
+      });
+      return;
+    }
+
+    // 번역 텍스트에 반영
+    setTranslatedText(response.data.translatedText);
   };
 
   // string 이동 핸들링
@@ -503,6 +545,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             previewState={previewState}
             previewDispatch={previewDispatch}
             updateString={updateString}
+            translateByAi={translateByAi}
           />
         </div>
         <footer className="string-editor-footer">

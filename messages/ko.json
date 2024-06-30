@@ -194,7 +194,8 @@
         "PREVIEW_MODE": {
           "LABEL": "미리보기",
           "EXIT_PREVIEW": "미리보기 종료"
-        }
+        },
+        "AI_TRANSLATE": "Ai 번역"
       }
     }
   },
