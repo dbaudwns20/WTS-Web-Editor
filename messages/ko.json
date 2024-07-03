@@ -194,7 +194,8 @@
         "PREVIEW_MODE": {
           "LABEL": "미리보기",
           "EXIT_PREVIEW": "미리보기 종료"
-        }
+        },
+        "AI_TRANSLATE": "Ai 번역"
       }
     }
   },
@@ -237,6 +238,7 @@
     "ERR_MISSING_PARAMS": "필수 파라미터가 누락되었습니다. - [ {arg} ]",
     "ERR_MISSING_FORM_DATA": "필수 데이터가 누락되었습니다. - [ {arg} ]",
     "ERR_NO_TRANSLATED_DATA": "번역된 데이터가 존재하지 않습니다.",
-    "ERR_NO_PROJECT": "프로젝트가 존재하지 않습니다."
+    "ERR_NO_PROJECT": "프로젝트가 존재하지 않습니다.",
+    "ERR_NO_STRING": "STRING이 존재하지 않습니다."
   }
 }

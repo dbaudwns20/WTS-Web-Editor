@@ -1,6 +1,7 @@
 import { ClientSession } from "mongoose";
 
 import StringModel, { IString } from "@/db/models/string";
+import { ErrorResponse } from "@/types/api.response";
 
 import { updateProject } from "@/app/api/_services/project.service";
 
@@ -46,6 +47,17 @@ async function computeCompletedProcess(
     completedCount += 1;
   }
   return ((completedCount / totalCount) * 100).toFixed(1);
+}
+
+/**
+ * 스트링 조회
+ * @param stringId
+ * @returns
+ */
+export async function getString(projectId: string, stringId: string) {
+  const instance = await StringModel.find({ _id: stringId, projectId });
+  if (!instance) throw new ErrorResponse("ERR_NO_STRING");
+  return instance;
 }
 
 /**
