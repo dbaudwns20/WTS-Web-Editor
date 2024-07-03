@@ -25,7 +25,7 @@ const Shortcut = forwardRef((props: any, ref) => {
             <div className="keyboards">
               {isMacintosh() ? (
                 <span className="keyboard is-mac">
-                  <Image src={MacCommand} alt="command" />
+                  <MacCommand className="text-gray-500 dark:text-gray-300" />
                 </span>
               ) : (
                 <span className="keyboard is-win">Ctrl</span>
@@ -38,7 +38,7 @@ const Shortcut = forwardRef((props: any, ref) => {
             <div className="keyboards">
               {isMacintosh() ? (
                 <span className="keyboard is-mac">
-                  <Image src={MacCommand} alt="command" />
+                  <MacCommand className="text-gray-500 dark:text-gray-300" />
                 </span>
               ) : (
                 <span className="keyboard is-win">Ctrl</span>
@@ -51,7 +51,7 @@ const Shortcut = forwardRef((props: any, ref) => {
             <div className="keyboards">
               {isMacintosh() ? (
                 <span className="keyboard is-mac">
-                  <Image src={MacCommand} alt="command" />
+                  <MacCommand className="text-gray-500 dark:text-gray-300" />
                 </span>
               ) : (
                 <span className="keyboard is-win">Ctrl</span>
@@ -65,10 +65,10 @@ const Shortcut = forwardRef((props: any, ref) => {
               {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
-                    <Image src={MacShift} alt="shift" />
+                    <MacShift className="text-gray-500 dark:text-gray-300" />
                   </span>
                   <span className="keyboard is-mac">
-                    <Image src={MacCommand} alt="command" />
+                    <MacCommand className="text-gray-500 dark:text-gray-300" />
                   </span>
                 </>
               ) : (
@@ -88,7 +88,7 @@ const Shortcut = forwardRef((props: any, ref) => {
               {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
-                    <Image src={MacCommand} alt="command" />
+                    <MacCommand className="text-gray-500 dark:text-gray-300" />
                   </span>
                   <span className="keyboard">
                     <i className="material-icons md-18">arrow_left</i>
@@ -100,14 +100,8 @@ const Shortcut = forwardRef((props: any, ref) => {
               ) : (
                 <>
                   <span className="keyboard is-win">Ctrl</span>
-                  <span className="keyboard">
-                    <i className="material-icons md-18 rotate-180">
-                      arrow_right_alt
-                    </i>
-                  </span>
-                  <span className="keyboard">
-                    <i className="material-icons md-18">arrow_right_alt</i>
-                  </span>
+                  <span className="keyboard">←</span>
+                  <span className="keyboard">→</span>
                 </>
               )}
             </div>
@@ -118,10 +112,10 @@ const Shortcut = forwardRef((props: any, ref) => {
               {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
-                    <Image src={MacShift} alt="shift" />
+                    <MacShift className="text-gray-500 dark:text-gray-300" />
                   </span>
                   <span className="keyboard is-mac">
-                    <Image src={MacCommand} alt="command" />
+                    <MacCommand className="text-gray-500 dark:text-gray-300" />
                   </span>
                 </>
               ) : (
@@ -139,10 +133,10 @@ const Shortcut = forwardRef((props: any, ref) => {
               {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
-                    <Image src={MacShift} alt="shift" />
+                    <MacShift className="text-gray-500 dark:text-gray-300" />
                   </span>
                   <span className="keyboard is-mac">
-                    <Image src={MacCommand} alt="command" />
+                    <MacCommand className="text-gray-500 dark:text-gray-300" />
                   </span>
                 </>
               ) : (
@@ -160,10 +154,10 @@ const Shortcut = forwardRef((props: any, ref) => {
               {isMacintosh() ? (
                 <>
                   <span className="keyboard is-mac">
-                    <Image src={MacShift} alt="shift" />
+                    <MacShift className="text-gray-500 dark:text-gray-300" />
                   </span>
                   <span className="keyboard is-mac">
-                    <Image src={MacCommand} alt="command" />
+                    <MacCommand className="text-gray-500 dark:text-gray-300" />
                   </span>
                 </>
               ) : (

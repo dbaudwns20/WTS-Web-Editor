@@ -226,6 +226,20 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
             />
             <footer className="translator-footer">
               <div className="translator-footer-functions">
+                <a
+                  className="anchor-has-icon undraggable"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    doUseAi();
+                  }}
+                >
+                  <span className="icon">
+                    <i className="material-icons-outlined md-18 mr-1">
+                      translate
+                    </i>
+                  </span>
+                  <span>{t("AI_TRANSLATE")}</span>
+                </a>
                 {currentString?.comment ? (
                   <a
                     className="anchor-has-icon undraggable"
@@ -244,20 +258,6 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
                 ) : (
                   <></>
                 )}
-                <a
-                  className="anchor-has-icon undraggable"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    doUseAi();
-                  }}
-                >
-                  <span className="icon">
-                    <i className="material-icons-outlined md-18 mr-1">
-                      translate
-                    </i>
-                  </span>
-                  <span>{t("AI_TRANSLATE")}</span>
-                </a>
                 <a
                   className="anchor-has-icon undraggable has-tooltip has-arrow"
                   data-tooltip={

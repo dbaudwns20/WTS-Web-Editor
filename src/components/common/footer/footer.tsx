@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 
 import useThemeMode, { type ThemeMode } from "@/hooks/useThemeMode";
 
@@ -67,18 +66,30 @@ export default function Footer() {
           </div>
         </div>
         <div className="links">
-          <span className="text-xs fill-gray-300">Created By Junim</span>
+          <span className="text-xs dark:text-gray-300">Created By Junim</span>
           <a href="mailto:dbaudwns20@gmail.com">
-            <Image src={Email} alt="Email" width={20} height={20} priority />
+            <Email
+              width={20}
+              height={20}
+              className="text-gray-400 dark:text-gray-300"
+            />
           </a>
           <a
             href="https://github.com/dbaudwns20/WTS-Web-Editor"
             target="_blank"
           >
-            <Image src={Github} alt="Github" width={20} height={20} priority />
+            <Github
+              width={20}
+              height={20}
+              className="text-gray-400 dark:text-gray-300"
+            />
           </a>
           <a href="https://github.com/dbaudwns20" target="_blank">
-            <Image src={User} alt="User" width={20} height={20} priority />
+            <User
+              width={20}
+              height={20}
+              className="text-gray-400 dark:text-gray-300"
+            />
           </a>
         </div>
       </nav>

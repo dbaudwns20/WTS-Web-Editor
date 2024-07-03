@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Link } from "@/navigation";
 
 import W3 from "@/assets/warcraft-iii.svg";
@@ -12,13 +11,12 @@ type HeaderProps = {};
 
 export default function Header(props: HeaderProps) {
   const {} = props;
-
   return (
     <header className="main-header">
       <nav className="navbar">
         <Link className="logo" href="/">
-          <Image src={W3} alt="w3" width={45} priority />
-          <Image src={Banner} alt="banner" width={180} priority />
+          <W3 width={45} height={45} />
+          <Banner width={180} height={38.14} />
         </Link>
         <LocaleSelect />
       </nav>
