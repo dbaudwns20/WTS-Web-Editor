@@ -464,6 +464,7 @@ export default function ProjectDetail() {
             <StringEditor
               ref={stringEditorRef}
               projectId={projectId as string}
+              projectLocale={getLocaleTextByValue(project!.locale)!}
               stringGroup={stringGroup}
               setStringGroup={setStringGroup}
               isEdited={isEdited}
