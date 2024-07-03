@@ -1,9 +1,9 @@
 import { type NextRequest } from "next/server";
 
-import dbConnect from "@/db/database";
-
-import { getString } from "@/app/api/_services/string.service";
-import { translateText } from "@/app/api/_services/deepl.service";
+import {
+  getUsageAndQuota,
+  translateText,
+} from "@/app/api/_services/deepl.service";
 
 import {
   checkRequestBody,
@@ -23,7 +23,11 @@ export async function GET(
 ) {
   try {
     checkRequestParams(["projectId", "stringId"], params);
-    return resolveSuccess({});
+    const { usage, quota } = await getUsageAndQuota();
+    return resolveSuccess({
+      usage,
+      quota,
+    });
   } catch (error) {
     return resolveErrors(error);
   }
