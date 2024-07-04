@@ -12,21 +12,24 @@ function getDeepLApiFetchingData(
   };
   body?: any;
 } {
+  const apiUrl: string = process.env.DEEPL_API_URL as string;
+  const authKey: string = process.env.DEEPL_API_KEY as string;
+
   switch (type) {
     case "usage":
       return {
         method: "GET",
-        url: process.env.DEEPL_API_URL + "usage",
+        url: apiUrl + "usage",
         headers: {
-          Authorization: "DeepL-Auth-Key " + process.env.DEEPL_API_KEY,
+          Authorization: "DeepL-Auth-Key " + authKey,
         },
       };
     case "translate":
       return {
         method: "POST",
-        url: process.env.DEEPL_API_URL + "translate",
+        url: apiUrl + "translate",
         headers: {
-          Authorization: "DeepL-Auth-Key " + process.env.DEEPL_API_KEY,
+          Authorization: "DeepL-Auth-Key " + authKey,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
