@@ -307,7 +307,7 @@ body {
   @apply px-2;
   @apply -mt-[4px];
   @apply min-w-[45px];
-  @apply max-w-[120px];
+  @apply max-w-[150px];
   @apply pointer-events-none;
   content: attr(data-tooltip);
   width: max-content;

@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import "./style.css";
+import Deepl from "@/assets/deepl.svg";
 
 import Preview from "./preview/preview";
 
@@ -122,7 +123,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     setFocus();
   };
 
-  const doUseAi = async () => {
+  const handleTranslateByAi = async () => {
     await translateByAi();
     setFocus();
   };
@@ -227,17 +228,14 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
             <footer className="translator-footer">
               <div className="translator-footer-functions">
                 <a
-                  className="anchor-has-icon undraggable"
+                  className="anchor-has-icon undraggable has-tooltip has-arrow"
+                  data-tooltip={`DEEPL ${t("AI_TRANSLATE")}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    doUseAi();
+                    handleTranslateByAi();
                   }}
                 >
-                  <span className="icon">
-                    <i className="material-icons-outlined md-18 mr-1">
-                      translate
-                    </i>
-                  </span>
+                  <Deepl className="mr-0.5" />
                   <span>{t("AI_TRANSLATE")}</span>
                 </a>
                 {currentString?.comment ? (
