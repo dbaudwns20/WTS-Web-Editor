@@ -27,7 +27,7 @@ export async function downloadWts(
     filter.completedAt = { $ne: null };
   }
 
-  const instance = await StringModel.find(filter).sort({ StringNumber: 1 });
+  const instance = await StringModel.find(filter).sort({ stringNumber: 1 });
 
   if (instance.length === 0) {
     throw new ErrorResponse("ERR_NO_TRANSLATED_DATA");
