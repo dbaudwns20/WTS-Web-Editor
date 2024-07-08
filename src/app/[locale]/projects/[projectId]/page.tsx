@@ -280,7 +280,14 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.repeat || e.altKey) return;
+      if (
+        e.repeat ||
+        e.altKey ||
+        isUpdateModalOpen ||
+        isUploadWtsModalOpen ||
+        isDownloadWtsModalOpen
+      )
+        return;
       if (!e.shiftKey && (e.ctrlKey || e.metaKey)) {
         // ctrl or command key 감지
         const key: string = e.key;
@@ -321,7 +328,7 @@ export default function ProjectDetail() {
                     alt={project!.projectImage.pathname}
                     width={120}
                     height={120}
-                    priority={true}
+                    priority
                   />
                 </figure>
                 <div className="info-wrapper">
@@ -335,9 +342,15 @@ export default function ProjectDetail() {
                     ) : (
                       <></>
                     )}
-                    <span className="tag progress">
-                      {t("INFO.PROGRESS", { process: project?.process })}
-                    </span>
+                    {project!.process === "100.0" ? (
+                      <span className="tag complete">
+                        {t("INFO.TRANSLATED_ALL")}
+                      </span>
+                    ) : (
+                      <span className="tag progress">
+                        {t("INFO.PROGRESS", { process: project?.process })}
+                      </span>
+                    )}
                   </div>
                   <div className="button-group">
                     <button
