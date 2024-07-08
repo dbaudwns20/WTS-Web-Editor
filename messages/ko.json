@@ -54,7 +54,8 @@
       "PROGRESS": "{process}% 번역완료",
       "DOWNLOAD": "다운로드",
       "SOURCE_LINK": "출처 링크",
-      "LAST_EDITED": "마지막 수정"
+      "LAST_EDITED": "마지막 수정",
+      "TRANSLATED_ALL": "전체 번역완료"
     },
     "MORE_BUTTON": {
       "UPDATE": "업데이트",

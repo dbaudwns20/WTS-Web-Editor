@@ -54,7 +54,8 @@
       "PROGRESS": "{process}% Translated",
       "DOWNLOAD": "Download",
       "SOURCE_LINK": "Source Link",
-      "LAST_EDITED": "Last Edited"
+      "LAST_EDITED": "Last Edited",
+      "TRANSLATED_ALL": "Translation Complete"
     },
     "MORE_BUTTON": {
       "UPDATE": "Update",
