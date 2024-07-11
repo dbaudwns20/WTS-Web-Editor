@@ -12,6 +12,7 @@ WTS Web Editor는 게임 워크래프트3의 인게임 텍스트 파일을 손�
 ![tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![ts](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![mongo](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![deepl](https://img.shields.io/badge/deepL-rgb(20,%2044,%2070).svg?style=for-the-badge&logo=deepL&logoColor=white)
 
 ## 사용된 라이브러리들
 
@@ -33,6 +34,8 @@ WTS Web Editor는 게임 워크래프트3의 인게임 텍스트 파일을 손�
   - Blob Storage는 파일 저장소로, API 키를 통해 접근할 수 있습니다. Vercel 대시보드에서 API 키를 생성하세요.
 - MongoDB Atlas 개인 클러스터
   - MongoDB Atlas는 클라우드 기반의 NoSQL 데이터베이스 서비스입니다. [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)에서 개인 클러스터를 생성하세요.
+- DeepL 계정 및 무료버전 API Key
+  - DeepL은 AI 를 이용한 번역 서비스를 제공합니다. [DeepL](https://www.deepl.com/)에서 개인 계정을 생성하고 무료 API 키를 발급받으세요. 
 
 ### 환경 변수 설정
 
@@ -42,11 +45,15 @@ root 디렉토리에 `.env.local` 파일을 만들고 다음 값을 입력해야
 BLOB_READ_WRITE_TOKEN=""
 MONGODB_DB=""
 MONGODB_URI=""
+DEEPL_API_KEY=""
+DEEPL_API_URL="https://api-free.deepl.com/v2/"
 ```
 
 - `BLOB_READ_WRITE_TOKEN`: Vercel Blob Storage API 키를 입력합니다.
 - `MONGODB_DB`: MongoDB 데이터베이스 이름을 입력합니다.
 - `MONGODB_URI`: MongoDB 클러스터의 URI를 입력합니다.
+- `DEEPL_API_KEY`: DeepL 에서 발급받은 API 키를 입력합니다.
+- `DEEPL_API_URL`: 무료 사용자를 위한 API URL 입니다.
 
 ### 패키지 설치
 
