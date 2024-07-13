@@ -4,7 +4,6 @@ import "./style.css";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "@/navigation";
-import Image from "next/image";
 
 import ProjectCard from "@/app/[locale]/_project-card/project.card";
 import ProjectCardSkeleton from "@/app/[locale]/_project-card/skeleton/project.card.skeleton";
@@ -50,9 +49,7 @@ export default function RootPage() {
   const [orderInfo, setOrderInfo] = useState<OrderInfo>(defaultOrderInfo);
 
   // 프로젝트 생성 모달창 열기
-  const newProject = () => {
-    setIsModalOpen(true);
-  };
+  const newProject = () => setIsModalOpen(true);
 
   // 함수 호출 후 처리
   const completeFunction = (callbacks: Function) => {
@@ -118,15 +115,13 @@ export default function RootPage() {
     }
 
     setPageInfo(response.pageInfo);
-    setProjectList(projectList.concat(bindProjectList(response.data)));
+    setProjectList((prev) => prev.concat(bindProjectList(response.data)));
 
     setIsMoreLoading(false);
   };
 
   const handleScroll = () => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
     if (
       scrollTop + clientHeight >= scrollHeight &&
       pageInfo.currentPage < pageInfo.totalPage &&

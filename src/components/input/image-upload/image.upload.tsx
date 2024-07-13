@@ -153,6 +153,9 @@ const ImageUpload = forwardRef((props: ImageUploadProps, ref) => {
             alt="project image"
             width={135}
             height={135}
+            priority={true}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           />
         </div>
         <div className="upload-wrapper">

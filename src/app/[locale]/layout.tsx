@@ -28,6 +28,7 @@ export default async function Layout({
           href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
           rel="stylesheet"
         />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>

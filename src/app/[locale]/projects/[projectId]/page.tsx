@@ -328,7 +328,9 @@ export default function ProjectDetail() {
                     alt={project!.projectImage.pathname}
                     width={120}
                     height={120}
-                    priority
+                    priority={true}
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
                   />
                 </figure>
                 <div className="info-wrapper">

@@ -218,7 +218,6 @@ body {
   @apply text-sm;
   @apply flex;
   @apply items-center;
-  @apply shadow-md;
 }
 
 .anchor-has-icon {

@@ -31,6 +31,8 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
         className="image"
         src={project.projectImage.url}
         alt={project.projectImage.pathname}
+        placeholder="blur"
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
         priority={true}
         width={500}
         height={500}
@@ -61,6 +63,7 @@ const ProjectCard = forwardRef((props: ProjectProps, ref) => {
         <div
           className="progress-bar"
           role="progressbar"
+          aria-label="progress-bar"
           aria-valuenow={Number(project.process)}
           aria-valuemin={0}
           aria-valuemax={100}
