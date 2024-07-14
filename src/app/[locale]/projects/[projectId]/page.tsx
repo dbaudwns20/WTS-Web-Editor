@@ -290,7 +290,7 @@ export default function ProjectDetail() {
         return;
       if (!e.shiftKey && (e.ctrlKey || e.metaKey)) {
         // ctrl or command key 감지
-        const key: string = e.key;
+        const key: string = e.key.toLowerCase();
         if (["ArrowRight", "ArrowLeft", "s", "d", "f"].includes(key)) {
           e.preventDefault();
           e.stopPropagation();
@@ -298,7 +298,7 @@ export default function ProjectDetail() {
         }
       } else if (e.shiftKey && (e.ctrlKey || e.metaKey)) {
         // shift + ctrl or command key 감지
-        const key: string = e.key;
+        const key: string = e.key.toLowerCase();
         if (["f", "e", "c", "x"].includes(key)) {
           e.preventDefault();
           e.stopPropagation();
