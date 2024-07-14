@@ -4,6 +4,7 @@ import StringModel, { IString } from "@/db/models/string";
 import { ErrorResponse } from "@/types/api.response";
 
 import { updateProject } from "@/app/api/_services/project.service";
+import { translateText } from "./deepl.service";
 
 type StringInstance = {
   stringNumber: number;
@@ -265,7 +266,7 @@ export async function overwriteWtsStrings(
   session: ClientSession
 ) {
   // 업데이트에 사용할 현재 시간
-  const currentTime = new Date();
+  const currentTime: Date = new Date();
 
   // 성능 향상을 위한 대량 쓰기 작업 준비
   const bulkOps = wtsStringList.map((wtsString) => {
@@ -295,4 +296,20 @@ export async function overwriteWtsStrings(
       session
     );
   }
+}
+
+export async function getTranslatedTextList(
+  originalText: string | null,
+  session: ClientSession
+) {
+  if (!originalText) throw new ErrorResponse("NO_ORIGINAL_TEXT");
+
+  const instanceList = await StringModel.find({
+    originalText,
+    translatedText: { $ne: "" },
+  }).session(session);
+
+  instanceList.forEach((it) => {
+    console.log(it.translatedText);
+  });
 }
