@@ -1,10 +1,10 @@
 import { ClientSession } from "mongoose";
 
 import StringModel, { IString } from "@/db/models/string";
+
 import { ErrorResponse } from "@/types/api.response";
 
 import { updateProject } from "@/app/api/_services/project.service";
-import { translateText } from "./deepl.service";
 
 type StringInstance = {
   stringNumber: number;
@@ -299,17 +299,52 @@ export async function overwriteWtsStrings(
 }
 
 export async function getTranslatedTextList(
-  originalText: string | null,
+  originalText: string,
+  locale: number,
   session: ClientSession
 ) {
-  if (!originalText) throw new ErrorResponse("NO_ORIGINAL_TEXT");
-
-  const instanceList = await StringModel.find({
-    originalText,
-    translatedText: { $ne: "" },
-  }).session(session);
-
-  instanceList.forEach((it) => {
-    console.log(it.translatedText);
-  });
+  return await StringModel.aggregate([
+    {
+      $match: {
+        originalText,
+        translatedText: { $ne: "" },
+      },
+    },
+    {
+      // 문자열로 저장된 projectId 를 ObjectId 로 변환한 값을 추가
+      $addFields: {
+        projectObjectId: { $toObjectId: "$projectId" },
+      },
+    },
+    {
+      // projectObjectId를 기준으로 projects 컬렉션과 조인.
+      $lookup: {
+        from: "projects", // 조인할 필드
+        localField: "projectObjectId", // 현재 컬렉션에서 비교할 key값
+        foreignField: "_id", // 대상 컬렉션에 비교할 key값
+        as: "project", // 추가될 필드 명
+      },
+    },
+    {
+      // 조인된 project 배열을 단일 객체로 변환.
+      $unwind: "$project",
+    },
+    {
+      // project.locale이 주어진 locale과 일치하는지 필터링.
+      $match: {
+        "project.locale": locale,
+      },
+    },
+    {
+      // 결과값 정리
+      $project: {
+        _id: 0,
+        translatedText: 1,
+        stringNumber: 1,
+        completedAt: 1,
+        projectId: "$project._id",
+        projectTitle: "$project.title",
+      },
+    },
+  ]).session(session);
 }
