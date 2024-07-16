@@ -26,11 +26,13 @@ export async function GET(
   try {
     checkRequestParams(["projectId"], params);
 
+    const searchParams: URLSearchParams = request.nextUrl.searchParams;
+
+    const keyword: string | null = searchParams.get("keyword");
+    const status: string | null = searchParams.get("status");
+
     // 검색조건
     let query: any = { projectId: params.projectId };
-
-    const keyword: string | null = request.nextUrl.searchParams.get("keyword");
-    const status: string | null = request.nextUrl.searchParams.get("status");
 
     // 키워드 검색조건
     if (keyword) {
@@ -115,15 +117,14 @@ export async function PUT(
 ) {
   let session;
   try {
+    checkRequestParams(["projectId"], params);
+    const formData: FormData = await request.formData();
+    checkRequestBody(["wtsStringList"], formData);
+
     await dbConnect();
 
     session = await startSession();
     session.startTransaction();
-
-    const formData: FormData = await request.formData();
-
-    checkRequestParams(["projectId"], params);
-    checkRequestBody(["wtsStringList"], formData);
 
     await overwriteWtsStrings(
       params["projectId"],

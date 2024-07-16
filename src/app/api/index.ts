@@ -28,6 +28,18 @@ export function checkRequestParams(keys: string[], params: any) {
   }
 }
 
+export function checkRequestQuery(keys: string[], query: URLSearchParams) {
+  const arr: string[] = [];
+  for (const key of keys) {
+    if (!query.has(key)) {
+      arr.push(key);
+    }
+  }
+  if (arr.length > 0) {
+    throw new ErrorResponse("ERR_MISSING_PARAMS", arr.join(","));
+  }
+}
+
 export function checkRequestBody(keys: string[], form: FormData) {
   const arr: string[] = [];
   for (const key of keys) {

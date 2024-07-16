@@ -23,7 +23,9 @@ export async function GET(
 ) {
   try {
     checkRequestParams(["projectId", "stringId"], params);
+
     const { usage, quota } = await getUsageAndQuota();
+
     return resolveSuccess({
       usage,
       quota,
@@ -38,9 +40,8 @@ export async function POST(
   { params }: { params: Params }
 ) {
   try {
-    const formData = await request.formData();
-
     checkRequestParams(["projectId", "stringId"], params);
+    const formData = await request.formData();
     checkRequestBody(["originalText", "targetLang"], formData);
 
     const translatedText: string = await translateText(

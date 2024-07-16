@@ -3,6 +3,9 @@ import { type NextRequest } from "next/server";
 
 import dbConnect from "@/db/database";
 
+import { getLocaleValueByText } from "@/types/locale";
+import { ErrorResponse } from "@/types/api.response";
+
 import {
   updateString,
   getTranslatedTextList,
@@ -11,6 +14,7 @@ import {
 import {
   checkRequestBody,
   checkRequestParams,
+  checkRequestQuery,
   resolveSuccess,
   resolveErrors,
 } from "@/app/api";
@@ -26,18 +30,29 @@ export async function GET(
 ) {
   let session;
   try {
+    checkRequestParams(["projectId", "stringId"], params);
+    const searchParams: URLSearchParams = request.nextUrl.searchParams;
+    checkRequestQuery(["originalText", "locale"], searchParams);
+
+    const originalText: string | null = searchParams.get("originalText");
+    if (!originalText) throw new ErrorResponse("NO_ORIGINAL_TEXT");
+    const locale: number = getLocaleValueByText(searchParams.get("locale")!);
+
     await dbConnect();
 
     session = await startSession();
     session.startTransaction();
 
-    checkRequestParams(["projectId", "stringId"], params);
+    const translatedStringList = await getTranslatedTextList(
+      originalText,
+      locale,
+      session
+    );
 
-    const originalText: string | null =
-      request.nextUrl.searchParams.get("originalText");
-
-    await getTranslatedTextList(originalText, session);
-    return resolveSuccess({});
+    return resolveSuccess({
+      count: translatedStringList.length,
+      translatedStringList,
+    });
   } catch (error) {
     if (session && session.inTransaction()) {
       session.abortTransaction();
@@ -54,14 +69,8 @@ export async function PUT(
 ) {
   let session;
   try {
-    await dbConnect();
-
-    session = await startSession();
-    session.startTransaction();
-
-    const formData = await request.formData();
-
     checkRequestParams(["projectId", "stringId"], params);
+    const formData = await request.formData();
     checkRequestBody(
       ["translatedText", "isSaveDraft", "isCompleted"],
       formData
@@ -72,6 +81,11 @@ export async function PUT(
       isSaveDraft: formData.get("isSaveDraft") === "true",
       isCompleted: formData.get("isCompleted") === "true",
     };
+
+    await dbConnect();
+
+    session = await startSession();
+    session.startTransaction();
 
     const newString = await updateString(
       params["projectId"],

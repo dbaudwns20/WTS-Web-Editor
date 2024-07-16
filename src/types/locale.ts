@@ -1,5 +1,3 @@
-import { locales, defaultLocale } from "@/navigation";
-
 enum Locale {
   en_US = 1,
   ko_KR = 2,
@@ -56,8 +54,17 @@ export function getLocaleList() {
   return result;
 }
 
-export function getLocaleTextByValue(value: number) {
-  for (const [k, v] of Object.entries(Locale)) if (v === value) return k;
+export function getLocaleTextByValue(value: number): string {
+  let result: string = "";
+  for (const [k, v] of Object.entries(Locale)) if (v === value) result = k;
+  return result;
+}
+
+export function getLocaleValueByText(text: string): number {
+  let result: number = 0;
+  for (const [k, v] of Object.entries(Locale))
+    if (k === text) result = v as number;
+  return result;
 }
 
 export default Locale;
