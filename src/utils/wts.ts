@@ -61,30 +61,24 @@ export function parseToHtml(wtsString: string): string {
     .replace(/\|n/g, "<br />");
 
   // 정규 표현식으로 색상 코드와 텍스트를 분리
-  const regex: RegExp = /\|c([0-9a-fA-F]{8})([^|]*)\|r/g;
+  const regExp: RegExp = /\|c([0-9a-fA-F]{8})([^|]*)\|r/g;
 
   let lastIndex: number = 0;
   let match: RegExpExecArray | null;
 
-  while ((match = regex.exec(wtsString)) !== null) {
+  while ((match = regExp.exec(wtsString)) !== null) {
     const [_, colorCode, text] = match;
 
-    // rgbA 값 추출
-    const alpha: number = parseInt(colorCode.slice(0, 2), 16) / 255;
-    const red: number = parseInt(colorCode.slice(2, 4), 16);
-    const green: number = parseInt(colorCode.slice(4, 6), 16);
-    const blue: number = parseInt(colorCode.slice(6, 8), 16);
-
-    const rgbaColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    const hexColor = `#${colorCode.slice(2)}`;
 
     // 정규 표현식 매치 이전의 일반 텍스트를 추가
     result += wtsString.substring(lastIndex, match.index);
 
     // 색상 코드를 적용한 텍스트를 추가
-    result += `<span style="color:${rgbaColor}">${text}</span>`;
+    result += `<span style="color:${hexColor}">${text}</span>`;
 
     // 마지막 매치 이후 인덱스를 갱신
-    lastIndex = regex.lastIndex;
+    lastIndex = regExp.lastIndex;
   }
 
   // 마지막 매치 이후의 일반 텍스트를 추가
