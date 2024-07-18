@@ -37,7 +37,10 @@ export async function GET(
     // 키워드 검색조건
     if (keyword) {
       // $regex를 사용하여 대소문자 구분 없이 검색
-      const keywordRegex = new RegExp(keyword, "i");
+      const keywordRegex = new RegExp(
+        keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+        "i"
+      );
       let keywordFilter: any = {
         $or: [
           { originalText: { $regex: keywordRegex } },
