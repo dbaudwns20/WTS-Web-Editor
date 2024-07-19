@@ -44,6 +44,7 @@ export async function GET(
     session.startTransaction();
 
     const translatedStringList = await getTranslatedTextList(
+      params["stringId"],
       originalText,
       locale,
       session

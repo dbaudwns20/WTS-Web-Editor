@@ -546,6 +546,7 @@ const StringEditor = forwardRef((props: StringEditorProps, ref) => {
             previewDispatch={previewDispatch}
             updateString={updateString}
             translateByAi={translateByAi}
+            projectLocale={projectLocale}
           />
         </div>
         <footer className="string-editor-footer">

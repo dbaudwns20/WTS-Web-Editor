@@ -36,7 +36,7 @@ export async function GET(
 
     // 키워드 검색조건
     if (keyword) {
-      // $regex를 사용하여 대소문자 구분 없이 검색
+      // $regex를 사용하여 대소문자 구분 없이 검색, 특수문자 escape 추가
       const keywordRegex = new RegExp(
         keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
         "i"

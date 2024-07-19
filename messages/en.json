@@ -196,7 +196,8 @@
           "LABEL": "Preview Mode",
           "EXIT_PREVIEW": "Exit Preview"
         },
-        "AI_TRANSLATE": "AI Translate"
+        "AI_TRANSLATE": "AI Translate",
+        "MOVE_PROJECT": "Go to project"
       }
     }
   },

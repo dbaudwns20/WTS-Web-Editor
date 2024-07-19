@@ -8,13 +8,18 @@ import {
   useCallback,
   useState,
 } from "react";
+import { useRouter } from "@/navigation";
 
 import "./style.css";
+
 import Deepl from "@/assets/deepl.svg";
 
 import Preview from "./preview/preview";
 
 import String from "@/types/string";
+import { TranslatedText, bindTranslatedTextList } from "@/types/wts.string";
+
+import { callApi } from "@/utils/common";
 
 import {
   type PreviewState,
@@ -44,6 +49,7 @@ type TranslatorProps = {
   previewDispatch: Dispatch<PreviewAction>;
   updateString: (isDraft: boolean) => Promise<void>;
   translateByAi: () => Promise<void>;
+  projectLocale: string;
 };
 
 const Translator = forwardRef((props: TranslatorProps, ref) => {
@@ -57,7 +63,10 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     previewDispatch,
     updateString,
     translateByAi,
+    projectLocale,
   } = props;
+
+  const router = useRouter();
 
   // i18n translate key
   const t = useTranslations("PROJECT_DETAIL.STRING_EDITOR.TRANSLATOR");
@@ -65,12 +74,15 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   // refs
   const translatorRef = useRef<HTMLDivElement>(null);
   const translatorOriginRef = useRef<HTMLDivElement>(null);
-  const originalTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const originalTextAreaRef = useRef<HTMLDivElement>(null);
   const translateTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
   // values
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [showComment, setShowComment] = useState<boolean>(false);
+  const [sameTranslatedTextList, setSameTranslatedTextList] = useState<
+    TranslatedText[]
+  >([]);
 
   // 부모 컴포넌트에서 사용할 수 있는 함수 선언
   useImperativeHandle(ref, () => ({
@@ -128,6 +140,11 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     setFocus();
   };
 
+  const moveProject = (projectId: string, stringNumber: number) => {
+    let url: string = `/projects/${projectId}?strings=${stringNumber}`;
+    router.replace(url);
+  };
+
   const getFontSizeClass = useCallback((textLength: number): string => {
     let fontSize: string = "text-3xl";
     if (textLength === 0) return fontSize;
@@ -159,6 +176,31 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
     }
   }, []);
 
+  const getSameTranslatedTextList = useCallback(async () => {
+    if (currentString) {
+      const { projectId, id, originalText } = currentString;
+
+      const response = await callApi(
+        `/api/projects/${projectId}/strings/${id}?originalText=${originalText}&locale=${projectLocale}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (!response.success) {
+        showNotificationMessage({
+          message: response.message,
+          messageType: "danger",
+        });
+        return;
+      }
+
+      setSameTranslatedTextList(
+        bindTranslatedTextList(response.data.translatedStringList)
+      );
+    }
+  }, [currentString, projectLocale]);
+
   useEffect(() => {
     if (isDisabled) {
       translatorRef.current?.classList.add("is-disabled");
@@ -169,12 +211,17 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
 
   useEffect(() => {
     if (originalTextAreaRef.current) {
-      // textarea 높이 조정
-      setHeight(originalTextAreaRef.current);
       // String 이 갱신될때 주석 숨기기
       setShowComment(false);
+      // 원본 텍스트가 다른 프로젝트에서 번역된 내용 가져오기
+      getSameTranslatedTextList();
     }
-  }, [originalText, setHeight]);
+  }, [originalText, getSameTranslatedTextList]);
+
+  useEffect(() => {
+    // textarea 높이 조정
+    setHeight(originalTextAreaRef.current);
+  }, [sameTranslatedTextList, setHeight]);
 
   useEffect(() => {
     if (translateTextAreaRef.current) {
@@ -214,17 +261,54 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
             <header className="translator-header undraggable">
               {t("ORIGINAL_TEXT")}
             </header>
-            <textarea
+            <div
               ref={originalTextAreaRef}
               className={`original-text ${getFontSizeClass(
                 originalText.length
               )}`}
-              spellCheck={false}
-              readOnly
-              tabIndex={-1}
-              value={originalText}
-              rows={1}
-            />
+            >
+              {originalText}
+              {sameTranslatedTextList.length > 0 ? (
+                <div className="same-translated-text-list-wrapper">
+                  <div className="same-translated-text-list">
+                    {sameTranslatedTextList.map((item, index) => (
+                      <div
+                        className="same-translated-text-list-item"
+                        key={index}
+                        onClick={() => {
+                          setTranslatedText(item.translatedText);
+                          setFocus();
+                        }}
+                      >
+                        <div className="same-translated-text">
+                          <h6 className="project-title">{item.projectTitle}</h6>
+                          <p className="translated-text">
+                            {item.translatedText}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          className="flex items-center justify-center p-0.5 z-10 hover:text-sky-400 has-tooltip has-arrow"
+                          data-tooltip={t("MOVE_PROJECT")}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveProject(item.projectId, item.stringNumber);
+                          }}
+                        >
+                          <span className="icon">
+                            <i className="material-icons-outlined md-18">
+                              launch
+                            </i>
+                          </span>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
             <footer className="translator-footer">
               <div className="translator-footer-functions">
                 <a
