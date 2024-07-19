@@ -236,10 +236,10 @@ export default function ProjectDetail() {
   //
   const executeShortcutCommand = (key: string) => {
     switch (key) {
-      case "ArrowRight":
+      case "arrowright":
         stringEditorRef.current?.handleMove(false);
         break;
-      case "ArrowLeft":
+      case "arrowleft":
         stringEditorRef.current?.handleMove(true);
         break;
       case "s":
@@ -288,21 +288,20 @@ export default function ProjectDetail() {
         isDownloadWtsModalOpen
       )
         return;
-      if (!e.shiftKey && (e.ctrlKey || e.metaKey)) {
-        // ctrl or command key 감지
-        const key: string = e.key.toLowerCase();
-        if (["ArrowRight", "ArrowLeft", "s", "d", "f"].includes(key)) {
+      const key = e.key.toLowerCase();
+      const isCtrlOrMeta = e.ctrlKey || e.metaKey;
+
+      if (!e.shiftKey && isCtrlOrMeta) {
+        if (["arrowright", "arrowleft", "s", "d", "f"].includes(key)) {
           e.preventDefault();
           e.stopPropagation();
           executeShortcutCommand(key);
         }
-      } else if (e.shiftKey && (e.ctrlKey || e.metaKey)) {
-        // shift + ctrl or command key 감지
-        const key: string = e.key.toLowerCase();
+      } else if (e.shiftKey && isCtrlOrMeta) {
         if (["f", "e", "c", "x"].includes(key)) {
           e.preventDefault();
           e.stopPropagation();
-          executeShortcutCommand("shift+" + key);
+          executeShortcutCommand(`shift+${key}`);
         }
       }
     };

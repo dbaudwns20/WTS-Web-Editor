@@ -37,6 +37,12 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
     return () => document.removeEventListener("keydown", onKeyDown); // 실행 후 이벤트 제거
   });
 
+  useEffect(() => {
+    // mount 시 첫번째 버튼에 focus
+    const buttonsEl = document.querySelector("#confirmButtons");
+    (buttonsEl?.firstChild as HTMLElement).focus();
+  }, []);
+
   return (
     <div ref={overlay} className="confirm-background">
       <div ref={wrapper} className="confirm">
@@ -67,7 +73,7 @@ const Confirm = forwardRef((props: ConfirmProps, ref) => {
             dangerouslySetInnerHTML={{ __html: message }}
           ></p>
           <div className="buttons-wrapper">
-            <div className="buttons">
+            <div id="confirmButtons" className="buttons">
               {buttons.map((btn: FuncButton, idx) => {
                 return (
                   <button

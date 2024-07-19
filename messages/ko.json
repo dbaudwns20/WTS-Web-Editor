@@ -196,7 +196,8 @@
           "LABEL": "미리보기",
           "EXIT_PREVIEW": "미리보기 종료"
         },
-        "AI_TRANSLATE": "AI 번역"
+        "AI_TRANSLATE": "AI 번역",
+        "MOVE_PROJECT": "프로젝트 이동"
       }
     }
   },

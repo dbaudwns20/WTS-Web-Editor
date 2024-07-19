@@ -171,10 +171,10 @@
   @apply dark:text-gray-400;
   @apply overflow-hidden;
   @apply max-w-[90%];
-  text-overflow: ellipsis;
+  @apply text-ellipsis;
+  @apply line-clamp-1;
   word-break: break-word;
   display: -webkit-box;
-  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 

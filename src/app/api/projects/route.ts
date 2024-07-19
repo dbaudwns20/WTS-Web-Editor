@@ -27,16 +27,16 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   let session;
   try {
-    await dbConnect();
-
-    session = await startSession();
-    session.startTransaction();
-
     const formData: FormData = await request.formData();
     checkRequestBody(
       ["title", "locale", "wtsStringList", "imageFile"],
       formData
     );
+
+    await dbConnect();
+
+    session = await startSession();
+    session.startTransaction();
 
     const createData: any = {
       title: formData.get("title"),
