@@ -50,7 +50,7 @@ const Preview = forwardRef((props: PreviewProps, ref) => {
   };
 
   useEffect(() => {
-    setParseText(parseToHtml(text));
+    setParseText(parseToHtml(text, true));
   }, [text]);
 
   return (

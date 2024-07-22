@@ -28,6 +28,7 @@ import {
 
 import { showNotificationMessage } from "@/utils/message";
 import { isMacintosh } from "@/utils/validator";
+import { parseToHtml } from "@/utils/wts";
 
 import { useTranslations } from "next-intl";
 
@@ -80,6 +81,7 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   // values
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [showComment, setShowComment] = useState<boolean>(false);
+  const [parseText, setParseText] = useState<string>("");
   const [sameTranslatedTextList, setSameTranslatedTextList] = useState<
     TranslatedText[]
   >([]);
@@ -210,13 +212,17 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
   }, [isDisabled]);
 
   useEffect(() => {
+    if (originalText) setParseText(parseToHtml(originalText, false));
+  }, [originalText]);
+
+  useEffect(() => {
     if (originalTextAreaRef.current) {
       // String 이 갱신될때 주석 숨기기
       setShowComment(false);
       // 원본 텍스트가 다른 프로젝트에서 번역된 내용 가져오기
       getSameTranslatedTextList();
     }
-  }, [originalText, getSameTranslatedTextList]);
+  }, [getSameTranslatedTextList]);
 
   useEffect(() => {
     // textarea 높이 조정
@@ -266,49 +272,46 @@ const Translator = forwardRef((props: TranslatorProps, ref) => {
               className={`original-text ${getFontSizeClass(
                 originalText.length
               )}`}
-            >
-              {originalText}
-              {sameTranslatedTextList.length > 0 ? (
-                <div className="same-translated-text-list-wrapper">
-                  <div className="same-translated-text-list">
-                    {sameTranslatedTextList.map((item, index) => (
-                      <div
-                        className="same-translated-text-list-item"
-                        key={index}
-                        onClick={() => {
-                          setTranslatedText(item.translatedText);
-                          setFocus();
+              dangerouslySetInnerHTML={{ __html: parseText }}
+            />
+            {sameTranslatedTextList.length > 0 ? (
+              <div className="same-translated-text-list-wrapper">
+                <div className="same-translated-text-list">
+                  {sameTranslatedTextList.map((item, index) => (
+                    <div
+                      className="same-translated-text-list-item"
+                      key={index}
+                      onClick={() => {
+                        setTranslatedText(item.translatedText);
+                        setFocus();
+                      }}
+                    >
+                      <div className="same-translated-text">
+                        <p className="project-title">{item.projectTitle}</p>
+                        <p className="translated-text">{item.translatedText}</p>
+                      </div>
+                      <button
+                        type="button"
+                        className="move-project-button has-tooltip has-arrow"
+                        data-tooltip={t("MOVE_PROJECT")}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveProject(item.projectId, item.stringNumber);
                         }}
                       >
-                        <div className="same-translated-text">
-                          <h6 className="project-title">{item.projectTitle}</h6>
-                          <p className="translated-text">
-                            {item.translatedText}
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          className="flex items-center justify-center p-0.5 z-10 hover:text-sky-400 has-tooltip has-arrow"
-                          data-tooltip={t("MOVE_PROJECT")}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            moveProject(item.projectId, item.stringNumber);
-                          }}
-                        >
-                          <span className="icon">
-                            <i className="material-icons-outlined md-18">
-                              launch
-                            </i>
-                          </span>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
+                        <span className="icon">
+                          <i className="material-icons-outlined md-18">
+                            launch
+                          </i>
+                        </span>
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                <></>
-              )}
-            </div>
+              </div>
+            ) : (
+              <></>
+            )}
             <footer className="translator-footer">
               <div className="translator-footer-functions">
                 <a

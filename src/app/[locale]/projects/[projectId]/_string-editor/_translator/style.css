@@ -4,7 +4,9 @@
   @apply border;
   @apply border-gray-300;
   @apply rounded-lg;
-  @apply p-4;
+  @apply px-4;
+  @apply pt-4;
+  @apply pb-8;
   @apply relative;
 }
 
@@ -60,11 +62,10 @@
   @apply break-all;
   @apply resize-none;
   @apply outline-none;
-  @apply mb-6;
   @apply dark:text-slate-300;
 }
 
-.translator > .original-text > .same-translated-text-list-wrapper {
+.translator > .same-translated-text-list-wrapper {
   @apply mt-3;
   @apply pt-3;
   @apply border-t;
@@ -72,7 +73,6 @@
 }
 
 .translator
-  > .original-text
   > .same-translated-text-list-wrapper
   > .same-translated-text-header {
   @apply text-xs;
@@ -83,10 +83,7 @@
   @apply text-slate-500/80;
 }
 
-.translator
-  > .original-text
-  > .same-translated-text-list-wrapper
-  > .same-translated-text-list {
+.translator > .same-translated-text-list-wrapper > .same-translated-text-list {
   @apply grid;
   @apply grid-cols-1;
   @apply md:grid-cols-2;
@@ -97,13 +94,14 @@
 }
 
 .translator
-  > .original-text
   > .same-translated-text-list-wrapper
   > .same-translated-text-list
   > .same-translated-text-list-item {
-  @apply p-1;
+  @apply px-1.5;
+  @apply py-1;
   @apply rounded-md;
   @apply hover:bg-gray-200;
+  @apply hover:dark:bg-gray-800/50;
   @apply hover:cursor-pointer;
   @apply flex;
   @apply justify-between;
@@ -111,7 +109,6 @@
 }
 
 .translator
-  > .original-text
   > .same-translated-text-list-wrapper
   > .same-translated-text-list
   > .same-translated-text-list-item
@@ -120,7 +117,6 @@
 }
 
 .translator
-  > .original-text
   > .same-translated-text-list-wrapper
   > .same-translated-text-list
   > .same-translated-text-list-item
@@ -128,10 +124,10 @@
   > .project-title {
   @apply text-xs;
   @apply text-slate-400;
+  @apply dark:text-slate-300;
 }
 
 .translator
-  > .original-text
   > .same-translated-text-list-wrapper
   > .same-translated-text-list
   > .same-translated-text-list-item
@@ -140,6 +136,7 @@
   @apply text-[0.95rem];
   @apply leading-6;
   @apply text-slate-500;
+  @apply dark:text-slate-400;
   @apply overflow-hidden;
   @apply line-clamp-1;
   @apply text-ellipsis;
@@ -148,13 +145,26 @@
   -webkit-box-orient: vertical;
 }
 
+.translator
+  > .same-translated-text-list-wrapper
+  > .same-translated-text-list
+  > .same-translated-text-list-item
+  > .move-project-button {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply p-0.5;
+  @apply z-10;
+  @apply hover:text-sky-400;
+  @apply dark:hover:text-sky-500;
+}
+
 .translator > .translate-text {
   @apply w-full;
   @apply text-slate-500;
   @apply resize-none;
   @apply break-all;
   @apply outline-none;
-  @apply mb-6;
   @apply bg-transparent;
   @apply dark:text-slate-200;
 }

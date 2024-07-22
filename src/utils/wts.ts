@@ -50,15 +50,22 @@ export function readWtsFile(wtsFile: File): WtsString[] {
   return result;
 }
 
-export function parseToHtml(wtsString: string): string {
+export function parseToHtml(
+  wtsString: string,
+  isConvertColor: boolean
+): string {
   let result: string = "";
 
-  // <[^>]+> 부분을 0으로 치환, \r 제거, \n => <br /> 변환, |n => <br /> 변환
+  // <[^>]+> 부분을 0으로 치환, \r 제거, \n => <br /> 변환
   wtsString = wtsString
     .replace(/<[^>]+>/g, "0")
     .replace(/[\r]/g, "")
-    .replace(/[\n]/g, "<br />")
-    .replace(/\|n/g, "<br />");
+    .replace(/[\n]/g, "<br />");
+
+  if (!isConvertColor) return wtsString;
+
+  // |n => <br /> 변환
+  wtsString = wtsString.replace(/\|n/g, "<br />");
 
   // 정규 표현식으로 색상 코드와 텍스트를 분리
   const regExp: RegExp = /\|c([0-9a-fA-F]{8})([^|]*)\|r/g;
