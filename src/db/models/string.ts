@@ -68,7 +68,7 @@ const StringSchema: Schema<IString> = new Schema({
   comment: {
     type: String,
     default: null,
-    maxlength: 100,
+    maxlength: 500,
     trim: true,
   },
   createdAt: {
