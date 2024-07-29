@@ -57,11 +57,9 @@
 
 .translator > .original-text {
   @apply w-full;
-  @apply text-slate-500;
   @apply bg-transparent;
-  @apply break-all;
-  @apply resize-none;
-  @apply outline-none;
+  @apply whitespace-pre-wrap;
+  @apply text-slate-500;
   @apply dark:text-slate-300;
 }
 
