@@ -56,16 +56,16 @@ export function parseToHtml(
 ): string {
   let result: string = "";
 
-  // <[^>]+> 부분을 0으로 치환, \r 제거, \n => <br /> 변환
-  wtsString = wtsString
-    .replace(/<[^>]+>/g, "0")
-    .replace(/[\r]/g, "")
-    .replace(/[\n]/g, "<br />");
+  // \r 제거, \n => <br /> 변환
+  wtsString = wtsString.replace(/[\r]/g, "").replace(/[\n]/g, "<br />");
 
-  if (!isConvertColor) return wtsString;
+  if (!isConvertColor) {
+    // <, > 을 이스케이프 문자로 변환
+    return wtsString.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
 
-  // |n => <br /> 변환
-  wtsString = wtsString.replace(/\|n/g, "<br />");
+  // <[^>]+> 부분을 0으로 치환, |n => <br /> 변환
+  wtsString = wtsString.replace(/<[^>]+>/g, "0").replace(/\|n/g, "<br />");
 
   // 정규 표현식으로 색상 코드와 텍스트를 분리
   const regExp: RegExp = /\|c([0-9a-fA-F]{8})([^|]*)\|r/g;
