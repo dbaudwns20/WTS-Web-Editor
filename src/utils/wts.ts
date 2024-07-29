@@ -50,22 +50,25 @@ export function readWtsFile(wtsFile: File): WtsString[] {
   return result;
 }
 
-export function parseToHtml(
-  wtsString: string,
-  isConvertColor: boolean
-): string {
-  let result: string = "";
-
-  // \r 제거, \n => <br /> 변환
-  wtsString = wtsString.replace(/[\r]/g, "").replace(/[\n]/g, "<br />");
-
-  if (!isConvertColor) {
+export function parseToHtml(wtsString: string, isPreview: boolean): string {
+  // 미리보기 모드가 아니라면 html 태그로만 파싱
+  if (!isPreview) {
     // <, > 을 이스케이프 문자로 변환
-    return wtsString.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return wtsString
+      .replace(/[\r]/g, "")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/[\n]/g, "<br />");
   }
 
-  // <[^>]+> 부분을 0으로 치환, |n => <br /> 변환
-  wtsString = wtsString.replace(/<[^>]+>/g, "0").replace(/\|n/g, "<br />");
+  let result: string = "";
+
+  // <[^>]+> 부분을 0으로 치환, \r 제거, \n => <br /> 변환, |n => <br /> 변환
+  wtsString = wtsString
+    .replace(/<[^>]+>/g, "0")
+    .replace(/[\r]/g, "")
+    .replace(/[\n]/g, "<br />")
+    .replace(/\|n/g, "<br />");
 
   // 정규 표현식으로 색상 코드와 텍스트를 분리
   const regExp: RegExp = /\|c([0-9a-fA-F]{8})([^|]*)\|r/g;
